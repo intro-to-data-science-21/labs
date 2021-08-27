@@ -1,0 +1,321 @@
+---
+title: "Introduction"
+subtitle: "Getting you up to speed with R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Welcome!
+
+The practical component of the **Introduction to Data Science** course relies largely in *R* programming. Today we will center on some of the necessary skills to perform the assignments for the course.
+
+This week's tutorial will be divided in three parts. 
+
+- First, we will speak about the R and RStudio infrastructure setup. 
+- Second, I will remind you of the most important data structures in R and we will practice some basic commands to get you up to speed with working in R.
+- Third, we will discuss some best practices in R. 
+
+
+But first things first:
+**Have you all successfully installed R and RStudio?**
+Otherwise, [install R](https://cran.r-project.org/) first, then [install RStudio](https://www.rstudio.com/products/rstudio/) - or think about [updating](https://happygitwithr.com/install-r-rstudio.html) R, RStudio, and your installed packages.
+
+**Have you all registered a free GitHub account?**
+Otherwise, register [here](https://github.com/).
+
+---
+
+## R and RStudio: Basics
+
+### The RStudio layout
+
+*RStudio* is an integrated development environment (IDE) for R. Think of *RStudio* as a front that allows us to interact, compile, and render R code in a more instinctive way. The following image shows what the standard RStudio interface looks like:
+
+![RStudio Interface](R-Studio.png)
+
+1. **Console**: The *console* provides a means to interact directly with *R*. You can type some code at the *console* and when you press ENTER, R will run that code. Depending on what you type, you may see some output in the *console* or if you make a mistake, you may get a warning or an error message.
+
+2. **Script editor**: You will utilize the *script editor* to complete your assignments. The *script editor* will be the space where files will be displayed. For example, once you download and open the bi-weekly assignment .Rmd template, it will appear here. The editor is a where you should place code you care about, since the code from the console cannot be saved into a script.
+
+3. **Environment**: This area holds the abstractions you have created with your code. If you run `myresult <- 5+3+2`, the `myresult` object will appear there.
+
+4. **Plots and files**: This area will be where graphic output will be generated. Additionally, if you write a question mark before any function, (i.e. `?mean`) the online documentation will be displayed here.
+
+
+
+---
+
+### Object Classes 
+
+**Everything** in R is an object.
+
+We will mostly use the four following basic **data types**:
+
+* character
+* numeric
+* integer
+* logical
+
+You can find out the data types with various functions in R, such as 
+
+```{r}
+x <- "Welcome to the first MDS cohort!"
+typeof(x)
+
+y <- 1:10
+typeof(y)
+```
+
+Furthermore, R as many **data structures**:
+
+* vector
+* list
+* matrix
+* data frame
+* factor
+
+### Vectors
+```{r}
+my_vector <- c(1, 2, 3)
+my_character_vector <- c("Welcome", "everyone")
+
+length(my_vector)
+str(my_character_vector)
+```
+
+### Matrixes
+
+```{r}
+my_matrix <- matrix(nrow=3, ncol=3)
+
+dim(my_matrix)
+```
+
+### Lists
+
+```{r}
+my_list <- list(1, "a", TRUE)
+
+my_list[2]
+my_list[[2]]
+```
+### Data Frames
+
+```{r}
+my_df <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
+
+head(my_df)
+tail(my_df)
+dim(my_df)
+nrow(my_df)
+ncol(my_df)
+str(my_df)
+names(my_df)
+```
+
+### Factors
+
+```{r}
+# direct creation of factors
+my_factor <- factor(c("single","single","married","married","single"))
+
+# turning vectors into factors
+my_vector <- c("single","single","married","married","single")
+my_factor <- as.factor(my_vector)
+
+levels(my_factor)
+```
+
+
+
+If you are thrilled by object classes in R by now, [here is more](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/). ;-)
+
+---
+
+
+
+### R Packages
+
+For the most part, *R Packages* are collections of code and functions that leverage R programming to expand on the basic functionalities. There are a plethora of packages in *R* designed to facilitate the completion of tasks, built by the R community. In later parts of this course, you will also learn how to write packages yourself.
+
+Unlike other programming languages, in *R* you only need to install a package once. The following times you will only need to load the package. **As a good practice I recommend running the code to install packages only in your R console, not in the code editor.** You can install a package with the following syntax
+
+```r
+install.packages("name_of_your_package") #note that the quotation marks are mandatory at this stage
+```
+
+Once the package has been installed, you just need to "call it" every time you want to use it in a file by running:
+
+```r
+library("name_of_your_package") #either of this lines will require the package
+library(name_of_your_package) #library understands the code with, or without, quotation marks
+```
+
+**It is extremely important that you do not have any lines installing packages for your assignments because the file will fail to knit**
+
+
+---
+
+
+### Working directory
+
+The *working directory* is just a file path on your computer that sets the default location of any files you read into R, or save out of R. Normally, when you open *RStudio* it will have a default directory (a folder in your computer). You can check you directory by running `getwd()` in your console:
+
+```r
+#this is the default in my case
+getwd()
+#[1] "/Users/l.oswald"
+```
+
+**When your RStudio is closed and you open a file from your finder in MacOS or file explorer in Windows, the default working directory will be the folder where the file is hosted**
+
+---
+
+### Setting your working directory
+
+You can set you directory manually from RStudio: use the menu to change your working directory under Session > Set Working Directory > Choose Directory.
+
+You can also use the `setwd()` function:
+
+```r
+setwd("/path/to/your/directory") #in macOS
+setwd("c:/path/to/your/directory") #in windows
+```
+
+---
+
+### Recommended folder structure for the class
+
+We recommend you pay close attention to your folder structure. You will receive a new folder for each assignment. Make the folder your working directory when working on the assignment. This folder will be populated with the template .Rmd and the data for the week. When you knit the file, the **.html** will be created in this folder.
+
+**We will learn more about the assignment submission workflow next week. Still, avoid changing the name of the files you receive in Github since it will create issues.**
+
+---
+
+### Working with R Projects
+
+Another option that helps you to circumvent the folder structure mess to some degree are R Projects.
+We highly recommend working in Projects because they are easily integrated with Git - something you will discover in the lecture tomorrow!
+
+
+### Dealing with errors in R
+
+Errors in R occur when code is used in a way that it is not intended. For example when you try to add two character strings, you will get the following error:
+
+```r
+"hello" + "world"
+Error in "hello" + "world": non-numeric argument to binary operator
+```
+
+Normally, when something has gone wrong with your program, *R* will notify you of an error in the **console**. There are errors that will prevent the code from running, while others will only produce **warning** messages. In the following case, the code will run, but you will notice that the string **"three"** is turned into a NA.
+
+```r
+as.numeric(c("1", "2", "three"))
+Warning: NAs introduced by coercion
+[1]  1  2 NA
+```
+
+Since we will be utilizing widely used packages and functions in the course of the semester, the errors that you may come across in the process of completing your assignments will be common for other R users. Most errors occur because of typos. A Google search of the error message can take you a long way as well. Most of the times the first entry on **stackoverflow.com** will solve the problem.   
+
+---
+
+## Importing data
+
+Next we will work with data provided by the `palmerpenguins` package; however, most practical applications will require you to work with your own data. In fact, for most assignments, you will be given a data set to work with. As we will see in the coming weeks, data are messy. You know what else is messy? Data formats. You may be acquainted with a couple of them *(.csv, .tsv, .xlsx)*.
+
+Fortunately for us, the `tidyverse` has two packages that make the process of loading data sets from different formats very easy.
+
+- `readr`: The goal of `readr` is to provide a fast and friendly way to read rectangular data (like **csv, tsv, rds, and fwf**)
+- `haven`: The goal of `haven` is to enable R to read and write various data formats used by other statistical packages (like **dta, sas, and sav**)
+
+You can read more about how to load different types of data in the respective documentations of the packages — [readr](https://readr.tidyverse.org/) and [haven](https://haven.tidyverse.org/)
+
+
+---
+
+For the assignments you will be required to load datasets. You can do that by installing the `readr` package and utilizing:
+
+```r
+#with readr
+your_data_frame <- readr::read_rds("path_for_the_file")
+
+#you can alternatively use a base R option
+your_data_frame <- base::readRDS("path_for_the_file")
+```
+
+This week's mock assignment will feature a **.tsv** file. When in doubt just Google **"How to load x_format data in R?"** That will do the trick!
+
+---
+
+### The double colon operator ::
+
+You may have noted in the previous section that the functions were preceded by their package name and two colons, for example: `readr::read_rds()`. The double colon operator `::` helps us ensure that we select functions from a particular package. We utilize the operator to explicitly state where the function is coming. This may become even more important when you are doing data analysis as part of a team further in your careers. Though it is likely that this will not be a problem during the course, we can try to employ the following convention `package_name::function()` to ensure that we will not encounter errors in our knitting process:
+
+```r
+dplyr::select()
+```
+---
+
+Let's look at what happens when we load `tidyverse`.
+
+```r
+library(tidyverse)
+
+#── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 #──
+#✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+#✓ tibble  3.0.3     ✓ dplyr   1.0.2
+#✓ tidyr   1.1.2     ✓ stringr 1.4.0
+#✓ readr   1.3.1     ✓ forcats 0.5.0
+#── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() #──
+#x dplyr::filter() masks stats::filter()
+#x dplyr::lag()    masks stats::lag()
+```
+
+You may notice that *R* points out some conflicts where some functions are being masked. The default in this machine will become the `filter()` from the `dplyr` package during this session. If you were to run some code that is based on the `filter()` from the `stats` package, your code will probably result in errors.
+
+---
+
+
+## Best practices
+
+Let us conclude the tutorial with some notes on best practices in R.
+There is a multitude of collections on best practices online, for example, Ivo Bernardo collected a few very useful ones [here](https://towardsdatascience.com/best-practices-for-r-programming-ec0754010b5a).
+
+### Script structure
+
+When structuring your scripts, remember a few things
+
+* Libraries go first
+* Hard coded variables (e.g. when reading in data) go second
+* Relative paths over absolute paths (give your friends and colleagues a chance to execute your scripts without trouble)
+
+### Naming conventions
+
+In summary, we can say: always use easy to interpret names and don’t use whitespaces in file or variable names! Some *good* examples:
+
+* my_file.R
+* my_vector <- c(1,2,3)
+* this_function()
+
+### Spacing
+
+It is somewhat easier to read if you generally leave a space after a comma
+
+* my_function(1:10, c(2, 4))
+
+### Repetition
+
+When you start copying and pasting code (creating a lot of redundancy), you might want to consider slimming down your code by creating a function. Functions? Let us leave this as a note of caution and return to functions and efficient code in one of our very last sessions! :-) 
+
+
