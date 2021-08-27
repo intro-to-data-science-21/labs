@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## Welcome!
 
-The practical component of the **Introduction to Data Science** course relies largely in *R* programming. Today we will center on some of the necessary skills to perform the assignments for the course.
+The practical component of the **Introduction to Data Science** course relies largely on *R* programming. Today will center around some of the necessary skills to perform the assignments for this course.
 
 This week's tutorial will be divided in three parts. 
 
@@ -199,13 +199,13 @@ setwd("c:/path/to/your/directory") #in windows
 
 We recommend you pay close attention to your folder structure. You will receive a new folder for each assignment. Make the folder your working directory when working on the assignment. This folder will be populated with the template .Rmd and the data for the week. When you knit the file, the **.html** will be created in this folder.
 
-**We will learn more about the assignment submission workflow next week. Still, avoid changing the name of the files you receive in Github since it will create issues.**
+**We will learn more about the assignment submission workflow next week. Still, avoid changing the name of the files you receive on Github since it will create issues.**
 
 ---
 
 ### Working with R Projects
 
-Another option that helps you to circumvent the folder structure mess to some degree are R Projects.
+Another option that allows you to circumvent the folder structure mess to some degree are R Projects.
 We highly recommend working in Projects because they are easily integrated with Git - something you will discover in the lecture tomorrow!
 
 
@@ -290,7 +290,7 @@ You may notice that *R* points out some conflicts where some functions are being
 ## Best practices
 
 Let us conclude the tutorial with some notes on best practices in R.
-There is a multitude of collections on best practices online, for example, Ivo Bernardo collected a few very useful ones [here](https://towardsdatascience.com/best-practices-for-r-programming-ec0754010b5a).
+There is a multitude of collections on best practices online, for example, some very useful ones are [here](https://www.r-bloggers.com/2018/09/r-code-best-practices/).
 
 ### Script structure
 
