@@ -3,7 +3,7 @@
 
 ## Lab Sessions
 
-1. Introduction and R basics [**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-1-intro/1-intro.html)| [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-1-intro/1-intro.Rmd)
+1. Introduction and R basics \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-1-intro/1-intro.html)| [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-1-intro/1-intro.Rmd)\]
 2. Version control and project management \[[**.html**]() | [**.Rmd**]()\]
 3. R and the tidyverse \[[**.html**]() | [**.Rmd**]()\]
 
