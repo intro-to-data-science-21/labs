@@ -42,7 +42,7 @@ Otherwise, register [here](https://github.com/).
 
 *RStudio* is an integrated development environment (IDE) for R. Think of *RStudio* as a front that allows us to interact, compile, and render R code in a more instinctive way. The following image shows what the standard RStudio interface looks like:
 
-![RStudio Interface](https://github.com/intro-to-data-science-21/labs/blob/main/session-1-intro/R-Studio.png)
+![RStudio Interface](R-Studio.png)
 
 1. **Console**: The *console* provides a means to interact directly with *R*. You can type some code at the *console* and when you press ENTER, R will run that code. Depending on what you type, you may see some output in the *console* or if you make a mistake, you may get a warning or an error message.
 
