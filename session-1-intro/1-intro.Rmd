@@ -94,7 +94,7 @@ length(my_vector)
 str(my_character_vector)
 ```
 
-### Matrixes
+### Matrices
 
 ```{r}
 my_matrix <- matrix(nrow=3, ncol=3)
