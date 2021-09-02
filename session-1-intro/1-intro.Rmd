@@ -801,6 +801,10 @@ When you start copying and pasting code (creating a lot of redundancy), you migh
 
 Again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
 
+## To-do for next week!
+
+Next week's session will be about version control and project management with Git and Github. Please download and install [Github desktop](https://desktop.github.com/) on your machine! See you next week! `r emo::ji("computer")`
+
 ---
 
 # Sources {-}
