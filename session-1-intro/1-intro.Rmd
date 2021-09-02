@@ -477,7 +477,9 @@ pop1[asia == T & regime != "Autocracy"]
 
 ---
 
-# R Packages `r emo::ji("package")`
+# Working with R
+
+## R Packages `r emo::ji("package")`
 
 For the most part, *R Packages* are collections of code and functions that leverage R programming to expand on the basic functionalities. There are a plethora of packages in *R* designed to facilitate the completion of tasks, built by the R community. In later parts of this course, you will also learn how to write packages yourself.
 
@@ -701,6 +703,8 @@ max(mydata_na$nconflict)
 mydata_na$country[mydata_na$nconflict == max(mydata_na$nconflict)]
 ```
 
+# Working with R II
+
 ## Saving data 
 Suppose we wanted to save this newly created data frame. We have multiple options to do so. If we wanted to save it as a native `.RData` format, we would run the following command. 
 ```{r}
@@ -713,7 +717,7 @@ Most of the time, however, we would want to save our data in formats that can be
 # write.csv(mydata_new, file = "mydata_new.csv")
 ```
 
-# Dealing with errors in R
+## Dealing with errors in R
 
 Errors in R occur when code is used in a way that it is not intended. For example when you try to add two character strings, you will get the following error:
 

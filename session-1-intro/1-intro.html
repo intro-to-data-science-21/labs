@@ -819,8 +819,10 @@ names(my_df)</code></pre>
 <hr />
 </div>
 </div>
-<div id="r-packages" class="section level1">
-<h1>R Packages 📦</h1>
+<div id="working-with-r" class="section level1">
+<h1>Working with R</h1>
+<div id="r-packages" class="section level2">
+<h2>R Packages 📦</h2>
 <p>For the most part, <em>R Packages</em> are collections of code and functions that leverage R programming to expand on the basic functionalities. There are a plethora of packages in <em>R</em> designed to facilitate the completion of tasks, built by the R community. In later parts of this course, you will also learn how to write packages yourself.</p>
 <p>Unlike other programming languages, in <em>R</em> you only need to install a package once. The following times you will only need to load the package. <strong>As a good practice I recommend running the code to install packages only in your R console, not in the code editor.</strong> You can install a package with the following syntax</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;name_of_your_package&quot;</span>) <span class="co">#note that the quotation marks are mandatory at this stage</span></span></code></pre></div>
@@ -829,6 +831,7 @@ names(my_df)</code></pre>
 <span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(name_of_your_package) <span class="co">#library understands the code with, or without, quotation marks</span></span></code></pre></div>
 <p><strong>It is extremely important that you do not have any lines installing packages for your assignments because the file will fail to knit</strong></p>
 <hr />
+</div>
 <div id="working-directory" class="section level2">
 <h2>Working directory</h2>
 <p>The <em>working directory</em> is just a file path on your computer that sets the default location of any files you read into R, or save out of R. Normally, when you open <em>RStudio</em> it will have a default directory (a folder in your computer). You can check you directory by running <code>getwd()</code> in your console:</p>
@@ -1040,6 +1043,9 @@ names(my_df)</code></pre>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a>mydata_na<span class="sc">$</span>country[mydata_na<span class="sc">$</span>nconflict <span class="sc">==</span> <span class="fu">max</span>(mydata_na<span class="sc">$</span>nconflict)]</span></code></pre></div>
 <pre><code>## [1] &quot;Sudan&quot;</code></pre>
 </div>
+</div>
+<div id="working-with-r-ii" class="section level1">
+<h1>Working with R II</h1>
 <div id="saving-data" class="section level2">
 <h2>Saving data</h2>
 <p>Suppose we wanted to save this newly created data frame. We have multiple options to do so. If we wanted to save it as a native <code>.RData</code> format, we would run the following command.</p>
@@ -1048,9 +1054,8 @@ names(my_df)</code></pre>
 <p>Most of the time, however, we would want to save our data in formats that can be read by other programs as well. <code>.csv</code> is an obvious choice.</p>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(mydata_new, file = &quot;mydata_new.csv&quot;)</span></span></code></pre></div>
 </div>
-</div>
-<div id="dealing-with-errors-in-r" class="section level1">
-<h1>Dealing with errors in R</h1>
+<div id="dealing-with-errors-in-r" class="section level2">
+<h2>Dealing with errors in R</h2>
 <p>Errors in R occur when code is used in a way that it is not intended. For example when you try to add two character strings, you will get the following error:</p>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;hello&quot;</span> <span class="sc">+</span> <span class="st">&quot;world&quot;</span></span>
 <span id="cb171-2"><a href="#cb171-2" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="st">&quot;hello&quot;</span> <span class="sc">+</span> <span class="st">&quot;world&quot;</span><span class="sc">:</span> non<span class="sc">-</span>numeric argument to binary operator</span></code></pre></div>
@@ -1060,6 +1065,7 @@ names(my_df)</code></pre>
 <span id="cb172-3"><a href="#cb172-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="dv">1</span>  <span class="dv">2</span> <span class="cn">NA</span></span></code></pre></div>
 <p>Since we will be utilizing widely used packages and functions in the course of the semester, the errors that you may come across in the process of completing your assignments will be common for other R users. Most errors occur because of typos. A Google search of the error message can take you a long way as well. Most of the times the first entry on <strong>stackoverflow.com</strong> will solve the problem.</p>
 <hr />
+</div>
 <div id="the-double-colon-operator" class="section level2">
 <h2>The double colon operator ::</h2>
 <p>You may have noted in the previous section that the functions were preceded by their package name and two colons, for example: <code>readr::read_rds()</code>. The double colon operator <code>::</code> helps us ensure that we select functions from a particular package. We utilize the operator to explicitly state where the function is coming. This may become even more important when you are doing data analysis as part of a team further in your careers. Though it is likely that this will not be a problem during the course, we can try to employ the following convention <code>package_name::function()</code> to ensure that we will not encounter errors in our knitting process:</p>
