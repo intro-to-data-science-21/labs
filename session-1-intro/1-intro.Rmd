@@ -70,7 +70,7 @@ In addition, there are a lot of free `R` comprehensive guides, such as Quick-R a
 ## Executing a line of code
 To execute a single line of code. In RStudio, with the curser in the line you want `R` to execute, 
 
-Press `command +  return` (on macOS) or `Crtl + Enter` (on Windows).
+Press `command + return` (on macOS) or `Crtl + Enter` (on Windows).
 
 To execute multiple lines of code at once, highlight the respective portion of the code and then run it using the operations above.
 
@@ -116,10 +116,10 @@ Logical operators are incredibly helpful for any type of exploratory analysis, d
 
 # Objects in R
 
-First thing to remember - *everything* in R is an object.
+`R` stores information as an *object*. You can name objects whatever you like. Just remember to not use names that are reserved for build-in functions or functions in the packages you use, such as `sum`, `mean`, or `abs`. Most of the time, `R` will let you use these as names, but it leads to confusion in your code. 
+
 
 ## Assigning values to objects
-`R` stores information as an *object*. You can name objects whatever you like. Just remember to not use names that are reserved for build-in functions or functions in the packages you use, such as `sum`, `mean`, or `abs`. Most of the time, `R` will let you use these as names, but it leads to confusion in your code. 
 
 A few things to remember
 
@@ -152,19 +152,20 @@ There are four main variable types you should be familiar with:
 
 ## Data Structures in R
 
-R has many **data structures**, the most important ones for now are:
+R has many data structures, the most important ones for now are:
 
-* vectors
-* lists
-* matrices
-* data frames
-* factors
+* **Vectors**
+* **Lists**
+* **Matrices**
+* **Data frames**
+* **Factors**
+
+Here is a short overview with a few related operations that you can apply to the different structures.
 
 ### Vectors
 ```{r}
 my_vector <- c(1, 2, 3)
 my_character_vector <- c("Welcome", "everyone")
-
 length(my_vector)
 str(my_character_vector)
 ```
@@ -173,7 +174,6 @@ str(my_character_vector)
 
 ```{r}
 my_matrix <- matrix(nrow=3, ncol=3)
-
 dim(my_matrix)
 ```
 
@@ -181,7 +181,6 @@ dim(my_matrix)
 
 ```{r}
 my_list <- list(1, "a", TRUE)
-
 my_list[2]
 my_list[[2]]
 ```
@@ -192,7 +191,7 @@ my_list[[2]]
 my_df <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
 ```
 
-Some useful operations to learn something about a data frame:
+Some useful operations to learn something about a data frame - more on this in a moment!
 ```
 head(my_df)
 tail(my_df)
@@ -216,7 +215,7 @@ my_factor <- as.factor(my_vector)
 levels(my_factor)
 ```
 
-If you are thrilled by object classes in R by now, [here is more](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/). ;-)
+If you are thrilled by object classes in R by now, [here is more](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/).
 
 ---
 
@@ -225,7 +224,7 @@ If you are thrilled by object classes in R by now, [here is more](https://swcarp
 
 Let's first focus on vectors as building blocks of most data structures you'll be working with.
 
-A **vector** is one of the simplest type of data you can work with in `R`. "A vector or a one-dimensional array simply represents a collection of information stored in a specific order" (Imai 2017: 14). It is essentially a list of data of a single type (either numerical, character, or logical). 
+A **vector** is one of the simplest type of data you can work with in `R`. "A vector or a one-dimensional array simply represents a collection of information stored in a specific order" (Imai 2017: 14). It is essentially a list of data of a single type (e.g. numerical, character, or logical). 
 
 To create a vector, we use the function `c()` (``concatenate'') to combine separate data points. The general format for creating a vector in R is as follows:
 `name_of_vector <- c("what you want to put into the vector")`
@@ -611,12 +610,12 @@ If we try to access a data point that is out of bounds, `R` returns the value `N
 mydata[3,7]
 ```
 
-**Exercise 1** Access the element of the dataframe `mydata` that is stored in row 1, column 1.
+**Exercise 10** Access the element of the dataframe `mydata` that is stored in row 1, column 1.
 ```{r, echo = F}
 mydata[1,1]
 ```
 
-**Exercise 2** Access the element of the data frame `mydata` that is stored in column 3, row 100.
+**Exercise 11** Access the element of the data frame `mydata` that is stored in column 3, row 100.
 ```{r, echo=FALSE}
 mydata[100,3]
 ```
@@ -640,23 +639,23 @@ summary(mydata$nconflict)
 table(mydata$region, mydata$nconflict > mean(mydata$nconflict))
 ```
 
-**Exercise 10**: How would you access all elements of the variable `country` using indexing rather than the `$` operator?
+**Exercise 12**: How would you access all elements of the variable `country` using indexing rather than the `$` operator?
 ```{r, echo = F}
 head(mydata[, 1])
 head(mydata[, "country"])
 ```
 
-**Exercise 11**: How would you find the maximum value for number of events using the `$` operator?
+**Exercise 13**: How would you find the maximum value for number of events using the `$` operator?
 ```{r, echo = F}
 max(mydata$nconflict)
 ```
 
-**Exercise 12**: Print the country that corresponds to the maximum world population value using the `$` operator and indexing!
+**Exercise 14**: Print the country that corresponds to the maximum world population value using the `$` operator and indexing!
 ```{r, echo = F}
 mydata$country[mydata$nconflict == max(mydata$nconflict)]
 ```
 
-**Exercise 13**: Print out every second element from the variable `country` using indexing methods and the sequence function `seq()`.
+**Exercise 15**: Print out every second element from the variable `country` using indexing methods and the sequence function `seq()`.
 ```{r, echo = F}
 head(mydata$country[seq(1, length(mydata$country), 2)])
 ```
@@ -707,14 +706,14 @@ mydata_na$country[mydata_na$nconflict == max(mydata_na$nconflict)]
 
 ## Saving data 
 Suppose we wanted to save this newly created data frame. We have multiple options to do so. If we wanted to save it as a native `.RData` format, we would run the following command. 
-```{r}
+```
 # Make sure you specified the right working directory!
-# save(mydata, file = "mydata_new.RData")
+save(mydata, file = "mydata_new.RData")
 ```
 
 Most of the time, however, we would want to save our data in formats that can be read by other programs as well. `.csv` is an obvious choice.
-```{r}
-# write.csv(mydata_new, file = "mydata_new.csv")
+```
+write.csv(mydata_new, file = "mydata_new.csv")
 ```
 
 ## Dealing with errors in R
@@ -798,7 +797,7 @@ It is somewhat easier to read if you generally leave a space after a comma
 When you start copying and pasting code (creating a lot of redundancy), you might want to consider slimming down your code by creating a function. Functions? Let us leave this as a note of caution and return to functions and efficient code in one of our very last sessions! :-) 
 
 
-## Let's go, learn R! `r emo::ji("backpack")`
+## Actually learning R `r emo::ji("backpack")`
 
 Again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
 

@@ -369,7 +369,7 @@ div.tocify {
 <div id="executing-a-line-of-code" class="section level2">
 <h2>Executing a line of code</h2>
 <p>To execute a single line of code. In RStudio, with the curser in the line you want <code>R</code> to execute,</p>
-<p>Press <code>command +  return</code> (on macOS) or <code>Crtl + Enter</code> (on Windows).</p>
+<p>Press <code>command + return</code> (on macOS) or <code>Crtl + Enter</code> (on Windows).</p>
 <p>To execute multiple lines of code at once, highlight the respective portion of the code and then run it using the operations above.</p>
 </div>
 <div id="arithmetic-in-r" class="section level2">
@@ -483,10 +483,9 @@ div.tocify {
 </div>
 <div id="objects-in-r" class="section level1">
 <h1>Objects in R</h1>
-<p>First thing to remember - <em>everything</em> in R is an object.</p>
+<p><code>R</code> stores information as an <em>object</em>. You can name objects whatever you like. Just remember to not use names that are reserved for build-in functions or functions in the packages you use, such as <code>sum</code>, <code>mean</code>, or <code>abs</code>. Most of the time, <code>R</code> will let you use these as names, but it leads to confusion in your code.</p>
 <div id="assigning-values-to-objects" class="section level2">
 <h2>Assigning values to objects</h2>
-<p><code>R</code> stores information as an <em>object</em>. You can name objects whatever you like. Just remember to not use names that are reserved for build-in functions or functions in the packages you use, such as <code>sum</code>, <code>mean</code>, or <code>abs</code>. Most of the time, <code>R</code> will let you use these as names, but it leads to confusion in your code.</p>
 <p>A few things to remember</p>
 <ul>
 <li>Do not use special characters such as <code>$</code> or <code>%</code>. Common symbols that are used in variable names include <code>.</code> or <code>_</code>.</li>
@@ -515,20 +514,20 @@ div.tocify {
 </div>
 <div id="data-structures-in-r" class="section level2">
 <h2>Data Structures in R</h2>
-<p>R has many <strong>data structures</strong>, the most important ones for now are:</p>
+<p>R has many data structures, the most important ones for now are:</p>
 <ul>
-<li>vectors</li>
-<li>lists</li>
-<li>matrices</li>
-<li>data frames</li>
-<li>factors</li>
+<li><strong>Vectors</strong></li>
+<li><strong>Lists</strong></li>
+<li><strong>Matrices</strong></li>
+<li><strong>Data frames</strong></li>
+<li><strong>Factors</strong></li>
 </ul>
+<p>Here is a short overview with a few related operations that you can apply to the different structures.</p>
 <div id="vectors" class="section level3">
 <h3>Vectors</h3>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>my_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>my_character_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Welcome&quot;</span>, <span class="st">&quot;everyone&quot;</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(my_vector)</span></code></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(my_vector)</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_character_vector)</span></code></pre></div>
 <pre><code>##  chr [1:2] &quot;Welcome&quot; &quot;everyone&quot;</code></pre>
@@ -536,15 +535,13 @@ div.tocify {
 <div id="matrices" class="section level3">
 <h3>Matrices</h3>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>my_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span><span class="dv">3</span>, <span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(my_matrix)</span></code></pre></div>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(my_matrix)</span></code></pre></div>
 <pre><code>## [1] 3 3</code></pre>
 </div>
 <div id="lists" class="section level3">
 <h3>Lists</h3>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="st">&quot;a&quot;</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>my_list[<span class="dv">2</span>]</span></code></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>my_list[<span class="dv">2</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] &quot;a&quot;</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>my_list[[<span class="dv">2</span>]]</span></code></pre></div>
@@ -553,7 +550,7 @@ div.tocify {
 <div id="data-frames" class="section level3">
 <h3>Data Frames</h3>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>)</span></code></pre></div>
-<p>Some useful operations to learn something about a data frame:</p>
+<p>Some useful operations to learn something about a data frame - more on this in a moment!</p>
 <pre><code>head(my_df)
 tail(my_df)
 dim(my_df)
@@ -573,7 +570,7 @@ names(my_df)</code></pre>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(my_factor)</span></code></pre></div>
 <pre><code>## [1] &quot;married&quot; &quot;single&quot;</code></pre>
-<p>If you are thrilled by object classes in R by now, <a href="https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/">here is more</a>. ;-)</p>
+<p>If you are thrilled by object classes in R by now, <a href="https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/">here is more</a>.</p>
 <hr />
 </div>
 </div>
@@ -581,7 +578,7 @@ names(my_df)</code></pre>
 <div id="vectors-1" class="section level1">
 <h1>Vectors</h1>
 <p>Let’s first focus on vectors as building blocks of most data structures you’ll be working with.</p>
-<p>A <strong>vector</strong> is one of the simplest type of data you can work with in <code>R</code>. “A vector or a one-dimensional array simply represents a collection of information stored in a specific order” (Imai 2017: 14). It is essentially a list of data of a single type (either numerical, character, or logical).</p>
+<p>A <strong>vector</strong> is one of the simplest type of data you can work with in <code>R</code>. “A vector or a one-dimensional array simply represents a collection of information stored in a specific order” (Imai 2017: 14). It is essentially a list of data of a single type (e.g. numerical, character, or logical).</p>
 <p>To create a vector, we use the function <code>c()</code> (`<code>concatenate&#39;&#39;) to combine separate data points. The general format for creating a vector in R is as follows:</code>name_of_vector &lt;- c(“what you want to put into the vector”)`</p>
 <p>Suppose, we have data on the population in millions for the five most populous countries in 2016. The data come from the World Bank.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>pop1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1379</span>, <span class="dv">1324</span>, <span class="dv">323</span>, <span class="dv">261</span>, <span class="dv">208</span>)</span>
@@ -937,9 +934,9 @@ names(my_df)</code></pre>
 <p>If we try to access a data point that is out of bounds, <code>R</code> returns the value <code>NULL</code>.</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>mydata[<span class="dv">3</span>,<span class="dv">7</span>]</span></code></pre></div>
 <pre><code>## NULL</code></pre>
-<p><strong>Exercise 1</strong> Access the element of the dataframe <code>mydata</code> that is stored in row 1, column 1.</p>
+<p><strong>Exercise 10</strong> Access the element of the dataframe <code>mydata</code> that is stored in row 1, column 1.</p>
 <pre><code>## [1] &quot;Afghanistan&quot;</code></pre>
-<p><strong>Exercise 2</strong> Access the element of the data frame <code>mydata</code> that is stored in column 3, row 100.</p>
+<p><strong>Exercise 11</strong> Access the element of the data frame <code>mydata</code> that is stored in column 3, row 100.</p>
 <pre><code>## [1] 503</code></pre>
 </div>
 <div id="the-operator" class="section level3">
@@ -986,16 +983,16 @@ names(my_df)</code></pre>
 ##   Southern Africa               7    1
 ##   Southern Asia                 2    4
 ##   Western Africa               14    1</code></pre>
-<p><strong>Exercise 10</strong>: How would you access all elements of the variable <code>country</code> using indexing rather than the <code>$</code> operator?</p>
+<p><strong>Exercise 12</strong>: How would you access all elements of the variable <code>country</code> using indexing rather than the <code>$</code> operator?</p>
 <pre><code>## [1] &quot;Afghanistan&quot; &quot;Albania&quot;     &quot;Algeria&quot;     &quot;Angola&quot;      &quot;Armenia&quot;    
 ## [6] &quot;Azerbaijan&quot;</code></pre>
 <pre><code>## [1] &quot;Afghanistan&quot; &quot;Albania&quot;     &quot;Algeria&quot;     &quot;Angola&quot;      &quot;Armenia&quot;    
 ## [6] &quot;Azerbaijan&quot;</code></pre>
-<p><strong>Exercise 11</strong>: How would you find the maximum value for number of events using the <code>$</code> operator?</p>
+<p><strong>Exercise 13</strong>: How would you find the maximum value for number of events using the <code>$</code> operator?</p>
 <pre><code>## [1] 70734</code></pre>
-<p><strong>Exercise 12</strong>: Print the country that corresponds to the maximum world population value using the <code>$</code> operator and indexing!</p>
+<p><strong>Exercise 14</strong>: Print the country that corresponds to the maximum world population value using the <code>$</code> operator and indexing!</p>
 <pre><code>## [1] &quot;Syria&quot;</code></pre>
-<p><strong>Exercise 13</strong>: Print out every second element from the variable <code>country</code> using indexing methods and the sequence function <code>seq()</code>.</p>
+<p><strong>Exercise 15</strong>: Print out every second element from the variable <code>country</code> using indexing methods and the sequence function <code>seq()</code>.</p>
 <pre><code>## [1] &quot;Afghanistan&quot;            &quot;Algeria&quot;                &quot;Armenia&quot;               
 ## [4] &quot;Bahrain&quot;                &quot;Belarus&quot;                &quot;Bosnia and Herzegovina&quot;</code></pre>
 </div>
@@ -1049,10 +1046,10 @@ names(my_df)</code></pre>
 <div id="saving-data" class="section level2">
 <h2>Saving data</h2>
 <p>Suppose we wanted to save this newly created data frame. We have multiple options to do so. If we wanted to save it as a native <code>.RData</code> format, we would run the following command.</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure you specified the right working directory!</span></span>
-<span id="cb169-2"><a href="#cb169-2" aria-hidden="true" tabindex="-1"></a><span class="co"># save(mydata, file = &quot;mydata_new.RData&quot;)</span></span></code></pre></div>
+<pre><code># Make sure you specified the right working directory!
+save(mydata, file = &quot;mydata_new.RData&quot;)</code></pre>
 <p>Most of the time, however, we would want to save our data in formats that can be read by other programs as well. <code>.csv</code> is an obvious choice.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(mydata_new, file = &quot;mydata_new.csv&quot;)</span></span></code></pre></div>
+<pre><code>write.csv(mydata_new, file = &quot;mydata_new.csv&quot;)</code></pre>
 </div>
 <div id="dealing-with-errors-in-r" class="section level2">
 <h2>Dealing with errors in R</h2>
@@ -1118,8 +1115,8 @@ names(my_df)</code></pre>
 <h2>Repetition</h2>
 <p>When you start copying and pasting code (creating a lot of redundancy), you might want to consider slimming down your code by creating a function. Functions? Let us leave this as a note of caution and return to functions and efficient code in one of our very last sessions! :-)</p>
 </div>
-<div id="lets-go-learn-r" class="section level2">
-<h2>Let’s go, learn R! 🎒</h2>
+<div id="actually-learning-r" class="section level2">
+<h2>Actually learning R 🎒</h2>
 <p>Again, the key to learning <code>R</code> is: <strong>Google</strong>! We can only give you an overview over basic <code>R</code> functions, but to really learn <code>R</code> you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just <em>similar enough</em> issue before and that the R community has answered it with 5+ different solutions years ago. 😉</p>
 <hr />
 </div>
