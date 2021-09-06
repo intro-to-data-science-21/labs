@@ -5,7 +5,7 @@
 
 1. Introduction, R basics and best practice \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-1-intro/1-intro.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-1-intro/1-intro.Rmd)\]
 2. Version control and project management \[[**.html**]() | [**.Rmd**]()\]
-3. R and the tidyverse \[[**.html**]() | [**.Rmd**]()\]
+3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-3-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-3-tidyverse/3-tidyverse.Rmd)\]
 
 ## Instructors
 
