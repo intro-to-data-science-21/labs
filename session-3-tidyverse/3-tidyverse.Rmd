@@ -1,0 +1,515 @@
+---
+title: "Tidyverse"
+subtitle: "Data cleaning, wrangling and plotting in R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+Today, we'll finally leave base R behind and make our lives much easier by introducing you to the tidyverse. `r emo::ji("sparkles")`
+We think for data cleaning, wrangling, and plotting, the tidyverse really is a no-brainer. A few good reasons for teaching the tidyverse are:
+
+* Outstanding documentation and community support
+* Consistent philosophy and syntax 
+* Convenient "front-end" for more advanced methods
+
+Read more on this [here](http://varianceexplained.org/r/teach-tidyverse/) if you like.
+
+**But**... this certainly shouldn't put you off learning base R alternatives.
+
+* Base R is extremely flexible and powerful (and stable).
+* There are some things that you'll have to venture outside of the tidyverse for.
+* A combination of tidyverse and base R is often the best solution to a problem.
+* Excellent base R data manipulation tutorials:
+
+[here](https://www.rspatial.org/intr/index.html) and [here](https://github.com/matloff/fasteR).
+
+---
+
+In general, the `tidyverse` is a collection of R packages that share an underlying design, syntax, and structure. One very prominent tidyverse package is `dplyr` for data manipulation.
+
+In this tutorial, you will learn to:
+
+* understand what we mean with `tidy data`
+* identify the purpose of a set of `dplyr` verbs
+* write statements in `tidy` syntax
+* apply `dplyr` verbs to solve your data manipulation challenges
+
+
+
+# Tidy Data
+
+Generally, we will encounter data in a tidy format. Tidy data refers to a way of mapping the structure of a data set. In a tidy data set:
+
+1. Each variable forms a column.
+2. Each observation forms a row.
+3. Each type of observational unit forms a table
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+knitr::include_graphics("tidy_data.png")
+```
+
+**Excercise 1**
+```
+Think about what you've learned about panel surveys (surveys fielded to the same set of participants at multiple points of time). Why is this a problem for the general assumptions of tidy data and what possible data formats can you end up with?
+```
+
+---
+
+# Tidyverse packages
+
+Let's load the tidyverse meta-package and check the output.
+```{r}
+library(tidyverse)
+```
+
+We see that we have actually loaded a number of packages (which could also be loaded individually): **ggplot2**, **tibble**, **dplyr**, etc.
+We can also see information about the package versions and some [namespace conflicts](https://raw.githack.com/uo-ec607/lectures/master/04-rlang/04-rlang.html#59).
+
+
+The tidyverse actually comes with a lot more packages than those that are just loaded automatically.<sup>1</sup>
+```{r}
+tidyverse_packages()
+```
+
+We'll use several of these additional packages during the remainder of this course.
+
+E.g. The **lubridate** package for working with dates and the **rvest** package for webscraping. However, these packages will have to be loaded separately!
+
+
+# The pipe `%>%` operator
+
+The tidyverse loads its a pipe operator, denoted `%>%`.
+Using pipes can dramatically improve the experience of reading and writing code. Compare:
+
+```{r, eval = F}
+## These next two lines of code do exactly the same thing.
+
+mpg %>% filter(manufacturer=="audi") %>% group_by(model) %>% summarise(hwy_mean = mean(hwy))
+
+summarise(group_by(filter(mpg, manufacturer=="audi"), model), hwy_mean = mean(hwy))
+```
+
+The first line reads from left to right, exactly how I thought of the operations in my head. 
+- Take this object (`mpg`), do this (`filter`), then do this (`group_by`), etc.
+
+The second line totally inverts this logical order (the final operation comes first!) 
+- Who wants to read things inside out?
+
+The piped version of the code is even more readable if we write it over several lines. Here it is again and, this time, I'll run it for good measure so you can see the output:
+
+```{r, eval = F}
+mpg %>% 
+  filter(manufacturer=="audi") %>% 
+  group_by(model) %>% 
+  summarise(hwy_mean = mean(hwy))
+```
+
+Remember: Using vertical space costs nothing and makes for much more readable/writeable code than cramming things horizontally.
+
+PS — The pipe is originally from the [**magrittr**](https://magrittr.tidyverse.org/) package, which can do some other cool things if you're inclined to explore.
+
+
+# Data manipulation with `dplyr`
+
+In this tutorial, you'll learn and practice examples using some functions in `dplyr` to work with data. Those are: 
+
+- `select()`: keep or exclude some columns
+- `filter()`: keep rows that satisfy your conditions
+- `mutate()`: add columns from existing data or edit existing columns
+- `group_by()`: lets you define groups within your data set
+- `summarize()`: get summary statistics
+- `arrange()`: reorders the rows according to single or multiple variables
+
+
+```{r, echo=FALSE}
+library(palmerpenguins)
+```
+
+```{r, fig.align='center', echo=F, out.width ="80%"}
+knitr::include_graphics("kacheln3.png")
+```
+
+To demonstrate and practice how these verbs (functions) work, we'll use the penguings dataset.
+
+The 3 species of penguins in this data set are Adelie, Chinstrap and Gentoo. The data set contains 8 variables: 
+
+- **species:** a factor denoting the penguin species (Adelie, Chinstrap, or Gentoo)
+- **island:** a factor denoting the island (in Palmer Archipelago, Antarctica) where observed
+- **culmen_length_mm:** a number denoting length of the dorsal ridge of penguin bill (millimeters)
+- **culmen_depth_mm:** a number denoting the depth of the penguin bill (millimeters)
+- **flipper_length_mm:** an integer denoting penguin flipper length (millimeters)
+- **body_mass_g:** an integer denoting penguin body mass (grams)
+- **sex:** a factor denoting penguin sex (MALE, FEMALE)
+- **year** an integer denoting the year of the record
+
+
+## `select()`
+
+The first verb (function) we will utilize is `select()`. We can employ it to manipulate our data based on **columns**. If you recall from our initial exploration of the data set there were eight variables attached to every observation. Do you recall them? If you do not, there is no problem. You can utilize `names()` to retrieve the names of the variables in a data frame.
+
+```{r}
+names(penguins)
+```
+
+Say we are only interested in the species, island, and year variables of these data, we can utilize the following syntax:
+
+```select(data, columns)```
+
+
+**Excercise 2**
+*The following code chunk would select the variables we need. Can you adapt it, so that we keep the body_mass_g and sex variables as well?*
+```{r,, eval=F}
+dplyr::select(penguins, species, island, year)
+```
+
+Good to know: To **drop** variables, use `-` before the variable name, i.e. select(penguins, -year)] to drop the year column (select everything but the year column).
+
+
+## `filter()`
+
+The second verb (function) we will employ is `filter()`. `filter()` lets you use a logical test to extract specific **rows** from a data frame. To use `filter()`, pass it the data frame followed by one or more logical tests. `filter()` will return every row that passes each logical test.
+
+The more commonly used logical operators are:
+
+- `==`: Equal to
+- `!=`: Not equal to
+- `>`, `>=`: Greater than, greater than or equal to
+- `<`, `<=`: Less than, less than or equal to
+- `&`, `|`: And, or
+
+Say we are interested in retrieving the observations from the year 2007. We would do:
+
+```{r , eval=F}
+dplyr::filter(penguins, year == 2007)
+```
+
+
+**Excercise 3**
+Can you adapt the code to retrieve all the observations of Chinstrap penguins from 2007
+```{r, echo=FALSE, eval=F}
+# you just need to utilize & and type the logical operator for the species
+dplyr::filter(penguins, year == 2007 & species == "Chinstrap")
+```
+
+
+**Excercise 4**
+We can leverage the pipe operator to sequence our code in a logical manner. Can you adapt the following code chunck with the pipe and conditional logical operators we discussed?
+
+```
+only_2009 <- dplyr::filter(penguins, year == 2009)
+only_2009_chinstraps <- dplyr::filter(only_2009, species == "Chinstrap")
+only_2009_chinstraps_species_sex_year <- dplyr::select(only_2009_chinstraps, species, sex, year)
+final_df <- only_2009_chinstraps_species_sex_year
+final_df #to print it in our console
+```
+
+```{r, echo=FALSE, eval=F}
+penguins %>%
+  dplyr::filter(year == 2009 & species == "Chinstrap") %>%
+  dplyr::select(species, sex, year)
+```
+
+## `mutate()`
+
+`mutate()` lets us create, modify, and delete columns. The most common use for now will be to create new variables based on existing ones. Say we are working with a U.S. American client and they feel more confortable with assessing the weight of the penguins in pounds. We would utilize `mutate()` as such:
+
+
+```mutate(new_var_name = conditions)```
+
+```{r,, eval=F}
+penguins %>%
+  dplyr::mutate(body_mass_lbs = body_mass_g/453.6)
+```
+
+
+## `group_by()` and `summarize()`
+
+These two verbs `group_by()` and `summarize()` tend to go together. When combined , 'summarize()` will create a new data frame. It will have one (or more) rows for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarising all observations in the input. For example:
+
+```{r}
+# compare this output with the one below
+penguins %>%
+  dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T)) 
+```
+
+```{r}
+penguins %>%
+  dplyr::group_by(species) %>%
+  dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T))
+```
+
+**Excercise 5**
+Can you get the weight of the lightest penguin of each species? You can use `min()`. What happens when in addition to species you also group by year `group_by(species, year)`?
+
+```{r, eval = F}
+penguins %>%
+  dplyr::group_by(species, year) %>%
+  dplyr::summarize(lightest_penguin = min(body_mass_g, na.rm = T))
+```
+
+## `arrange()`
+
+The `arrange()` verb is pretty self-explanatory. `arrange()` orders the rows of a data frame by the values of selected columns in ascending order. You can use the `desc()` argument inside to arrange in descending order. The following chunk arranges the data frame based on the length of the penguins' bill. You hint tab contains the code for the descending order alternative. 
+
+```arrange(variable_of_interest)```
+
+```{r, eval=F}
+penguins %>%
+  dplyr::arrange(bill_length_mm)
+```
+
+```{r, eval=F}
+penguins %>%
+  dplyr::arrange(desc(bill_length_mm))
+```
+
+**Excercise 6**
+Can you create a data frame arranged by body_mass_g of the penguins observed in the "Dream" island?
+
+```{r, echo = FALSE, eval=F}
+penguins %>%
+  dplyr::filter(island == "Dream") %>%
+  dplyr::arrange(body_mass_g)
+```
+
+**Quiz**
+
+1. Which verb allows you to index columns?
+
+* select()
+* filter()
+* summarize()
+* group_by()
+
+2. Which verb allows you to index rows?
+
+* select()
+* filter()
+* summarize()
+* group_by()
+
+3. How long was the longest observed bill of a Gentoo penguin in 2008? 
+
+4. How long was the shortest observed bill of a Gentoo penguin in 2008? 
+
+
+## Other dplyr functions
+
+`ungroup()`: For ungrouping data after using the `group_by()` command
+- Particularly useful with the `summarise` and `mutate` commands, as we've already seen.
+
+
+`slice()`: Subset rows by position rather than filtering by values.
+- E.g. `penguins %>% slice(c(1, 5))`
+
+
+`pull()`: Extract a column from as a data frame as a vector or scalar.
+- E.g. `penguins %>% filter(gender=="female") %>% pull(height)`
+
+
+`count()` and `distinct()`: Number and isolate unique observations.
+- E.g. `penguins %>% count(species)`, or `penguins %>% distinct(species)`
+- You could also use a combination of `mutate`, `group_by`, and `n()`, e.g. `penguins %>% group_by(species) %>% mutate(num = n())`.
+
+
+There are also a whole class of [window functions](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for creating cumulative aggregates, etc.
+- See `vignette("window-functions")`.
+
+The final set of dplyr "goodies" are the family of join operations. These are important enough that we want to go over some concepts in a bit more depth.
+
+However - note that we will cover relational data structures (and SQL) in even more depth in a separate lab session! 
+
+# Joins with `dplyr`
+
+One of the mainstays of the dplyr package is merging data with the family [join operations](https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html).
+
+- `inner_join(df1, df2)`
+- `left_join(df1, df2)`
+- `right_join(df1, df2)`
+- `full_join(df1, df2)`
+- `semi_join(df1, df2)`
+- `anti_join(df1, df2)`
+
+(You might find it helpful to to see visual depictions of the different join operations [here](https://r4ds.had.co.nz/relational-data.html).)
+
+For the simple examples that I'm going to show here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
+- Load it now and then inspect these data frames in your own console.
+
+```{r, echo = F}
+library(nycflights13)
+flights 
+planes
+```
+
+Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publishers) on the flights and planes datasets. 
+- *Note*: I'm going subset columns after the join, but only to keep text on the slide.
+
+```{r}
+left_join(flights, planes) %>%
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)%>%
+  head(3) ## Just to save vertical space in output
+```
+
+Note that dplyr made a reasonable guess about which columns to join on (i.e. columns that share the same name). It also told us its choices: 
+
+```
+## Joining, by = c("year", "tailnum")
+```
+
+However, there's an obvious problem here: the variable "year" does not have a consistent meaning across our joining datasets!
+- In one it refers to the *year of flight*, in the other it refers to *year of construction*.
+
+
+Luckily, there's an easy way to avoid this problem. 
+- Try `?dplyr::join`.
+
+You just need to be more explicit in your join call by using the `by = ` argument.
+- You can also rename any ambiguous columns to avoid confusion. 
+```{r}
+left_join(
+  flights,
+  planes %>% rename(year_built = year), ## Not necessary w/ below line, but helpful
+  by = "tailnum" ## Be specific about the joining column
+  ) %>%
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) %>%
+  head(3) 
+```
+
+Last thing I'll mention for now; note what happens if we again specify the join column... but don't rename the ambiguous "year" column in at least one of the given data frames.
+```{r join3}
+left_join(
+  flights,
+  planes, ## Not renaming "year" to "year_built" this time
+  by = "tailnum"
+  ) %>%
+  select(contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) %>%
+  head(3)
+```
+
+Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific.
+
+
+Let's move on to another important tidyverse package!
+
+# The `tidyr` package
+
+Key tidyr verbs are:
+
+1. `pivot_longer`: Pivot wide data into long format (i.e. "melt").<sup>1</sup> 
+
+2. `pivot_wider`: Pivot long data into wide format (i.e. "cast").<sup>2</sup> 
+
+3. `separate`: Separate (i.e. split) one column into multiple columns.
+
+4. `unite`: Unite (i.e. combine) multiple columns into one.
+
+
+## `pivot_longer()`
+
+```{r}
+stocks = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
+  time = as.Date('2009-01-01') + 0:1,
+  X = rnorm(2, 0, 1),
+  Y = rnorm(2, 0, 2),
+  Z = rnorm(2, 0, 4)
+  )
+stocks
+stocks %>% pivot_longer(-time, names_to="stock", values_to="price")
+```
+
+Let's quickly save the "tidy" (i.e. long) stocks data frame  
+
+```{r}
+## Write out the argument names this time: i.e. "names_to=" and "values_to="
+tidy_stocks <- stocks %>% 
+  pivot_longer(-time, names_to="stock", values_to="price")
+```
+
+
+## `pivot_wider()`
+
+```{r pivot_wider1, dependson=tidy_stocks}
+tidy_stocks %>% pivot_wider(names_from=stock, values_from=price)
+tidy_stocks %>% pivot_wider(names_from=time, values_from=price)
+```
+
+Note that the second example; which has combined different pivoting arguments; has effectively transposed the data.
+
+
+## `tidyr::separate()`
+
+```{r sep1}
+economists = data.frame(name = c("Adam.Smith", "Paul.Samuelson", "Milton.Friedman"))
+economists
+economists %>% separate(name, c("first_name", "last_name")) 
+```
+
+This command is pretty smart. But to avoid ambiguity, you can also specify the separation character with `separate(..., sep=".")`.
+
+A related function is `separate_rows`, for splitting up cells that contain multiple fields or observations (a frustratingly common occurence with survey data).
+
+```{r sep2}
+jobs = data.frame(
+  name = c("Jack", "Jill"),
+  occupation = c("Homemaker", "Philosopher, Philanthropist, Troublemaker") 
+  ) 
+jobs
+## Now split out Jill's various occupations into different rows
+jobs %>% separate_rows(occupation)
+```
+
+
+## `tidyr::unite()`
+
+```{r unite1}
+gdp = data.frame(
+  yr = rep(2016, times = 4),
+  mnth = rep(1, times = 4),
+  dy = 1:4,
+  gdp = rnorm(4, mean = 100, sd = 2)
+  )
+gdp 
+## Combine "yr", "mnth", and "dy" into one "date" column
+gdp %>% unite(date, c("yr", "mnth", "dy"), sep = "-")
+```
+
+Note that `unite` will automatically create a character variable. You can see this better if we convert it to a tibble. 
+```{r unite2}
+gdp_u = gdp %>% unite(date, c("yr", "mnth", "dy"), sep = "-") %>% as_tibble()
+gdp_u
+```
+
+If you want to convert it to something else (e.g. date or numeric) then you will need to modify it using `mutate`. See below for an example, using the [lubridate](https://lubridate.tidyverse.org/) package's super helpful date conversion functions.
+
+```{r unite3, message=F}
+library(lubridate)
+gdp_u %>% mutate(date = ymd(date))
+```
+
+---
+
+
+## Actually learning R `r emo::ji("backpack")`
+
+Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
+
+---
+
+# Sources {-}
+
+This tutorial is partly based on [_R for Data Science_](http://r4ds.had.co.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3; as well as the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott. 
+
+
+
+
