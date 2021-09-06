@@ -803,6 +803,8 @@ Again, the key to learning `R` is: **Google**! We can only give you an overview 
 
 ## To-do for next week!
 
+For those of you who have yet to create a Github account, do so [now](https://github.com/).
+
 Next week's session will be about version control and project management with Git and Github. Please download and install [Github desktop](https://desktop.github.com/) on your machine! See you next week! `r emo::ji("computer")`
 
 ---
