@@ -87,7 +87,7 @@ We'll use several of these additional packages during the remainder of this cour
 E.g. The **lubridate** package for working with dates and the **rvest** package for webscraping. However, these packages will have to be loaded separately!
 
 
-# The pipe `%>%` operator
+# The pipe `%>%` operator 
 
 The tidyverse loads its a pipe operator, denoted `%>%`.
 Using pipes can dramatically improve the experience of reading and writing code. Compare:
