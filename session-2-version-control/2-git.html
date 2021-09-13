@@ -438,7 +438,12 @@ div.tocify {
 ## 
 ## Changes to be committed:
 ##   (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
-##  modified:   README.md</code></pre>
+##  modified:   README.md
+## 
+## Untracked files:
+##   (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+##  .Rhistory
+##  .Rproj.user/</code></pre>
 </div>
 <div id="using-rstudio" class="section level4">
 <h4>Using Rstudio</h4>
@@ -574,16 +579,31 @@ div.tocify {
 </div>
 </div>
 <div id="branching-forks" class="section level1">
-<h1>Branching &amp; Forks</h1>
+<h1>Branching &amp; Forks 🌲</h1>
 <hr />
-<p>A really cool feature of</p>
+<p>A really cool feature of version control with Git are <em>Branches</em>.</p>
+<p>Branches allow you to take a snapshot of your existing repo and try out a whole new idea without affecting your main (i.e. “master”) branch.</p>
+<p>Only once you (and your collaborators) are 100% satisfied, would you merge it back into the master branch.</p>
+<p>Okey, time to play around with branches a little bit!</p>
+<div id="section-4" class="section level3 unlisted unnumbered tabset tabset-fade tabset-pills">
+<h3 class="unlisted unnumbered tabset tabset-fade tabset-pills"></h3>
+<div id="using-the-command-line-3" class="section level4">
+<h4>Using the Command Line</h4>
+</div>
+<div id="using-rstudio-3" class="section level4">
+<h4>Using RStudio</h4>
+</div>
+<div id="using-github-desktop-3" class="section level4">
+<h4>Using Github Desktop</h4>
+</div>
+</div>
 </div>
 <div id="dealing-with-merge-conflicts" class="section level1">
 <h1>Dealing with Merge Conflicts?</h1>
 <hr />
 </div>
 <div id="exercises" class="section level1">
-<h1>Exercises</h1>
+<h1>Exercises 🏋</h1>
 <hr />
 <hr />
 </div>
@@ -593,7 +613,7 @@ div.tocify {
 <div id="https" class="section level3 tabset tabset-fade tabset-pills">
 <h3 class="tabset tabset-fade tabset-pills">Caching credentials with HTTPS</h3>
 <p>Github recommends that you generate a <em>Personal Access Token</em> and cache it using HTTPS. Luckily for us this can be achieved in a few simple steps.</p>
-<div id="using-the-command-line-3" class="section level4">
+<div id="using-the-command-line-4" class="section level4">
 <h4>Using the Command Line</h4>
 <p>You need to go to your Github Account. Then select your logo in the top right &gt; Settings &gt; Developer Settings &gt; Personal Access tokens</p>
 <p>There you can create a new <em>PAT</em>. It is suggested that you select the following categories under scope: <code>repo</code>, <code>workflow</code>, <code>gist</code>, <code>admin::org</code> and <code>user</code>.</p>
@@ -603,7 +623,7 @@ div.tocify {
 <p>In order select: GitHub.com &gt; HTTPS &gt; Yes &gt; Paste an authentication token</p>
 <p>Then you simply need to paste your <em>PAT</em> and you should no longer be challenged for your github credentials.</p>
 </div>
-<div id="using-rstudio-3" class="section level4">
+<div id="using-rstudio-4" class="section level4">
 <h4>Using RStudio</h4>
 <p>Luckily for R users there are two packages that essentially automate this process for us:</p>
 <p>The <code>usethis</code> package has a function that takes you immediately to the relevant GitHub page and preselects the recommended scopes (what github calls settings) for you.</p>

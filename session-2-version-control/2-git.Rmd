@@ -282,18 +282,29 @@ The best way to get into the habit of using Git in your workflow is to practice!
 8. Update and do the same thing with the README
 
 
-# Branching & Forks
+# Branching & Forks `r emo::ji("tree")`
 ***
-A really cool feature of 
+A really cool feature of version control with Git are *Branches*.
 
+Branches allow you to take a snapshot of your existing repo and try out a whole new idea without affecting your main (i.e. "master") branch.
 
+Only once you (and your collaborators) are 100% satisfied, would you merge it back into the master branch.
 
+Okey, time to play around with branches a little bit! 
+
+### {.unlisted .unnumbered .tabset .tabset-fade .tabset-pills}
+
+#### Using the Command Line
+
+#### Using RStudio
+
+#### Using Github Desktop
 
 # Dealing with Merge Conflicts?
 
 ***
 
-# Exercises
+# Exercises `r emo::ji("person lifting weights")`
 ***
 ***
 # Appendix
