@@ -1,0 +1,188 @@
+---
+title: "Version Control"
+subtitle: "Getting used to Git(hub) with R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+***
+## Introduction
+
+
+::: {#hello .greeting .message style="color: black;"}
+**Welcome back!** `r emo::ji("flexed biceps")`!
+:::
+
+
+
+This week we will be looking at a key component of the data science workflow: version control. More specifically we will create your first repo on Github and see how we can use it to keep a record of all the changes that were ever made to your code. This is an essential component of collaborative coding efforts, but can also be immensely beneficial to your own solo projects. 
+
+Today's session will follow the exact recipe suggested in Simon's lecture:
+
+- Create a new repo on Github and initialize it
+- Clone this repo to your local machine 
+- Make some changes to a file (we'll review some code from last week)
+- Stage these local changes
+- Commit them to our Git history with a helpful message
+- Pull from the GitHub repo just in case anyone else made changes too (not expected here, but good practice).
+- Pushed our changes to the GitHub repo.
+
+Before we get into the nitty-gritty of this week's session, I would like to suggest you all  [download Github Desktop](https://desktop.github.com/). It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command line. 
+
+***
+## Setting Up
+
+Most of you will already have completed this step (we hope). For future reference however, we included a small reminder on the necessary steps:
+
+1. Register for a GitHub account 
+
+2. Install Git (or update version)
+ 
+```{bash}
+which git
+git --version
+```
+
+```{bash, eval=FALSE}
+brew install git
+
+```
+
+3. Enter Credentials for Git
+
+```{bash, eval=FALSE}
+git config --global user.name 'its-me'
+git config --global user.email 'my-email@adress.eu'
+```
+
+***
+
+### How to create a new repo on Github 
+
+* Go to [your github page](https://github.com) and make sure you are logged in.
+
+* Click green “New repository” button. Or, if you are on your own profile page, click on “Repositories”, then click the green “New” button.
+
+* How to fill this in:
+  + Repository name: my_first_repo (or whatever you want).
+  + Description: “figuring out how this works” (or whatever, but some text is good for the README).
+  + Select Public.
+  + YES Initialize this repository with a README.
+  + For everything else, just accept the default.
+
+Great, now you created a new repo on Github. It is important to note here that you should always create a repo prior to starting the work in R or RStudio.
+
+***
+### Clone this repo to your local machine {.tabset .tabset-fade .tabset-pills}
+
+Whatever way you plan on cloning this repo, you first need to copy the URL identifying it. Luckily there is another green button "Code" that allows you to do just that. Copy the HTTPS link for now. 
+
+<br>
+
+#### Using the Command Line
+
+Open the Terminal on your laptop.
+
+Be sure to check what directory you’re in. `$ pwd` displays the working directory. `$ cd` is the command to change directory. 
+
+Clone a repo into your chosen  directory.
+```{bash, eval = F}
+cd ~/phd_hertie/teaching/IDS_fall_21 
+git clone https://github.com/tom-arend/my_first_repo.git
+
+```
+Check whether it worked:
+```{bash}
+cd ~/phd_hertie/teaching/IDS_fall_21/my_first_repo
+git log
+git status
+```
+
+
+#### Using Rstudio
+
+In RStudio, go to:
+
+File > New Project > Version Control > Git. 
+
+In the “repository URL”-box paste the URL of your new GitHub repository. It will be something like this https://github.com/tom-arend/my_first_repo.git.
+
+Do not just create some random directory for the local copy. Instead think about how you organize your files and folders and make it coherent.
+
+I always suggest that with any new R-project you “Open in new session”.
+
+Finally, click the “Create Project” to create a new directory. What you get are three things in one: 
+
+* a directory or “folder” on your computer
+* a Git repository, linked to a remote GitHub repository
+* an RStudio Project
+
+In the absence of other constraints, I suggest that all of your R projects have exactly this set-up.
+
+
+#### Using Github Desktop
+
+
+
+###
+
+<br>
+
+
+```{css, echo=F}
+
+.questionkbox {
+  padding: 1em;
+  background: CornflowerBlue;
+  color: white;
+  border: 2px Darkgrey;
+  border-radius: 10px;
+}
+.center {
+  text-align: center;
+}
+
+```
+
+
+:::: {.questionbox}
+::: {.center}
+**Question**
+:::
+
+There’s a big advantage to the “GitHub first, then RStudio / Command Shell” workflow, do you know which one?
+::::
+
+
+***
+#### Make changes to a file
+
+To showcase how useful Git can be, we first need to add some files to our repo. While we do this we might as well review some of the stuff we encountered last week.
+
+
+
+<br>
+
+
+
+
+# Reverting Changes
+***
+# Dealing with Merge Conflicts
+***
+# Potential Additions
+***
+# Exercises
+***
+
+
