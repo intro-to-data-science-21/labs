@@ -270,10 +270,17 @@ Github no longer supports simply using user-name and password as a way of authen
 
 ### Exercises (Part I)
 
-The best way to get into the habit of using Git in your workflow is to practice! So let us get back to our 
+The best way to get into the habit of using Git in your workflow is to practice! So let us get back to our working example with my_first_repo and the initial_script. 
 
-1. 
-2. 
+1. Using the tidyverse subset our cleaned df to include only countries in the Americas
+2. Calculate the mean life_exp in the Americas in 2002
+3. Add a new categorical variable using `mutate()` that qualifies whether a country is rich or poor! (Hint use the variable gdp_per_cap and `ìf_else()`)
+4. Save the script!
+5. Stage and Commit your changes (Do not forget the message along your commit!)
+6. First Pull from origin (Not necessary here, but it is good to develop the right habits)
+7. Then push your commit.
+8. Update and do the same thing with the README
+
 
 # Branching & Forks
 ***
