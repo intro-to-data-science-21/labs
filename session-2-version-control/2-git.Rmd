@@ -110,7 +110,7 @@ git clone https://github.com/tom-arend/my_first_repo.git
 
 ```
 Check whether it worked:
-```{bash}
+```{bash, eval=F}
 cd ~/phd_hertie/teaching/IDS_fall_21/my_first_repo
 git log
 git status
@@ -161,7 +161,11 @@ pacman::p_load(tidyverse, gapminder)
 data(gapminder)
 head(gapminder)
 
+# Clean your Data ---------------------------------------------------------
 
+gapminder_clean <- gapminder %>% 
+  rename(life_exp = lifeExp, gdp_per_cap = gdpPercap) %>% 
+  mutate(gdp = pop * gdp_per_cap)
 
 ```
 
@@ -296,11 +300,39 @@ Okey, time to play around with branches a little bit!
 
 #### Using the Command Line
 
+Create a new branch on your local machine and switch to it:
+```{bash, eval=F}
+git checkout -b NAME-OF-YOUR-NEW-BRANCH
+```
+
+Push the new branch to GitHub:
+```{bash, eval=F}
+git push origin NAME-OF-YOUR-NEW-BRANCH
+```
+
+List all branches on your local machine:
+```{bash, eval=F}
+git branch
+```
+
+Switch back to (e.g.) the master branch:
+```{bash, eval=F}
+$ git checkout master
+```
+
+Delete a branch
+```{bash, eval=F}
+$ git branch -d NAME-OF-YOUR-FAILED-BRANCH
+$ git push origin :NAME-OF-YOUR-FAILED-BRANCH
+```
+
+
+
 #### Using RStudio
 
 #### Using Github Desktop
 
-# Dealing with Merge Conflicts?
+# Dealing with Merge Conflicts `r emo::ji("exploding head")`
 
 ***
 
