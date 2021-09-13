@@ -10,6 +10,7 @@ output:
     theme: lumen
     toc_depth: 3
     toc_float: true
+    css: custom.css 
 ---
 
 ```{r setup, include=FALSE}
@@ -31,16 +32,16 @@ Today's session will follow the exact recipe suggested in Simon's lecture:
 - Pull from the GitHub repo just in case anyone else made changes too (not expected here, but good practice).
 - Pushed our changes to the GitHub repo.
 
-Before we get into the nitty-gritty of this week's session, I would like to suggest you all  [download Github Desktop](https://desktop.github.com/). It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command line. 
+Before we get into the nitty-gritty of this week's session, I would like to suggest you all  [download Github Desktop](https://desktop.github.com/). It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command Line alone. There are a bunch of different GUIs that you can play around with. Some are better than others. An additional free GUI like GitHub Desktop that I like is [GitKraken](https://www.gitkraken.com/).
 
 ***
 # Setting Up `r emo::ji("hammer")`
 
 Most of you will already have completed this step (we hope). For future reference however, we included a small reminder on the necessary steps:
 
-1. Register for a GitHub account 
+1. Register for a [GitHub](https://github.com/) account.
 
-2. Install Git (or update version)
+2. Install Git (or update version) using the Command Line. 
  
 ```{bash}
 which git
@@ -78,7 +79,15 @@ The following section highlights the recommended workflow that you should employ
   + YES Initialize this repository with a README.
   + For everything else, just accept the default.
 
-Great, now you created a new repo on Github. It is important to note here that you should always create a repo prior to starting the work in R or RStudio.
+Great, now that you created a new repo on Github, it is important to note that you **should always** create a repo **prior** to starting your work in RStudio.
+
+
+:::: {.questionbox data-latex=""}
+::: {.center data-latex=""}
+**Question:**
+::: {.center data-latex=""}
+There is a distinct advantage to employing the GitHub first, RStudio/Shell second approach, do you know which one?
+::::
 
 ***
 ### 2. Clone it to your local machine {.tabset .tabset-fade .tabset-pills}
@@ -243,7 +252,13 @@ At some point during either of these processes you will be prompted to enter you
 
 > remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
 
-As it turns out Github no longer supports this way of authenticating yourself. You now have to identify yourself using *Personal Access Tokens*. You can cache these with [HTTPS](#https) or you can use [SSH keys](#ssh). 
+:::: {.noticebox data-latex=""}
+::: {.center data-latex=""}
+**Attention!**
+:::
+
+Github no longer supports this way of authenticating yourself. You now have to identify yourself using *Personal Access Tokens*. You can cache these with [HTTPS](#https) or you can use [SSH keys](#ssh). 
+::::
 
 ***
 

@@ -144,6 +144,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+<link rel="stylesheet" href="data:text/css,blockquote%20%7B%0Apadding%3A%2010px%2020px%3B%0Amargin%3A%200%200%2020px%3B%0Afont%2Dsize%3A%2014px%3B%0Aborder%2Dleft%3A%205px%20solid%20%23eee%3B%0A%7D%0A%2Enoticebox%20%7B%0Apadding%3A%201em%3B%0Abackground%3A%20black%3B%0Acolor%3A%20white%3B%0Aborder%3A%202px%20solid%20orange%3B%0Aborder%2Dradius%3A%2010px%3B%0A%7D%0A%2Equestionbox%20%7B%0Apadding%3A%201em%3B%0Abackground%3A%20CornflowerBlue%3B%0Acolor%3A%20white%3B%0Aborder%3A%20solid%20CornflowerBlue%3B%0Aborder%2Dradius%3A%205px%3B%0A%7D%0A%2Ecenter%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A" type="text/css" />
 
 
 
@@ -343,15 +344,15 @@ div.tocify {
 <li>Pull from the GitHub repo just in case anyone else made changes too (not expected here, but good practice).</li>
 <li>Pushed our changes to the GitHub repo.</li>
 </ul>
-<p>Before we get into the nitty-gritty of this week’s session, I would like to suggest you all <a href="https://desktop.github.com/">download Github Desktop</a>. It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command line.</p>
+<p>Before we get into the nitty-gritty of this week’s session, I would like to suggest you all <a href="https://desktop.github.com/">download Github Desktop</a>. It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command Line alone. There are a bunch of different GUIs that you can play around with. Some are better than others. An additional free GUI like GitHub Desktop that I like is <a href="https://www.gitkraken.com/">GitKraken</a>.</p>
 <hr />
 </div>
 <div id="setting-up" class="section level1">
 <h1>Setting Up 🔨</h1>
 <p>Most of you will already have completed this step (we hope). For future reference however, we included a small reminder on the necessary steps:</p>
 <ol style="list-style-type: decimal">
-<li><p>Register for a GitHub account</p></li>
-<li><p>Install Git (or update version)</p></li>
+<li><p>Register for a <a href="https://github.com/">GitHub</a> account.</p></li>
+<li><p>Install Git (or update version) using the Command Line.</p></li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> git</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
@@ -383,7 +384,8 @@ div.tocify {
 <li>For everything else, just accept the default.</li>
 </ul></li>
 </ul>
-<p>Great, now you created a new repo on Github. It is important to note here that you should always create a repo prior to starting the work in R or RStudio.</p>
+<p>Great, now that you created a new repo on Github, it is important to note that you <strong>should always</strong> create a repo <strong>prior</strong> to starting your work in RStudio.</p>
+<p>:::: {.questionbox data-latex=&quot;“} ::: {.center data-latex=”“} <strong>Question:</strong> ::: {.center data-latex=”&quot;} There is a distinct advantage to employing the GitHub first, RStudio/Shell second approach, do you know which one? ::::</p>
 <hr />
 </div>
 <div id="clone-it-to-your-local-machine" class="section level3 tabset tabset-fade tabset-pills">
@@ -519,7 +521,12 @@ div.tocify {
 <blockquote>
 <p>remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.</p>
 </blockquote>
-<p>As it turns out Github no longer supports this way of authenticating yourself. You now have to identify yourself using <em>Personal Access Tokens</em>. You can cache these with <a href="#https">HTTPS</a> or you can use <a href="#ssh">SSH keys</a>.</p>
+<div class="noticebox">
+<div class="center">
+<p><strong>Attention!</strong></p>
+</div>
+<p>Github no longer supports this way of authenticating yourself. You now have to identify yourself using <em>Personal Access Tokens</em>. You can cache these with <a href="#https">HTTPS</a> or you can use <a href="#ssh">SSH keys</a>.</p>
+</div>
 <hr />
 </div>
 <div id="exercises-part-i" class="section level3">
