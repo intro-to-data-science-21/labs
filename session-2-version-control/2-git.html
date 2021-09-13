@@ -330,11 +330,8 @@ div.tocify {
 
 
 <hr />
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<div id="hello" class="greeting message" style="color: black;">
-<p><strong>Welcome back!</strong> 💪!</p>
-</div>
+<div id="welcome-back" class="section level2">
+<h2>Welcome back! 💪</h2>
 <p>This week we will be looking at a key component of the data science workflow: version control. More specifically we will create your first repo on Github and see how we can use it to keep a record of all the changes that were ever made to your code. This is an essential component of collaborative coding efforts, but can also be immensely beneficial to your own solo projects.</p>
 <p>Today’s session will follow the exact recipe suggested in Simon’s lecture:</p>
 <ul>
@@ -349,8 +346,8 @@ div.tocify {
 <p>Before we get into the nitty-gritty of this week’s session, I would like to suggest you all <a href="https://desktop.github.com/">download Github Desktop</a>. It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command line.</p>
 <hr />
 </div>
-<div id="setting-up" class="section level2">
-<h2>Setting Up</h2>
+<div id="setting-up" class="section level1">
+<h1>Setting Up 🔨</h1>
 <p>Most of you will already have completed this step (we hope). For future reference however, we included a small reminder on the necessary steps:</p>
 <ol style="list-style-type: decimal">
 <li><p>Register for a GitHub account</p></li>
@@ -367,8 +364,13 @@ div.tocify {
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">&#39;its-me&#39;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">&#39;my-email@adress.eu&#39;</span></span></code></pre></div>
 <hr />
-<div id="how-to-create-a-new-repo-on-github" class="section level3">
-<h3>How to create a new repo on Github</h3>
+</div>
+<div id="suggested-workflow" class="section level1">
+<h1>Suggested Workflow 🏄</h1>
+<hr />
+<p>The following section highlights the recommended workflow that you should employ when you work with Git. You can see it as a sort of recipe that you should follow under most circumstances. At each stage you can find the instructions for working through both the Command Line and through RStudio. <strong>Be aware</strong> however that these are <strong>separate</strong> processes that should not be mixed. Either you use the shell for version control or you use RStudio.</p>
+<div id="create-a-new-repo-on-github" class="section level3">
+<h3>1. Create a new repo on Github</h3>
 <ul>
 <li><p>Go to <a href="https://github.com">your github page</a> and make sure you are logged in.</p></li>
 <li><p>Click green “New repository” button. Or, if you are on your own profile page, click on “Repositories”, then click the green “New” button.</p></li>
@@ -384,10 +386,9 @@ div.tocify {
 <p>Great, now you created a new repo on Github. It is important to note here that you should always create a repo prior to starting the work in R or RStudio.</p>
 <hr />
 </div>
-<div id="clone-this-repo-to-your-local-machine" class="section level3 tabset tabset-fade tabset-pills">
-<h3 class="tabset tabset-fade tabset-pills">Clone this repo to your local machine</h3>
-<p>Whatever way you plan on cloning this repo, you first need to copy the URL identifying it. Luckily there is another green button “Code” that allows you to do just that. Copy the HTTPS link for now.</p>
-<p><br></p>
+<div id="clone-it-to-your-local-machine" class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills">2. Clone it to your local machine</h3>
+<p>Whatever way you plan on cloning this repo, you first need to copy the URL identifying it. Luckily there is another green button “Code” that allows you to do just that. Copy the HTTPS link for now. It will look something like this <a href="https://github.com/tom-arend/my_first_repo.git" class="uri">https://github.com/tom-arend/my_first_repo.git</a>.</p>
 <div id="using-the-command-line" class="section level4">
 <h4>Using the Command Line</h4>
 <p>Open the Terminal on your laptop.</p>
@@ -413,7 +414,7 @@ div.tocify {
 <h4>Using Rstudio</h4>
 <p>In RStudio, go to:</p>
 <p>File &gt; New Project &gt; Version Control &gt; Git.</p>
-<p>In the “repository URL”-box paste the URL of your new GitHub repository. It will be something like this <a href="https://github.com/tom-arend/my_first_repo.git" class="uri">https://github.com/tom-arend/my_first_repo.git</a>.</p>
+<p>In the “repository URL”-box paste the URL of your new GitHub repository.</p>
 <p>Do not just create some random directory for the local copy. Instead think about how you organize your files and folders and make it coherent.</p>
 <p>I always suggest that with any new R-project you “Open in new session”.</p>
 <p>Finally, click the “Create Project” to create a new directory. What you get are three things in one:</p>
@@ -428,52 +429,127 @@ div.tocify {
 <h4>Using Github Desktop</h4>
 </div>
 </div>
-<div id="section" class="section level3">
-<h3></h3>
-<p><br></p>
-<style type="text/css">
-
-.questionkbox {
-  padding: 1em;
-  background: CornflowerBlue;
-  color: white;
-  border: 2px Darkgrey;
-  border-radius: 10px;
-}
-.center {
-  text-align: center;
-}
-
-</style>
-<div class="questionbox">
-<div class="center">
-<p><strong>Question</strong></p>
-</div>
-<p>There’s a big advantage to the “GitHub first, then RStudio / Command Shell” workflow, do you know which one?</p>
-</div>
+<div id="section" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered"></h3>
 <hr />
-<div id="make-changes-to-a-file" class="section level4">
-<h4>Make changes to a file</h4>
-<p>To showcase how useful Git can be, we first need to add some files to our repo. While we do this we might as well review some of the stuff we encountered last week.</p>
-<p><br></p>
 </div>
+<div id="make-changes-to-a-file" class="section level3">
+<h3>3. Make changes to a file</h3>
+<p>To showcase how useful Git can be, we first need to add some files to our repo. For now there should only be the .gitignore, the .Rproj and the README file. While we do this we might as well review some of the stuff we encountered last week.</p>
+<ul>
+<li><p>So let’s create a new script in the new Session that we just launched.</p></li>
+<li><p>First load/install necessary packages (the tidyverse suffices here)</p></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set-up your script ------------------------------------------------------</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c(&quot;tidyverse&quot;, &quot;gapminder&quot;, &quot;pacman&quot;)) # uncomment if already installed</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, gapminder)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your Data into R ---------------------------------------------------</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gapminder)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder)</span></code></pre></div>
+<ul>
+<li>For good measure let’s also update our Readme.</li>
+</ul>
 </div>
-</div>
-<div id="reverting-changes" class="section level1">
-<h1>Reverting Changes</h1>
+<div id="section-1" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered"></h3>
 <hr />
+</div>
+<div id="stage-your-changes-and-commit-them" class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills">4. Stage your Changes and Commit them</h3>
+<p>Before we get on to the next step, it is a goo idea to save this newly created script and give it a name. Do the same thing for the README file. Now that your changes are saved locally we need to let Git know.</p>
+<div id="using-the-command-line-1" class="section level4">
+<h4>Using the Command Line</h4>
+<p>Stage (“add”) a file or group of files.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add NAME-OF-FILE-OR-FOLDER</span></code></pre></div>
+<p>Alternatively you could stage all files:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span></code></pre></div>
+<p>Or you could stage updated files only (modified or deleted, but not new):</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-u</span></span></code></pre></div>
+<p>Finally you can also only stage new files (not updated).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span></code></pre></div>
+<p>You are now ready to commit these changes!</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Helpful message&quot;</span></span></code></pre></div>
+<p>As you can imagine, the command shell with its different options (and there are more beyond the staging phase), can be quicker and more flexible than your GUI interface, especially for experienced users.</p>
+</div>
+<div id="using-rstudio-1" class="section level4">
+<h4>Using RStudio</h4>
+<p>In the Environment/History panel a new tab called “git” should have appeared.</p>
+<ul>
+<li>Click on it and it should display all the changed and new files in your directory.</li>
+<li>Now you can select which files you want to stage. Simply tick the box next to your chosen files.</li>
+<li>Hit the Commit Button and a new window should open up.</li>
+<li>In this window you can quickly add a helpful message to mark exactly what you did. (Do not neglect this, as it helps both you and your collaborators to understand your changes.)</li>
+</ul>
+</div>
+<div id="using-github-desktop-1" class="section level4">
+<h4>Using GitHub Desktop</h4>
+</div>
+</div>
+<div id="section-2" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered"></h3>
+<hr />
+</div>
+<div id="pulling-and-pushing-your-commits" class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills">5. Pulling and Pushing your commits</h3>
+<p>This part of the version control workflow should be relatively easy. The most important thing to remember is that you should always <strong>pull</strong> before you <strong>push</strong>. The reason for this is that in collaborative projects someone else might have pushed changes to the same file you were working on. This can lead to merge conflicts that should be avoided.</p>
+<div id="using-the-command-line-2" class="section level4">
+<h4>Using the Command Line</h4>
+<p>There are only two commands you need to remember here and they are pretty intuitive:</p>
+<p>To pull from the main repo:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
+<p>And to push your commits:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
+</div>
+<div id="using-rstudio-2" class="section level4">
+<h4>Using RStudio</h4>
+<p>In RStudio you should see a change in the <strong>git</strong> tab. It should now read: “Your branch is ahead of ‘origin/main’ by 1 commit”</p>
+<p>As long as this information is displayed, you know that you need to pull and push your commit.</p>
+<p>To do this simply click on the blue arrow pointing down to <strong>pull</strong> from your main repo, before clicking on the green arrow pointing upwards to <strong>push</strong> your commits.</p>
+</div>
+<div id="using-github-desktop-2" class="section level4">
+<h4>Using Github Desktop</h4>
+</div>
+</div>
+<div id="section-3" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered"></h3>
+<p>At some point during either of these processes you will be prompted to enter your Github credentials and password. Regardless of whether you entered the correct username and password, you will receive the following information:</p>
+<blockquote>
+<p>remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.</p>
+</blockquote>
+<p>As it turns out Github no longer supports this way of authenticating yourself. You now have to identify yourself using <em>Personal Access Tokens</em>. You can cache these with <a href="#https">HTTPS</a> or you can use <a href="#ssh">SSH keys</a>.</p>
+<hr />
+</div>
+<div id="exercises-part-i" class="section level3">
+<h3>Exercises (Part I)</h3>
+<p>Let’s practice this recipe a</p>
+</div>
+</div>
+<div id="branching-forks" class="section level1">
+<h1>Branching &amp; Forks</h1>
+<hr />
+<p>A really cool feature of</p>
 </div>
 <div id="dealing-with-merge-conflicts" class="section level1">
-<h1>Dealing with Merge Conflicts</h1>
-<hr />
-</div>
-<div id="potential-additions" class="section level1">
-<h1>Potential Additions</h1>
+<h1>Dealing with Merge Conflicts?</h1>
 <hr />
 </div>
 <div id="exercises" class="section level1">
 <h1>Exercises</h1>
 <hr />
+<hr />
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<hr />
+<div id="https" class="section level2">
+<h2>Caching credentials with HTTPS</h2>
+</div>
+<div id="ssh" class="section level2">
+<h2>Identifying yourself with SSH keys</h2>
+</div>
 </div>
 
 
