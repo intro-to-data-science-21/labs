@@ -1,0 +1,289 @@
+---
+title: "Version Control"
+subtitle: "Getting used to Git(hub) with R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+***
+## Welcome back! `r emo::ji("flexed biceps")`
+
+
+This week we will be looking at a key component of the data science workflow: version control. More specifically we will create your first repo on Github and see how we can use it to keep a record of all the changes that were ever made to your code. This is an essential component of collaborative coding efforts, but can also be immensely beneficial to your own solo projects. 
+
+Today's session will follow the exact recipe suggested in Simon's lecture:
+
+- Create a new repo on Github and initialize it
+- Clone this repo to your local machine 
+- Make some changes to a file (we'll review some code from last week)
+- Stage these local changes
+- Commit them to our Git history with a helpful message
+- Pull from the GitHub repo just in case anyone else made changes too (not expected here, but good practice).
+- Pushed our changes to the GitHub repo.
+
+Before we get into the nitty-gritty of this week's session, I would like to suggest you all  [download Github Desktop](https://desktop.github.com/). It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command Line alone. There are a bunch of different GUIs that you can play around with. Some are better than others. An additional free GUI like GitHub Desktop that I like is [GitKraken](https://www.gitkraken.com/).
+
+***
+# Setting Up `r emo::ji("hammer")`
+
+Most of you will already have completed this step (we hope). For future reference however, we included a small reminder on the necessary steps:
+
+1. Register for a [GitHub](https://github.com/) account.
+
+2. Install Git (or update version) using the Command Line. 
+ 
+```{bash}
+which git
+git --version
+```
+
+```{bash, eval=FALSE}
+brew install git
+
+```
+
+3. Enter Credentials for Git
+
+```{bash, eval=FALSE}
+git config --global user.name 'its-me'
+git config --global user.email 'my-email@adress.eu'
+```
+
+***
+# Suggested Workflow `r emo::ji("surfer")`
+***
+
+The following section highlights the recommended workflow that you should employ when you work with Git. You can see it as a sort of recipe that you should follow under most circumstances. At each stage you can find the instructions for working through both the Command Line and through RStudio. **Be aware** however that these are **separate** processes that should not be mixed. Either you use the shell for version control or you use RStudio.
+
+### 1. Create a new repo on Github 
+
+* Go to [your github page](https://github.com) and make sure you are logged in.
+
+* Click green “New repository” button. Or, if you are on your own profile page, click on “Repositories”, then click the green “New” button.
+
+* How to fill this in:
+  + Repository name: my_first_repo (or whatever you want).
+  + Description: “figuring out how this works” (or whatever, but some text is good for the README).
+  + Select Public.
+  + YES Initialize this repository with a README.
+  + For everything else, just accept the default.
+
+Great, now that you created a new repo on Github, it is important to note that you **should always** create a repo **prior** to starting your work in RStudio.
+
+
+:::: {.questionbox data-latex=""}
+::: {.center data-latex=""}
+**Question:**
+::: {.center data-latex=""}
+There is a distinct advantage to employing the GitHub first, RStudio/Shell second approach, do you know which one?
+::::
+
+***
+### 2. Clone it to your local machine {.tabset .tabset-fade .tabset-pills}
+
+Whatever way you plan on cloning this repo, you first need to copy the URL identifying it. Luckily there is another green button "Code" that allows you to do just that. Copy the HTTPS link for now. It will look something like this https://github.com/tom-arend/my_first_repo.git.
+
+#### Using the Command Line
+
+Open the Terminal on your laptop.
+
+Be sure to check what directory you’re in. `$ pwd` displays the working directory. `$ cd` is the command to change directory. 
+
+Clone a repo into your chosen  directory.
+```{bash, eval = F}
+cd ~/phd_hertie/teaching/IDS_fall_21 
+git clone https://github.com/tom-arend/my_first_repo.git
+
+```
+Check whether it worked:
+```{bash}
+cd ~/phd_hertie/teaching/IDS_fall_21/my_first_repo
+git log
+git status
+```
+
+#### Using Rstudio
+
+In RStudio, go to:
+
+File > New Project > Version Control > Git. 
+
+In the “repository URL”-box paste the URL of your new GitHub repository. 
+
+Do not just create some random directory for the local copy. Instead think about how you organize your files and folders and make it coherent.
+
+I always suggest that with any new R-project you “Open in new session”.
+
+Finally, click the “Create Project” to create a new directory. What you get are three things in one: 
+
+* a directory or “folder” on your computer
+* a Git repository, linked to a remote GitHub repository
+* an RStudio Project
+
+In the absence of other constraints, I suggest that all of your R projects have exactly this set-up.
+
+
+#### Using Github Desktop
+
+### {.unlisted .unnumbered}
+***
+### 3. Make changes to a file
+
+To showcase how useful Git can be, we first need to add some files to our repo. For now there should only be the .gitignore, the .Rproj and the README file. While we do this we might as well review some of the stuff we encountered last week.
+
+* So let's create a new script in the new Session that we just launched.
+
+* First load/install necessary packages (the tidyverse suffices here)
+
+```{r, eval=F}
+
+# Set-up your script ------------------------------------------------------
+
+# install.packages(c("tidyverse", "gapminder", "pacman")) # uncomment if already installed
+pacman::p_load(tidyverse, gapminder)
+
+# Load your Data into R ---------------------------------------------------
+
+data(gapminder)
+head(gapminder)
+
+```
+
+* For good measure let's also update our Readme.
+
+### {.unlisted .unnumbered}
+***
+### 4. Stage your Changes and Commit them {.tabset .tabset-fade .tabset-pills}
+
+Before we get on to the next step, it is a goo idea to save this newly created script and give it a name. Do the same thing for the README file. Now that your changes are saved locally we need to let Git know. 
+
+#### Using the Command Line
+
+Stage ("add") a file or group of files.
+
+```{bash, eval=F}
+git add NAME-OF-FILE-OR-FOLDER
+```
+
+Alternatively you could stage all files:
+
+```{bash, eval=F}
+git add -A
+```
+
+Or you could stage updated files only (modified or deleted, but not new):
+
+```{bash, eval=F}
+git add -u
+```
+
+Finally you can also only stage new files (not updated).
+```{bash, eval=F}
+git add .
+```
+
+You are now ready to commit these changes!
+```{bash, eval=F}
+git commit -m "Helpful message"
+
+```
+
+As you can imagine, the command shell with its different options (and there are more beyond the staging phase), can be quicker and more flexible than your GUI interface, especially for experienced users. 
+
+#### Using RStudio
+
+In the Environment/History panel a new tab called "git" should have appeared. 
+
+* Click on it and it should display all the changed and new files in your directory.
+* Now you can select which files you want to stage. Simply tick the box next to your chosen files. 
+* Hit the Commit Button and a new window should open up.
+* In this window you can quickly add a helpful message to mark exactly what you did. (Do not neglect this, as it helps both you and your collaborators to understand your changes.)
+
+
+#### Using GitHub Desktop
+
+### {.unlisted .unnumbered}
+***
+### 5. Pulling and Pushing your commits {.tabset .tabset-fade .tabset-pills}
+
+This part of the version control workflow should be relatively easy. The most important thing to remember is that you should always **pull** before you **push**. The reason for this is that in collaborative projects someone else might have pushed changes to the same file you were working on. This can lead to merge conflicts that should be avoided.
+
+#### Using the Command Line
+
+There are only two commands you need to remember here and they are pretty intuitive:
+
+To pull from the main repo:
+
+```{bash, eval=F}
+git pull
+```
+
+And to push your commits:
+
+```{bash, eval=F}
+git push
+```
+
+#### Using RStudio
+
+In RStudio you should see a change in the **git** tab. It should now read: "Your branch is ahead of 'origin/main' by 1 commit"
+
+As long as this information is displayed, you know that you need to pull and push your commit. 
+
+To do this simply click on the blue arrow pointing down to **pull** from your main repo, before clicking on the green arrow pointing upwards to **push** your commits.
+
+#### Using Github Desktop
+
+
+### {.unlisted .unnumbered}
+
+At some point during either of these processes you will be prompted to enter your Github credentials and password. Regardless of whether you entered the correct username and password, you will receive the following information:
+
+> remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+
+:::: {.noticebox data-latex=""}
+::: {.center data-latex=""}
+**Attention!**
+:::
+
+Github no longer supports this way of authenticating yourself. You now have to identify yourself using *Personal Access Tokens*. You can cache these with [HTTPS](#https) or you can use [SSH keys](#ssh). 
+::::
+
+***
+
+### Exercises (Part I)
+
+Let's practice this recipe a 
+
+# Branching & Forks
+***
+A really cool feature of 
+
+
+
+
+# Dealing with Merge Conflicts?
+
+***
+
+# Exercises
+***
+***
+# Appendix
+***
+## Caching credentials with HTTPS {#https}
+
+
+## Identifying yourself with SSH keys {#ssh}
+
