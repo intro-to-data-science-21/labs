@@ -145,7 +145,7 @@ In the absence of other constraints, I suggest that all of your R projects have 
 
 To showcase how useful Git can be, we first need to add some files to our repo. For now there should only be the .gitignore, the .Rproj and the README file. While we do this we might as well review some of the stuff we encountered last week.
 
-* So let's create a new script in the new Session that we just launched.
+* So let's create a new R script and save it in the directory that we just cloned.
 
 * First load/install necessary packages (the tidyverse suffices here)
 
@@ -156,10 +156,20 @@ To showcase how useful Git can be, we first need to add some files to our repo. 
 # install.packages(c("tidyverse", "gapminder", "pacman")) # uncomment if already installed
 pacman::p_load(tidyverse, gapminder)
 
+```
+* Then load the data you want to work with into R.
+
+```{r, eval=F}
+
 # Load your Data into R ---------------------------------------------------
 
 data(gapminder)
 head(gapminder)
+
+```
+* Finally, start cleaning your data.
+
+```{r, eval=F}
 
 # Clean your Data ---------------------------------------------------------
 
@@ -168,6 +178,7 @@ gapminder_clean <- gapminder %>%
   mutate(gdp = pop * gdp_per_cap)
 
 ```
+
 
 * For good measure let's also update our Readme.
 
@@ -326,9 +337,9 @@ $ git branch -d NAME-OF-YOUR-FAILED-BRANCH
 $ git push origin :NAME-OF-YOUR-FAILED-BRANCH
 ```
 
-
-
 #### Using RStudio
+
+
 
 #### Using Github Desktop
 
