@@ -32,7 +32,9 @@ Today's session will follow the exact recipe suggested in Simon's lecture:
 - Pull from the GitHub repo just in case anyone else made changes too (not expected here, but good practice).
 - Pushed our changes to the GitHub repo.
 
-Before we get into the nitty-gritty of this week's session, I would like to suggest you all  [download Github Desktop](https://desktop.github.com/). It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command Line alone. There are a bunch of different GUIs that you can play around with. Some are better than others. An additional free GUI like GitHub Desktop that I like is [GitKraken](https://www.gitkraken.com/).
+Before we get into the nitty-gritty of this week's session, I would like to suggest you all  [download Github Desktop](https://desktop.github.com/). It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command Line alone. Instructions to set it up and get it running can be found [here](https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/overview/getting-started-with-github-desktop).
+
+There are a number of different GUIs that you can try out and play around with. Some are better than others. An additional free GUI like GitHub Desktop that I like is [GitKraken](https://www.gitkraken.com/).
 
 ***
 # Setting Up `r emo::ji("hammer")`
@@ -138,6 +140,9 @@ In the absence of other constraints, I suggest that all of your R projects have 
 
 
 #### Using Github Desktop
+
+
+
 
 ### {.unlisted .unnumbered}
 ***
