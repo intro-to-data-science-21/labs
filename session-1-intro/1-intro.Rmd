@@ -10,6 +10,7 @@ output:
     theme: lumen
     toc_depth: 3
     toc_float: true
+    self_contained: false
     includes:
       after_body: footer.html
 ---
