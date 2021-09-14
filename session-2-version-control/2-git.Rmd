@@ -341,6 +341,7 @@ $ git push origin :NAME-OF-YOUR-FAILED-BRANCH
 
 
 
+
 #### Using Github Desktop
 
 # Dealing with Merge Conflicts `r emo::ji("exploding head")`
@@ -389,6 +390,7 @@ It should look like this:
 ```{r, echo=FALSE, out.width="75%", fig.cap=""}
 knitr::include_graphics("PAT_github_web.png")
 ```
+
 Next you can use `gitcreds` to cache your credentials.
 
 ```{r, eval=F}
