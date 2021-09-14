@@ -10,6 +10,8 @@ output:
     theme: lumen
     toc_depth: 3
     toc_float: true
+    includes:
+      after_body: footer.html
 ---
 
 ```{r setup, include=FALSE}
