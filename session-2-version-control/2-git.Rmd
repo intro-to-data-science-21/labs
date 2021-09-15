@@ -287,6 +287,7 @@ To do this simply click on the blue arrow pointing down to **pull** from your ma
 
 #### Using Github Desktop
 
+It is not really straightforward to pull before pushing with Github Desktop. Given that there is no prominent pull button, you need to actively remember to do so prior to pressing the blue push button.
 
 ```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
 knitr::include_graphics("./github_desktop_pull_and_push.gif")
@@ -366,8 +367,11 @@ $ git push origin :NAME-OF-YOUR-FAILED-BRANCH
 
 #### Using RStudio
 
+Creating a new branch within RStudio is very easy.
 
-
+1. Under the git tab in the environment pane you click on the pink L-shaped symbol on the right. 
+2. This will launch a new branch that you can name. 
+3. Switching branches can be accomplished through the dropdown menu next to it.
 
 #### Using Github Desktop
 
