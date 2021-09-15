@@ -245,6 +245,10 @@ This method has the clear advantage of being extremely intuitive. However you ar
 
 #### Using GitHub Desktop
 
+Changed or added files are automatically staged in Github Desktop. The GUI also displays (wehere possible) the changes that were done.
+
+You only really need to commit the changes with a nice little summary or message. 
+
 ```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
 knitr::include_graphics("./github_desktop_stage_commit.gif")
 ```
