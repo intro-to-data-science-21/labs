@@ -141,8 +141,11 @@ In the absence of other constraints, I suggest that all of your R projects have 
 
 #### Using Github Desktop
 
+Here is a short gif on how to clone a repo with GitHub Desktop:
 
-
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("github_desktop_cloning.gif")
+```
 
 ### {.unlisted .unnumbered}
 ***
@@ -239,6 +242,12 @@ This method has the clear advantage of being extremely intuitive. However you ar
 
 #### Using GitHub Desktop
 
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("github_desktop_stage_commit.gif")
+```
+
+
+
 ### {.unlisted .unnumbered}
 ***
 ### 5. Pulling and Pushing your commits {.tabset .tabset-fade .tabset-pills}
@@ -270,6 +279,12 @@ As long as this information is displayed, you know that you need to pull and pus
 To do this simply click on the blue arrow pointing down to **pull** from your main repo, before clicking on the green arrow pointing upwards to **push** your commits.
 
 #### Using Github Desktop
+
+
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("github_desktop_pull_and_push.gif")
+```
+
 
 
 ### {.unlisted .unnumbered}
@@ -392,7 +407,7 @@ usethis::create_github_token()
 
 It should look like this:
 
-```{r, echo=FALSE, out.width="75%", fig.cap=""}
+```{r, echo=FALSE, out.width="75%", fig.cap="", fig.align="center"}
 knitr::include_graphics("PAT_github_web.png")
 ```
 
