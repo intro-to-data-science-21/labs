@@ -10,10 +10,10 @@ output:
     theme: lumen
     toc_depth: 3
     toc_float: true
-    css: custom.css
+    css: custom.css 
     self_contained: false
     includes:
-      after_body: footer.html 
+      after_body: footer.html
 ---
 
 ```{r setup, include=FALSE}
@@ -146,7 +146,9 @@ In the absence of other constraints, I suggest that all of your R projects have 
 
 Here is a short gif on how to clone a repo with GitHub Desktop:
 
-![](github_desktop_cloning.gif)
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("./github_desktop_cloning.gif")
+```
 
 ### {.unlisted .unnumbered}
 ***
@@ -243,7 +245,11 @@ This method has the clear advantage of being extremely intuitive. However you ar
 
 #### Using GitHub Desktop
 
-![](github_desktop_stage_commit.gif)
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("./github_desktop_stage_commit.gif")
+```
+
+
 
 ### {.unlisted .unnumbered}
 ***
@@ -278,7 +284,11 @@ To do this simply click on the blue arrow pointing down to **pull** from your ma
 #### Using Github Desktop
 
 
-![](github_desktop_pull_and_push.gif)
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("./github_desktop_pull_and_push.gif")
+```
+
+
 
 ### {.unlisted .unnumbered}
 
