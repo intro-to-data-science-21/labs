@@ -44,7 +44,9 @@ There are a number of different GUIs that you can try out and play around with. 
 
 Before getting to know Git(Hub) it is useful to have a look at R-projects and how you should structure them. Version Control is only useful if your projects can be understood **by a wide range of collaborators**. 
 
-As we saw in the lecture a structure like the following one would be a good starting point. 
+First of all, you should always use RStudio projects. They allow you to keep all the files associated with a project together — input data, R scripts, analytical results, figures etc. When you open a Project you will find a .Rproj file. This file contains all the meta information relevant to your project: settings, working directory, open scripts, encoding etc. If you are curious what exactly lies within it, I suggest you open the .Rproj file with a text editor. 
+
+However, projects are only as useful as the organization within them. As we saw in the lecture a structure like the following one would be a good starting point. 
 
 ```
 .
@@ -78,7 +80,7 @@ This is the folder that should contain your code. You should aim to emulate the 
 
 Within a given script you should always use relative paths. To access your processed data folder you can use the following file path `"./data/processed.RDa"`.  The "." represents your current working directory, which is set automatically when you open a new R-project. 
 
-For more in depth guides and explanations you can look [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/). If you feel like you want to practice this you can find more material [here]("link here").
+For more in depth guides and explanations you can look [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/). If you feel like you want to practice this you can find more material [here]("https://github.com/intro-to-data-science-21/labs/blob/main/practice-scripts/01-file-management.R").
 
 ***
 # Setting Up Git `r emo::ji("hammer")`
@@ -300,7 +302,7 @@ knitr::include_graphics("./pics/github_desktop_stage_commit.gif")
 ***
 ### 5. Pulling and Pushing your commits {.tabset .tabset-fade .tabset-pills}
 
-This part of the version control workflow should be relatively easy. The most important thing to remember is that you should always **pull** before you **push**. The reason for this is that in collaborative projects someone else might have pushed changes to the same file you were working on. This can lead to merge conflicts that should be avoided.
+This part of the version control workflow should be relatively easy. The most important thing to remember is that you should always **pull** before you **push**. The reason for this is that in collaborative projects someone else might have pushed changes to the same file you were working on. This can lead to conflicts that should be avoided.
 
 #### Using the Command Line
 
@@ -347,7 +349,7 @@ At some point during either of these processes you will be prompted to enter you
 **Attention!**
 :::
 
-Github no longer supports simply using user-name and password as a way of authenticating yourself. You now have to identify yourself using *Personal Access Tokens*. You can cache these with [HTTPS](#https) or you can use [SSH keys](#ssh). 
+Github no longer supports simply using user-name and password as a way of authenticating yourself. You now have to identify yourself using *Personal Access Tokens*. You can cache these with [HTTPS](#https) or you can use [SSH keys]("https://happygitwithr.com/ssh-keys.html"). 
 ::::
 
 ***
@@ -418,6 +420,12 @@ Creating a new branch within RStudio is very easy.
 
 #### Using Github Desktop
 
+Given the point-&-click nature of Github Desktop, it is very easy to open a new branch. Here is how it is done:
+
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("./pics/github_desktop_open_new_branch.gif")
+```
+
 
 ### {.unlisted .unnumbered .tabset .tabset-fade .tabset-pills}
 
@@ -425,7 +433,7 @@ Creating a new branch within RStudio is very easy.
 ***
 Once you are satisfied that the feature, analysis or whatever it was that you did in your branch, has been completed, you need to notify and ask your collaborators (or yourself) to approve the changes. This is done through Pull Requests. 
 
-As a reminder on how you open pull requests, here is the GIF from the lecture : 
+Pull Requests are best managed directly on Github. As a reminder on how you open pull requests, here is the GIF from the lecture again: 
 
 ```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
 knitr::include_graphics("./pics/github-rstudio-pr.gif")

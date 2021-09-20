@@ -351,7 +351,8 @@ div.tocify {
 <div id="project-management" class="section level1">
 <h1>Project Management 🧙</h1>
 <p>Before getting to know Git(Hub) it is useful to have a look at R-projects and how you should structure them. Version Control is only useful if your projects can be understood <strong>by a wide range of collaborators</strong>.</p>
-<p>As we saw in the lecture a structure like the following one would be a good starting point.</p>
+<p>First of all, you should always use RStudio projects. They allow you to keep all the files associated with a project together — input data, R scripts, analytical results, figures etc. When you open a Project you will find a .Rproj file. This file contains all the meta information relevant to your project: settings, working directory, open scripts, encoding etc. If you are curious what exactly lies within it, I suggest you open the .Rproj file with a text editor.</p>
+<p>However, projects are only as useful as the organization within them. As we saw in the lecture a structure like the following one would be a good starting point.</p>
 <pre><code>.
 +-- src
 +-- output
@@ -378,7 +379,7 @@ div.tocify {
 <div id="relative-paths" class="section level3">
 <h3>relative paths</h3>
 <p>Within a given script you should always use relative paths. To access your processed data folder you can use the following file path <code>"./data/processed.RDa"</code>. The “.” represents your current working directory, which is set automatically when you open a new R-project.</p>
-<p>For more in depth guides and explanations you can look <a href="https://www.r-bloggers.com/2018/08/structuring-r-projects/">here</a>. If you feel like you want to practice this you can find more material <a href="%22link%20here%22">here</a>.</p>
+<p>For more in depth guides and explanations you can look <a href="https://www.r-bloggers.com/2018/08/structuring-r-projects/">here</a>. If you feel like you want to practice this you can find more material <a href="%22https://github.com/intro-to-data-science-21/labs/blob/main/practice-scripts/01-file-management.R%22">here</a>.</p>
 <hr />
 </div>
 </div>
@@ -545,7 +546,7 @@ div.tocify {
 </div>
 <div id="pulling-and-pushing-your-commits" class="section level3 tabset tabset-fade tabset-pills">
 <h3 class="tabset tabset-fade tabset-pills">5. Pulling and Pushing your commits</h3>
-<p>This part of the version control workflow should be relatively easy. The most important thing to remember is that you should always <strong>pull</strong> before you <strong>push</strong>. The reason for this is that in collaborative projects someone else might have pushed changes to the same file you were working on. This can lead to merge conflicts that should be avoided.</p>
+<p>This part of the version control workflow should be relatively easy. The most important thing to remember is that you should always <strong>pull</strong> before you <strong>push</strong>. The reason for this is that in collaborative projects someone else might have pushed changes to the same file you were working on. This can lead to conflicts that should be avoided.</p>
 <div id="using-the-command-line-2" class="section level4">
 <h4>Using the Command Line</h4>
 <p>There are only two commands you need to remember here and they are pretty intuitive:</p>
@@ -629,6 +630,8 @@ div.tocify {
 </div>
 <div id="using-github-desktop-3" class="section level4">
 <h4>Using Github Desktop</h4>
+<p>Given the point-&amp;-click nature of Github Desktop, it is very easy to open a new branch. Here is how it is done:</p>
+<p><img src="pics/github_desktop_open_new_branch.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="section-5" class="section level3 unlisted unnumbered tabset tabset-fade tabset-pills">
@@ -639,7 +642,7 @@ div.tocify {
 <h1>Pull Requests 🙏</h1>
 <hr />
 <p>Once you are satisfied that the feature, analysis or whatever it was that you did in your branch, has been completed, you need to notify and ask your collaborators (or yourself) to approve the changes. This is done through Pull Requests.</p>
-<p>As a reminder on how you open pull requests, here is the GIF from the lecture :</p>
+<p>Pull Requests are best managed directly on Github. As a reminder on how you open pull requests, here is the GIF from the lecture again:</p>
 <p><img src="pics/github-rstudio-pr.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="dealing-with-merge-conflicts" class="section level1">
