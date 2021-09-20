@@ -463,14 +463,14 @@ div.tocify {
 <div id="using-github-desktop" class="section level4">
 <h4>Using Github Desktop</h4>
 <p>Here is a short gif on how to clone a repo with GitHub Desktop:</p>
-<p><img src="github_desktop_cloning.gif" width="85%" style="display: block; margin: auto;" /></p>
+<p><img src="pics/github_desktop_cloning.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="section" class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered"></h3>
 <hr />
 </div>
-<div id="make-changes-to-a-file" class="section level3">
+<div id="code" class="section level3">
 <h3>3. Make changes to a file</h3>
 <p>To showcase how useful Git can be, we first need to add some files to our repo. For now there should only be the .gitignore, the .Rproj and the README file. While we do this we might as well review some of the stuff we encountered last week.</p>
 <ul>
@@ -504,8 +504,8 @@ div.tocify {
 <h3 class="unlisted unnumbered"></h3>
 <hr />
 </div>
-<div id="stage-your-changes-and-commit-them" class="section level3 tabset tabset-fade tabset-pills">
-<h3 class="tabset tabset-fade tabset-pills">4. Stage your Changes and Commit them</h3>
+<div id="stage-your-changes-and-commit" class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills">4. Stage your Changes and Commit</h3>
 <p>Before we get on to the next step, it is a goo idea to save this newly created script and give it a name. Do the same thing for the README file. Now that your changes are saved locally we need to let Git know.</p>
 <div id="using-the-command-line-1" class="section level4">
 <h4>Using the Command Line</h4>
@@ -536,7 +536,7 @@ div.tocify {
 <h4>Using GitHub Desktop</h4>
 <p>Changed or added files are automatically staged in Github Desktop. The GUI also displays (wehere possible) the changes that were done.</p>
 <p>You only really need to commit the changes with a nice little summary or message.</p>
-<p><img src="github_desktop_stage_commit.gif" width="85%" style="display: block; margin: auto;" /></p>
+<p><img src="pics/github_desktop_stage_commit.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="section-2" class="section level3 unlisted unnumbered">
@@ -563,7 +563,7 @@ div.tocify {
 <div id="using-github-desktop-2" class="section level4">
 <h4>Using Github Desktop</h4>
 <p>It is not really straightforward to pull before pushing with Github Desktop. Given that there is no prominent pull button, you need to actively remember to do so prior to pressing the blue push button.</p>
-<p><img src="github_desktop_pull_and_push.gif" width="85%" style="display: block; margin: auto;" /></p>
+<p><img src="pics/github_desktop_pull_and_push.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="section-3" class="section level3 unlisted unnumbered">
@@ -584,19 +584,19 @@ div.tocify {
 <h3>Exercises (Part I)</h3>
 <p>The best way to get into the habit of using Git in your workflow is to practice! So let us get back to our working example with my_first_repo and the initial_script.</p>
 <ol style="list-style-type: decimal">
-<li>Using the tidyverse subset our cleaned df to include only countries in the Americas</li>
-<li>Calculate the mean life_exp in the Americas in 2002</li>
-<li>Add a new categorical variable using <code>mutate()</code> that qualifies whether a country is rich or poor! (Hint use the variable gdp_per_cap and <code>ìf_else()</code>)</li>
-<li>Save the script!</li>
+<li>Go to Github and create a new repo called: exercises_1</li>
+<li>Make sure to include a description for the README</li>
+<li>Clone that repo to your local machine using your preferred method</li>
+<li>Change the README file to read: “Hello Github!”</li>
+<li>Save the README.</li>
 <li>Stage and Commit your changes (Do not forget the message along your commit!)</li>
 <li>First Pull from origin (Not necessary here, but it is good to develop the right habits)</li>
 <li>Then push your commit.</li>
-<li>Update and do the same thing with the README</li>
 </ol>
 </div>
 </div>
-<div id="branching-forks" class="section level1">
-<h1>Branching &amp; Forks 🎋</h1>
+<div id="branches" class="section level1">
+<h1>Branches 🎄</h1>
 <hr />
 <p>A really cool feature of version control with Git are <em>Branches</em>.</p>
 <p>Branches allow you to take a snapshot of your existing repo and try out a whole new idea without affecting your main (i.e. “master”) branch.</p>
@@ -624,25 +624,45 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li>Under the git tab in the environment pane you click on the pink L-shaped symbol on the right.</li>
 <li>This will launch a new branch that you can name.</li>
-<li>Switching branches can be accomplished through the dropdown menu next to it.</li>
+<li>Switching branches can be accomplished through the drop-down menu next to it.</li>
 </ol>
 </div>
 <div id="using-github-desktop-3" class="section level4">
 <h4>Using Github Desktop</h4>
 </div>
 </div>
+<div id="section-5" class="section level3 unlisted unnumbered tabset tabset-fade tabset-pills">
+<h3 class="unlisted unnumbered tabset tabset-fade tabset-pills"></h3>
+</div>
 </div>
 <div id="pull-requests" class="section level1">
-<h1>Pull Requests</h1>
+<h1>Pull Requests 🙏</h1>
 <hr />
+<p>Once you are satisfied that the feature, analysis or whatever it was that you did in your branch, has been completed, you need to notify and ask your collaborators (or yourself) to approve the changes. This is done through Pull Requests.</p>
+<p>As a reminder on how you open pull requests, here is the GIF from the lecture :</p>
+<p><img src="pics/github-rstudio-pr.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="dealing-with-merge-conflicts" class="section level1">
 <h1>Dealing with Merge Conflicts 🤯</h1>
 <hr />
+<p>Merge conflicts occur when Git cannot resolve differences in the code between two commits. It only affects commits that apply changes <strong>to the same line of code</strong>. These merge conflicts are part of Git and alert you to the fact that there is a problem that needs to be addressed before continuing. Helpfully, Git marks where the merge conflict occurred within your code, contrasting the conflicting contributions. Unfortunately, it might be more difficult to resolve in larger projects where the problem is not immediately obvious to the human coder. A better approach would be to make extensive use of branches.</p>
 </div>
-<div id="exercises" class="section level1">
-<h1>Exercises 🏋</h1>
+<div id="exercises-part-ii" class="section level1">
+<h1>Exercises (Part II) 🏋</h1>
 <hr />
+<p>For these exercises we will use the same repo created in the first part of the exercises, so be sure to finish them before moving on to this section!</p>
+<ol style="list-style-type: decimal">
+<li>From the exercises_1 repo open up a new branch called “data-manipulation-idea”.</li>
+<li>Switch to this branch and create a new script.</li>
+<li>Copy the three code chunks from <a href="#code">this section</a> into the newly created script.</li>
+<li>Next, and using the tidyverse, subset our cleaned df to include only countries in the Americas.</li>
+<li>Finally, also add a new categorical variable using <code>mutate()</code> that qualifies whether a country is rich or poor! (Hint use the variable gdp_per_cap and <code>ìf_else()</code>)</li>
+<li>Save the script!</li>
+<li>Stage your changes and commit them. (Make sure you are commiting them within our “data-manipulation-idea” branch.)</li>
+<li>Go to your repo online and open a pull request.</li>
+<li>Review and merge this pull request.</li>
+<li>Delet the now obsolete branch.</li>
+</ol>
 <hr />
 </div>
 <div id="appendix" class="section level1">
@@ -667,15 +687,12 @@ div.tocify {
 <p>The <code>usethis</code> package has a function that takes you immediately to the relevant GitHub page and preselects the recommended scopes (what github calls settings) for you.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_github_token</span>()</span></code></pre></div>
 <p>It should look like this:</p>
-<p><img src="PAT_github_web.png" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="pics/PAT_github_web.png" width="75%" style="display: block; margin: auto;" /></p>
 <p>Next you can use <code>gitcreds</code> to cache your credentials.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>gitcreds<span class="sc">::</span><span class="fu">gitcreds_set</span>()</span></code></pre></div>
 <p>It will ask you for your PAT (or if you already cached credentials, whether you want to change them) and store it for you.</p>
 <p>Now you should be able to <strong>pull</strong> and <strong>push</strong> to your origin/main repo.</p>
 <p>If you ever misplace your token, but you need to use it to authenticate your command line operation for example, you can also call ´gitcreds::gitcreds_set()´ and select the 3. option to display your PAT.</p>
-</div>
-<div id="project-management-1" class="section level4">
-<h4>Project Management</h4>
 </div>
 </div>
 </div>

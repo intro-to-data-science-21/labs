@@ -188,12 +188,12 @@ In the absence of other constraints, I suggest that all of your R projects have 
 Here is a short gif on how to clone a repo with GitHub Desktop:
 
 ```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
-knitr::include_graphics("./github_desktop_cloning.gif")
+knitr::include_graphics("./pics/github_desktop_cloning.gif")
 ```
 
 ### {.unlisted .unnumbered}
 ***
-### 3. Make changes to a file
+### 3. Make changes to a file {#code}
 
 To showcase how useful Git can be, we first need to add some files to our repo. For now there should only be the .gitignore, the .Rproj and the README file. While we do this we might as well review some of the stuff we encountered last week.
 
@@ -236,7 +236,7 @@ gapminder_clean <- gapminder %>%
 
 ### {.unlisted .unnumbered}
 ***
-### 4. Stage your Changes and Commit them {.tabset .tabset-fade .tabset-pills}
+### 4. Stage your Changes and Commit {.tabset .tabset-fade .tabset-pills}
 
 Before we get on to the next step, it is a goo idea to save this newly created script and give it a name. Do the same thing for the README file. Now that your changes are saved locally we need to let Git know. 
 
@@ -291,7 +291,7 @@ Changed or added files are automatically staged in Github Desktop. The GUI also 
 You only really need to commit the changes with a nice little summary or message. 
 
 ```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
-knitr::include_graphics("./github_desktop_stage_commit.gif")
+knitr::include_graphics("./pics/github_desktop_stage_commit.gif")
 ```
 
 
@@ -331,7 +331,7 @@ To do this simply click on the blue arrow pointing down to **pull** from your ma
 It is not really straightforward to pull before pushing with Github Desktop. Given that there is no prominent pull button, you need to actively remember to do so prior to pressing the blue push button.
 
 ```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
-knitr::include_graphics("./github_desktop_pull_and_push.gif")
+knitr::include_graphics("./pics/github_desktop_pull_and_push.gif")
 ```
 
 
@@ -356,17 +356,19 @@ Github no longer supports simply using user-name and password as a way of authen
 
 The best way to get into the habit of using Git in your workflow is to practice! So let us get back to our working example with my_first_repo and the initial_script. 
 
-1. Using the tidyverse subset our cleaned df to include only countries in the Americas
-2. Calculate the mean life_exp in the Americas in 2002
-3. Add a new categorical variable using `mutate()` that qualifies whether a country is rich or poor! (Hint use the variable gdp_per_cap and `ìf_else()`)
-4. Save the script!
+
+1. Go to Github and create a new repo called: exercises_1
+2. Make sure to include a description for the README
+2. Clone that repo to your local machine using your preferred method
+3. Change the README file to read: "Hello Github!"
+4. Save the README.
 5. Stage and Commit your changes (Do not forget the message along your commit!)
 6. First Pull from origin (Not necessary here, but it is good to develop the right habits)
 7. Then push your commit.
-8. Update and do the same thing with the README
 
 
-# Branching & Forks `r emo::ji("tree")`
+
+# Branches `r emo::ji("tree")`
 ***
 A really cool feature of version control with Git are *Branches*.
 
@@ -412,22 +414,47 @@ Creating a new branch within RStudio is very easy.
 
 1. Under the git tab in the environment pane you click on the pink L-shaped symbol on the right. 
 2. This will launch a new branch that you can name. 
-3. Switching branches can be accomplished through the dropdown menu next to it.
+3. Switching branches can be accomplished through the drop-down menu next to it.
 
 #### Using Github Desktop
 
-# Pull Requests
-***
 
+### {.unlisted .unnumbered .tabset .tabset-fade .tabset-pills}
+
+# Pull Requests   `r emo::ji("ask")`
+***
+Once you are satisfied that the feature, analysis or whatever it was that you did in your branch, has been completed, you need to notify and ask your collaborators (or yourself) to approve the changes. This is done through Pull Requests. 
+
+As a reminder on how you open pull requests, here is the GIF from the lecture : 
+
+```{r, echo=FALSE, out.width="85%", fig.cap="", fig.align="center"}
+knitr::include_graphics("./pics/github-rstudio-pr.gif")
+```
 
 
 # Dealing with Merge Conflicts `r emo::ji("exploding head")`
+***
+
+Merge conflicts occur when Git cannot resolve differences in the code between two commits. It only affects commits that apply changes **to the same line of code**. These merge conflicts are part of Git and alert you to the fact that there is a problem that needs to be addressed before continuing. Helpfully, Git marks where the merge conflict occurred within your code, contrasting the conflicting contributions. Unfortunately, it might be more difficult to resolve in larger projects where the problem is not immediately obvious to the human coder. A better approach would be to make extensive use of branches.
+
+# Exercises (Part II) `r emo::ji("person lifting weights")`
+***
+
+For these exercises we will use the same repo created in the first part of the exercises, so be sure to finish them before moving on to this section!
+
+1. From the exercises_1 repo open up a new branch called "data-manipulation-idea". 
+2. Switch to this branch and create a new script. 
+3. Copy the three code chunks from [this section](#code) into the newly created script.
+4. Next, and using the tidyverse, subset our cleaned df to include only countries in the Americas.
+5. Finally, also add a new categorical variable using `mutate()` that qualifies whether a country is rich or poor! (Hint use the variable gdp_per_cap and `ìf_else()`)
+6. Save the script!
+7. Stage your changes and commit them. (Make sure you are commiting them within our "data-manipulation-idea" branch.)
+8. Go to your repo online and open a pull request. 
+9. Review and merge this pull request. 
+10. Delet the now obsolete branch. 
 
 ***
 
-# Exercises `r emo::ji("person lifting weights")`
-***
-***
 # Appendix
 ***
 ### Caching credentials with HTTPS {#https .tabset .tabset-fade .tabset-pills}
@@ -465,7 +492,7 @@ usethis::create_github_token()
 It should look like this:
 
 ```{r, echo=FALSE, out.width="75%", fig.cap="", fig.align="center"}
-knitr::include_graphics("PAT_github_web.png")
+knitr::include_graphics("./pics/PAT_github_web.png")
 ```
 
 Next you can use `gitcreds` to cache your credentials.
@@ -480,4 +507,4 @@ Now you should be able to **pull** and **push** to your origin/main repo.
 
 If you ever misplace your token, but you need to use it to authenticate your command line operation for example, you can also call ´gitcreds::gitcreds_set()´ and select the 3. option to display your PAT. 
 
-#### Project Management
+
