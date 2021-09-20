@@ -40,7 +40,48 @@ Before we get into the nitty-gritty of this week's session, I would like to sugg
 There are a number of different GUIs that you can try out and play around with. Some are better than others. An additional free GUI like GitHub Desktop that I like is [GitKraken](https://www.gitkraken.com/).
 
 ***
-# Setting Up `r emo::ji("hammer")`
+# Project Management `r emo::ji("mage")`
+
+Before getting to know Git(Hub) it is useful to have a look at R-projects and how you should structure them. Version Control is only useful if your projects can be understood **by a wide range of collaborators**. 
+
+As we saw in the lecture a structure like the following one would be a good starting point. 
+
+```
+.
++-- src
++-- output
+|   +-- figures
+|   +-- tables
++--data
+|   +-- raw
+|   +-- processed
+|
++-- README.md
++-- run_analyses.R 
++-- .gitignore
+
+```
+
+The overview can be adapted to requirements inherent to any given project. It might be interesting to spend a little more time looking into the different folders and what they should contains.
+
+### Data Folder
+
+The data folder is, as the name suggests, where your data goes. The "raw" folder should contain the original data that will need to be wrangled and manipulated. It might be that your data is stored in an online relational database, or needs to be accessed through an API. In such cases the raw folder can be dispensed with. 
+
+Once you have shaped your data into a format that suits your analysis, the data should be stored in the "processed" folder. If you need to perform certain intermediate steps it might also be an idea to create a dedicated "temp" folder.
+
+### src folder
+
+This is the folder that should contain your code. You should aim to emulate the workflow of standard data science project within this folder. It is best to separate different aspects of your project into separate scripts. The names of these scripts should be named so as to make it clear what step of the project they represent (i.e. "2-preprocess-data", "3-descriptives" etc.). These scripts should sequentially be executed through a main runner script. This can be done calling the `source()` function. 
+
+### relative paths
+
+Within a given script you should always use relative paths. To access your processed data folder you can use the following file path `"./data/processed.RDa"`.  The "." represents your current working directory, which is set automatically when you open a new R-project. 
+
+For more in depth guides and explanations you can look [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/). If you feel like you want to practice this you can find more material [here]("link here").
+
+***
+# Setting Up Git `r emo::ji("hammer")`
 
 Most of you will already have completed this step (we hope). For future reference however, we included a small reminder on the necessary steps:
 
@@ -66,7 +107,7 @@ git config --global user.name 'its-me'
 git config --global user.email 'my-email@adress.eu'
 ```
 
-***
+
 # Suggested Workflow `r emo::ji("surfer")`
 ***
 
@@ -375,6 +416,11 @@ Creating a new branch within RStudio is very easy.
 
 #### Using Github Desktop
 
+# Pull Requests
+***
+
+
+
 # Dealing with Merge Conflicts `r emo::ji("exploding head")`
 
 ***
@@ -434,5 +480,4 @@ Now you should be able to **pull** and **push** to your origin/main repo.
 
 If you ever misplace your token, but you need to use it to authenticate your command line operation for example, you can also call ´gitcreds::gitcreds_set()´ and select the 3. option to display your PAT. 
 
-### Identifying yourself with SSH keys {#ssh}
-
+#### Project Management
