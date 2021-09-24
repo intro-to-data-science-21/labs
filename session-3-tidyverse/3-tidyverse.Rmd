@@ -10,6 +10,10 @@ output:
     theme: lumen
     toc_depth: 3
     toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
 ---
 
 ```{r setup, include=FALSE}
@@ -36,18 +40,19 @@ Read more on this [here](http://varianceexplained.org/r/teach-tidyverse/) if you
 
 ---
 
+# The Tidyverse `r emo::ji("telescope")`
+
 In general, the `tidyverse` is a collection of R packages that share an underlying design, syntax, and structure. One very prominent tidyverse package is `dplyr` for data manipulation.
 
-In this tutorial, you will learn to:
+In this lab, you will learn to:
 
 * understand what we mean with `tidy data`
 * identify the purpose of a set of `dplyr` verbs
-* write statements in `tidy` syntax
-* apply `dplyr` verbs to solve your data manipulation challenges
+* restructure data with a set of `tidyr` verbs
+* learn about functions and iteration with `purrr`
 
 
-
-# Tidy Data
+# Tidy Data `r emo::ji("card_index_dividers")`
 
 Generally, we will encounter data in a tidy format. Tidy data refers to a way of mapping the structure of a data set. In a tidy data set:
 
@@ -61,12 +66,12 @@ knitr::include_graphics("tidy_data.png")
 
 **Excercise 1**
 ```
-Think about what you've learned about panel surveys (surveys fielded to the same set of participants at multiple points of time). Why is this a problem for the general assumptions of tidy data and what possible data formats can you end up with?
+Think about what you might have learned about panel surveys (surveys fielded to the same set of participants at multiple points of time). Why could this be a problem for the general assumptions of tidy data and what possible data formats can you end up with?
 ```
 
 ---
 
-# Tidyverse packages
+# Tidyverse packages 
 
 Let's load the tidyverse meta-package and check the output.
 ```{r}
@@ -86,6 +91,9 @@ We'll use several of these additional packages during the remainder of this cour
 
 E.g. The **lubridate** package for working with dates and the **rvest** package for webscraping. However, these packages will have to be loaded separately!
 
+```{r, fig.align='center', echo=F, out.width ="80%"}
+knitr::include_graphics("kacheln3.png")
+```
 
 # The pipe `%>%` operator 
 
@@ -120,7 +128,7 @@ Remember: Using vertical space costs nothing and makes for much more readable/wr
 PS — The pipe is originally from the [**magrittr**](https://magrittr.tidyverse.org/) package, which can do some other cool things if you're inclined to explore.
 
 
-# Data manipulation with `dplyr`
+# Data manipulation with `dplyr` 
 
 In this tutorial, you'll learn and practice examples using some functions in `dplyr` to work with data. Those are: 
 
@@ -134,10 +142,6 @@ In this tutorial, you'll learn and practice examples using some functions in `dp
 
 ```{r, echo=FALSE}
 library(palmerpenguins)
-```
-
-```{r, fig.align='center', echo=F, out.width ="80%"}
-knitr::include_graphics("kacheln3.png")
 ```
 
 To demonstrate and practice how these verbs (functions) work, we'll use the penguings dataset.
@@ -173,10 +177,10 @@ Say we are only interested in the species, island, and year variables of these d
 dplyr::select(penguins, species, island, year)
 ```
 
-Good to know: To **drop** variables, use `-` before the variable name, i.e. select(penguins, -year)] to drop the year column (select everything but the year column).
+Good to know: To **drop** variables, use `-` before the variable name, i.e. select(penguins, -year) to drop the year column (select everything but the year column).
 
 
-## `filter()`
+## `filter()` `r emo::ji("coffee")`
 
 The second verb (function) we will employ is `filter()`. `filter()` lets you use a logical test to extract specific **rows** from a data frame. To use `filter()`, pass it the data frame followed by one or more logical tests. `filter()` will return every row that passes each logical test.
 
@@ -220,12 +224,12 @@ penguins %>%
   dplyr::select(species, sex, year)
 ```
 
-## `mutate()`
+## `mutate()` `r emo::ji("closed_umbrella")``r emo::ji("open_umbrella")`
 
 `mutate()` lets us create, modify, and delete columns. The most common use for now will be to create new variables based on existing ones. Say we are working with a U.S. American client and they feel more confortable with assessing the weight of the penguins in pounds. We would utilize `mutate()` as such:
 
 
-```mutate(new_var_name = conditions)```
+```mutate(new_var_name = manipulated old_var(s))```
 
 ```{r,, eval=F}
 penguins %>%
@@ -258,7 +262,7 @@ penguins %>%
   dplyr::summarize(lightest_penguin = min(body_mass_g, na.rm = T))
 ```
 
-## `arrange()`
+## `arrange()` `r emo::ji("egg")``r emo::ji("hatching_chick")``r emo::ji("hatched_chick")`
 
 The `arrange()` verb is pretty self-explanatory. `arrange()` orders the rows of a data frame by the values of selected columns in ascending order. You can use the `desc()` argument inside to arrange in descending order. The following chunk arranges the data frame based on the length of the penguins' bill. You hint tab contains the code for the descending order alternative. 
 
@@ -322,11 +326,7 @@ penguins %>%
 - E.g. `penguins %>% count(species)`, or `penguins %>% distinct(species)`
 - You could also use a combination of `mutate`, `group_by`, and `n()`, e.g. `penguins %>% group_by(species) %>% mutate(num = n())`.
 
-
-There are also a whole class of [window functions](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for creating cumulative aggregates, etc.
-- See `vignette("window-functions")`.
-
-The final set of dplyr "goodies" are the family of join operations. These are important enough that we want to go over some concepts in a bit more depth.
+The final set of dplyr verbs we'd like you to know are the family of join operations. These are important enough that we want to go over some concepts in a bit more depth.
 
 However - note that we will cover relational data structures (and SQL) in even more depth in a separate lab session! 
 
@@ -348,8 +348,8 @@ For the simple examples that I'm going to show here, we'll need some data sets t
 
 ```{r, echo = F}
 library(nycflights13)
-flights 
-planes
+#flights 
+#planes
 ```
 
 Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publishers) on the flights and planes datasets. 
@@ -447,7 +447,7 @@ tidy_stocks %>% pivot_wider(names_from=time, values_from=price)
 Note that the second example; which has combined different pivoting arguments; has effectively transposed the data.
 
 
-## `tidyr::separate()`
+## `tidyr::separate()` `r emo::ji("broken_heart")`
 
 ```{r sep1}
 economists = data.frame(name = c("Adam.Smith", "Paul.Samuelson", "Milton.Friedman"))
@@ -470,7 +470,7 @@ jobs %>% separate_rows(occupation)
 ```
 
 
-## `tidyr::unite()`
+## `tidyr::unite()` `r emo::ji("heart")`
 
 ```{r unite1}
 gdp = data.frame(
@@ -499,11 +499,162 @@ gdp_u %>% mutate(date = ymd(date))
 
 ---
 
-<!-- notes: stuff to add after lecture
-* pivot_longer & pivot_wider (tidyr) !! (explain something about panel data)
-* build a function to reduce repetition
-* using for-loops vs. iteration with purrr (instead of apply family - map(), map*())
--->
+# Functions
+
+Functions allow you to automate tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
+
+1. You can give a function an evocative name that makes your code easier to understand.
+
+2. As requirements change, you only need to update code in one place, instead of many.
+
+3. You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+
+You can read more on functions in [this section](https://r4ds.had.co.nz/functions.html#functions) of R 
+for Data Science.
+
+Generally, how does code look like that calls for writing a function? For example like this:
+
+```{r, results=FALSE}
+df <- data.frame(
+  a = rnorm(100, 5, 2),
+  b = rnorm(100, 100, 15),
+  c = rnorm(100, 2, 1),
+  d = rnorm(100, 36, 7)
+)
+
+df$a <- (df$a - mean(df$a, na.rm = TRUE)) / sd(df$a, na.rm = TRUE)
+df$b <- (df$b - mean(df$b, na.rm = TRUE)) / sd(df$a, na.rm = TRUE) # spot the mistake?
+df$c <- (df$c - mean(df$c, na.rm = TRUE)) / sd(df$c, na.rm = TRUE)
+df$d <- (df$d - mean(df$d, na.rm = TRUE)) / sd(df$d, na.rm = TRUE)
+```
+There are three key steps to creating a new function:
+
+1. Pick a **name** for the function. For us it could be zscale because this function rescales (or z-transforms) a vector to have a mean of 0 and a standard deviation of 1.
+
+2. You list the **inputs**, or **arguments**, to the function inside function. Here we have just one argument. If we had more the call would look like function(x, y, z).
+
+3. You place the code you have developed in **body** of the function, a { block that immediately follows function(...).
+
+The overall structure of a function looks like this in R:
+
+```
+function_name <- function(input_parameters){
+  Do what you want to do in the body of the
+  function, just like you would write other code in R.
+}
+```
+
+In our example, we could simplify the z-transformation of 4 variables with this function:
+
+```{r}
+zscale <- function(x){
+  (x - mean(x, na.rm = T) / sd(x, na.rm = T))
+}
+```
+
+A word on **function names**. Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. mean), or accessing some property of an object (i.e. coefficients). A good sign that a noun might be a better choice is if you’re using a very broad verb like “get”, “compute”, “calculate”, or “determine”. Where possible, avoid overriding existing functions and variables. However, many good names are already taken by other packages, but avoiding the most common names from base R will avoid confusion.
+
+## Conditions
+
+You can of course also add conditions to your function.
+
+```
+if (this) {
+  # do that
+} else if (that) {
+  # do something else
+} else {
+  # 
+}
+```
+You could, for example, only transform numeric variables.
+
+```{r}
+zscale <- function(x){
+  if (is.numeric(x)) {
+  (x - mean(x, na.rm = T) / sd(x, na.rm = T))
+  }
+}
+```
+
+We can now apply our function to any variable that we would like to transform.
+
+```{r, results=FALSE}
+df$a <- zscale(df$a)
+df$b <- zscale(df$b)
+df$c <- zscale(df$c)
+df$d <- zscale(df$d)
+
+# you can also use your function with a pipe!
+df$d %>% zscale()
+```
+
+Note that there is still a lot of repetition. We can get rid of this using iteration `r emo::ji("point_down")`
+
+---
+
+# Iteration
+
+Iteration helps you when you need to do the same thing to multiple inputs: repeating the same operation on different columns, or on different datasets.
+
+On the one hand, you have for loops and while loops which are a great place to start because they make iteration very explicit. On the other hand, functional programming (FP) offers tools to extract out duplicated code, so each common for loop pattern gets its own function.
+
+Remember the code above - it violates the rule of thumb that you should not copy and paste more than twice.
+
+```{r, results=FALSE}
+# repetitive code
+df$a <- zscale(df$a)
+df$b <- zscale(df$b)
+df$c <- zscale(df$c)
+df$d <- zscale(df$d)
+
+# equivalent iteration
+for (i in seq_along(df)) {       # seq_along() similar to length()
+  df[[i]] <- zscale(df[[i]])     # [[]] because we are working on single elements
+}
+```
+
+To solve problems like this one with a for loop we again think about the three components:
+
+1. **Output:** we already have the output — it’s the same as the input because we are modifying data. If that is not the case, make sure to define a space where the output should go (e.g. an empty vector). If the length of your vector is unknown, you might be tempted to solve this problem by progressively growing the vector. However, this is not very efficient because in each iteration, R has to copy all the data from the previous iterations. In technical terms you get “quadratic” (O(n^2)) behaviour which means that a loop with three times as many elements would take nine (3^2) times as long to run. A better solution to save the results in a list, and then combine into a single vector after the loop is done. See more on this [here](https://r4ds.had.co.nz/iteration.html).
+
+2. **Sequence:** we can think about a data frame as a list of columns, so we can iterate over each column with seq_along(df).
+
+3. **Body:** apply zscale() or any other function.
+
+## Functionals `r emo::ji("cat")`
+
+For loops are not as important in R as they are in other languages because R is a functional programming language. This means that it’s possible to wrap up for loops in a function, and call that function instead of using the for loop directly. `r emo::ji("bulb")`
+
+The `purrr` package provides functions that eliminate the need for many common for loops. The apply family of functions in base R (apply(), lapply(), tapply(), etc) solve a similar problem, but purrr is more consistent and thus is easier to learn.
+
+The pattern of looping over a vector, doing something to each element and saving the results is so common that the purrr package provides a family of functions to do it for you. There is one function for each type of output:
+
+* `map()` makes a list.
+* `map_lgl()` makes a logical vector.
+* `map_int()` makes an integer vector.
+* `map_dbl()` makes a double vector.
+* `map_chr()` makes a character vector.
+
+Each function takes a vector as input, applies a function to each piece, and then returns a new vector that’s the same length (and has the same names) as the input. The type of the vector is determined by the suffix to the map function.
+
+```{r, results=FALSE}
+# repetitive code
+mean(df$a)
+mean(df$b)
+mean(df$c)
+mean(df$d)
+
+# equivalent map function
+map_dbl(df,mean)
+
+# map function in tidyverse style
+df %>% map_dbl(mean)
+
+```
+
+There is, of course, much more to learn about functions in R and we could dedicate an entire session to it.
+For now, consider this as is the first exposure to functions (that can actually already get you pretty far). However, it is important that you apply `r emo::ji("nerd")` you new skills and practice further on your own. A good starting point is obviously *assignment 2 that is due October 6, 11pm*. Good luck! `r emo::ji("crossed_fingers")`
 
 
 ## Actually learning R `r emo::ji("backpack")`
