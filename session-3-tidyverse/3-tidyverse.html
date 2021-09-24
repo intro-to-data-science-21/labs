@@ -498,11 +498,8 @@ final_df #to print it in our console</code></pre>
 <div id="arrange" class="section level2">
 <h2><code>arrange()</code> 🥚🐣🐥</h2>
 <p>The <code>arrange()</code> verb is pretty self-explanatory. <code>arrange()</code> orders the rows of a data frame by the values of selected columns in ascending order. You can use the <code>desc()</code> argument inside to arrange in descending order. The following chunk arranges the data frame based on the length of the penguins’ bill. You hint tab contains the code for the descending order alternative.</p>
-<pre class="arrange(variable_of_interest)```"><code>
-
-```r
-penguins %&gt;%
-  dplyr::arrange(bill_length_mm)</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(bill_length_mm)</span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(bill_length_mm))</span></code></pre></div>
 <p><strong>Excercise 6</strong> Can you create a data frame arranged by body_mass_g of the penguins observed in the “Dream” island?</p>
@@ -615,13 +612,13 @@ penguins %&gt;%
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>stocks</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"1.2358384","3":"-0.8896344","4":"-0.3965961"},{"1":"2009-01-02","2":"0.4540418","3":"-0.3401763","4":"-2.1043159"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.79482423","3":"2.200964","4":"0.2459667"},{"1":"2009-01-02","2":"0.02381227","3":"1.814031","4":"-6.0230062"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"1.2358384"},{"1":"2009-01-01","2":"Y","3":"-0.8896344"},{"1":"2009-01-01","2":"Z","3":"-0.3965961"},{"1":"2009-01-02","2":"X","3":"0.4540418"},{"1":"2009-01-02","2":"Y","3":"-0.3401763"},{"1":"2009-01-02","2":"Z","3":"-2.1043159"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-0.79482423"},{"1":"2009-01-01","2":"Y","3":"2.20096368"},{"1":"2009-01-01","2":"Z","3":"0.24596674"},{"1":"2009-01-02","2":"X","3":"0.02381227"},{"1":"2009-01-02","2":"Y","3":"1.81403059"},{"1":"2009-01-02","2":"Z","3":"-6.02300625"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s quickly save the “tidy” (i.e. long) stocks data frame</p>
@@ -634,13 +631,13 @@ penguins %&gt;%
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from=</span>price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"1.2358384","3":"-0.8896344","4":"-0.3965961"},{"1":"2009-01-02","2":"0.4540418","3":"-0.3401763","4":"-2.1043159"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.79482423","3":"2.200964","4":"0.2459667"},{"1":"2009-01-02","2":"0.02381227","3":"1.814031","4":"-6.0230062"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from=</span>price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"1.2358384","3":"0.4540418"},{"1":"Y","2":"-0.8896344","3":"-0.3401763"},{"1":"Z","2":"-0.3965961","3":"-2.1043159"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-0.7948242","3":"0.02381227"},{"1":"Y","2":"2.2009637","3":"1.81403059"},{"1":"Z","2":"0.2459667","3":"-6.02300625"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that the second example; which has combined different pivoting arguments; has effectively transposed the data.</p>
@@ -691,14 +688,14 @@ penguins %&gt;%
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>gdp </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"99.97661"},{"1":"2016","2":"1","3":"2","4":"97.26481"},{"1":"2016","2":"1","3":"3","4":"98.60737"},{"1":"2016","2":"1","3":"4","4":"99.93706"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"100.59479"},{"1":"2016","2":"1","3":"2","4":"100.47884"},{"1":"2016","2":"1","3":"3","4":"102.80522"},{"1":"2016","2":"1","3":"4","4":"98.70181"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Combine &quot;yr&quot;, &quot;mnth&quot;, and &quot;dy&quot; into one &quot;date&quot; column</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>gdp <span class="sc">%&gt;%</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.97661"},{"1":"2016-1-2","2":"97.26481"},{"1":"2016-1-3","2":"98.60737"},{"1":"2016-1-4","2":"99.93706"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"100.59479"},{"1":"2016-1-2","2":"100.47884"},{"1":"2016-1-3","2":"102.80522"},{"1":"2016-1-4","2":"98.70181"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that <code>unite</code> will automatically create a character variable. You can see this better if we convert it to a tibble.</p>
@@ -706,7 +703,7 @@ penguins %&gt;%
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>gdp_u</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.97661"},{"1":"2016-1-2","2":"97.26481"},{"1":"2016-1-3","2":"98.60737"},{"1":"2016-1-4","2":"99.93706"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"100.59479"},{"1":"2016-1-2","2":"100.47884"},{"1":"2016-1-3","2":"102.80522"},{"1":"2016-1-4","2":"98.70181"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>If you want to convert it to something else (e.g. date or numeric) then you will need to modify it using <code>mutate</code>. See below for an example, using the <a href="https://lubridate.tidyverse.org/">lubridate</a> package’s super helpful date conversion functions.</p>
@@ -714,7 +711,7 @@ penguins %&gt;%
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>gdp_u <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"99.97661"},{"1":"2016-01-02","2":"97.26481"},{"1":"2016-01-03","2":"98.60737"},{"1":"2016-01-04","2":"99.93706"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"100.59479"},{"1":"2016-01-02","2":"100.47884"},{"1":"2016-01-03","2":"102.80522"},{"1":"2016-01-04","2":"98.70181"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <hr />

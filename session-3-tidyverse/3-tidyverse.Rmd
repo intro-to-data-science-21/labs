@@ -266,16 +266,18 @@ penguins %>%
 
 The `arrange()` verb is pretty self-explanatory. `arrange()` orders the rows of a data frame by the values of selected columns in ascending order. You can use the `desc()` argument inside to arrange in descending order. The following chunk arranges the data frame based on the length of the penguins' bill. You hint tab contains the code for the descending order alternative. 
 
-```arrange(variable_of_interest)```
-
 ```{r, eval=F}
+
 penguins %>%
   dplyr::arrange(bill_length_mm)
+
 ```
 
 ```{r, eval=F}
+
 penguins %>%
   dplyr::arrange(desc(bill_length_mm))
+
 ```
 
 **Excercise 6**
