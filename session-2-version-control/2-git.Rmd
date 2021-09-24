@@ -80,7 +80,7 @@ This is the folder that should contain your code. You should aim to emulate the 
 
 Within a given script you should always use relative paths. To access your processed data folder you can use the following file path `"./data/processed.RDa"`.  The "." represents your current working directory, which is set automatically when you open a new R-project. 
 
-For more in depth guides and explanations you can look [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/). If you feel like you want to practice this you can find more material [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/01-file-management.R).
+For more in depth guides and explanations you can look [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/). If you feel like you want to practice this you can find more material [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/01-file-management.R). And there is even a package dedicated to file referencing [here](https://cran.r-project.org/web/packages/here/vignettes/here.html).
 
 ***
 # Setting Up Git `r emo::ji("hammer")`

@@ -499,6 +499,12 @@ gdp_u %>% mutate(date = ymd(date))
 
 ---
 
+<!-- notes: stuff to add after lecture
+* pivot_longer & pivot_wider (tidyr) !! (explain something about panel data)
+* build a function to reduce repetition
+* using for-loops vs. iteration with purrr (instead of apply family - map(), map*())
+-->
+
 
 ## Actually learning R `r emo::ji("backpack")`
 
