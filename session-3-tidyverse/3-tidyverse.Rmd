@@ -196,6 +196,12 @@ Say we are interested in retrieving the observations from the year 2007. We woul
 
 ```{r , eval=F}
 dplyr::filter(penguins, year == 2007)
+
+filter(penguins, year == 2007 & island == "Torgersen")
+
+penguins%>%na.omit()
+
+penguins
 ```
 
 
@@ -234,6 +240,8 @@ penguins %>%
 ```{r,, eval=F}
 penguins %>%
   dplyr::mutate(body_mass_lbs = body_mass_g/453.6)
+
+penguins$body_mass<-body_mass_g/453.6
 ```
 
 
