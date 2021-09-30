@@ -6,6 +6,8 @@
 1. Introduction, R basics and best practice \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-1-intro/1-intro.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-1-intro/1-intro.Rmd)\]
 2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-2-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-2-version-control/2-git.Rmd)\]
 3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-3-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-3-tidyverse/3-tidyverse.Rmd)\]
+4. Functions, Iteration and Data Bases
+5. Web Scraping with R
 
 ## Instructors
 
