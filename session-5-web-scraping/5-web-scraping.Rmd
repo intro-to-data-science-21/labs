@@ -1,0 +1,148 @@
+---
+title: "Web Scraping"
+subtitle: "Collecting Data from the Web using R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+***
+
+After talking quite a bit about data formats and data processing in the past weeks, today's session is dedicated to data collection - from the web!
+
+What we will cover:2
+
+* basic web technologies
+* scraping static webpages
+* scraping multiple static webpages 
+* building up and maintaining you own original sets of web-based data
+
+What we will not cover (today): 
+
+* scraping dynamic webpages
+* APIs 
+
+# Why webscrape with R?
+
+Webscraping broadly includes a) getting (unstructured) data from the web and b) 
+bringing it into shape (e.g. cleaning it, getting it into tabular format).
+
+Why webscrape? While some influential people consider "Data Scientist" `r emo::ji("woman_technologist")` as the [sexiest job](https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century) of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so? 
+
+* data abundance online 
+* social interaction online
+* services track social behavior
+
+BUT online data are usually meant for display, not (clean) download!
+
+Also, getting access to online data would be incredibly interesting when you think of 
+very pragmatic things like financial resources, time resources, reproducibility and updateability.
+
+Luckily, with `R` we can automate the whole pipeline of downloading, parsing and post-processing to make our projects easily reproducible. 
+
+In general, remember, the basic **workflow for scraping static webpages** is the following.
+
+```{r, fig.align='center', echo=F, out.width = "90%"}
+knitr::include_graphics("pics/workflow.png")
+```
+
+# Scraping static websites with `rvest`
+
+Who doesn't love Wikipedia? Let's use this as our first, straight forward test case.
+
+**Step 1.** Load the packages `rvest` and `stringr`.
+
+```{r, message=F}
+library(rvest)
+library(stringr)
+```
+
+**Step 2.** Parse the page source.
+
+```{r}
+parsed_url <- read_html("https://en.wikipedia.org/wiki/Berlin")
+```
+
+**Step 3.** Extract information.
+
+```{r}
+parsed_nodes <- html_nodes(parsed_url, xpath = "//div[contains(@class, 'column-count-3')]//li"
+)
+cities <- html_text(parsed_nodes)
+cities[1:10]
+```
+
+How can do I know THIS `xpath = "//div[contains(@class, 'column-count-3')]//li"` ?
+
+On your page of interest, go to a table that you'd like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View > Developer > inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy > Copy Xpath. That's it. 
+
+**Step 4.** Clean extracted data. Need help with regular expressions (me, everytime I use them), visit, for example, the section of [R for Data Science](https://r4ds.had.co.nz/strings.html) or simply this [cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf).
+```{r}
+# remove footnotes with a regular expression
+cities <- str_replace(cities, "\\[\\d+\\]", "")
+cities[1:10]
+
+# extract relevant information with regular expressions
+year <- str_extract(cities, "\\d{4}")
+city <- str_extract(cities, "[[:alpha:] ]+") %>% str_trim
+country <- str_extract(cities, "[[:alpha:] ]+$") %>% str_trim
+year[1:10]
+city[1:10]
+country[1:10]
+```
+
+**Step 5.** Put everything into a data frame.
+```{r}
+cities_df <- data.frame(year, city, country)
+head(cities_df)
+```
+
+## Scraping HTML tables
+
+We have just been scraping an html table... but there is even an easier way to do this in `rvest`!
+
+```{r}
+url_p <- read_html("https://en.wikipedia.org/wiki/List_of_human_spaceflights")
+tables <- html_table(url_p, header = TRUE, fill = TRUE)
+spaceflights <- tables[[1]]
+spaceflights
+```
+Another R workaround for more complex tables is the package `htmltab` that offers some more flexibility.
+
+# Scraping multiple pages 
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+# Sources
+
+This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). 
+
+
+
+
+
+
+
+
+
+

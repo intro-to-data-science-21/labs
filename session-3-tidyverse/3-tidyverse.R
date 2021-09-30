@@ -9,14 +9,14 @@ library(tidyverse)
 tidyverse_packages()
 
 
-## ---- eval = F----------------------------------------------------------------------------------------
+ 
 ## ## These next two lines of code do exactly the same thing.
 ## 
 mpg %>% filter(manufacturer=="audi") %>% group_by(model) %>% summarise(hwy_mean = mean(hwy))
  
 summarise(group_by(filter(mpg, manufacturer=="audi"), model), hwy_mean = mean(hwy))
 
-## ---- eval = F----------------------------------------------------------------------------------------
+ 
 mpg %>%
   filter(manufacturer=="audi") %>%
   group_by(model) %>%
@@ -42,7 +42,7 @@ names(penguins)
 dplyr::select(penguins, species, island, year)
 
 penguins %>%
-  select(species, island, year)
+  select(-year) 
 
 
 ## ---- eval=F------------------------------------------------------------------------------------------
@@ -55,17 +55,29 @@ dplyr::filter(penguins, year == 2007 , species == "Chinstrap")
 dplyr::filter(penguins, year == 2007 | species == "Chinstrap")
 
 
-## ---- echo=FALSE, eval=F------------------------------------------------------------------------------
-penguins %>%
-dplyr::filter(year == 2009 & species == "Chinstrap") %>%
-dplyr::select(species, sex, year)
+## ---- echo=FALSE, eval=F------------------------------------------------------------------------------ penguins %>%
+penguins %>% 
+  dplyr::filter(year == 2009 & species == "Chinstrap") %>%
+  dplyr::select(species, sex, year) 
 
 
 ## ---- eval=F------------------------------------------------------------------------------------------
+names(penguins)
 
 penguins_n <- penguins %>%
-  dplyr::mutate(body_mass_lbs = body_mass_g/453.6,
-                body_mass_kg = body_mass_g/1000)
+  dplyr::mutate(body_mass_g = body_mass_g - 2 ,
+                body_mass_kg = body_mass_g/1000,
+                body_mass_scaled = scale(body_mass_g))
+
+
+
+penguins_n$body_mass_2 <- (penguins_n$body_mass_g - mean(penguins_n$body_mass_g))/sd(penguins_n$body_mass_g)
+
+attach(penguins_n)
+body_mass_2 <- (body_mass_g - mean(body_mass_g))/sd(body_mass_g)
+
+
+rm(penguins_n)
 
 # useful stuff for missing values
 penguins_n %>%
@@ -91,13 +103,12 @@ penguins %>%
   dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T)) 
 
 ## -----------------------------------------------------------------------------------------------------
+
 penguins <- penguins %>%
   dplyr::group_by(species) %>%
-  #mutate(max_weight_species = max(body_mass_g, na.rm = T))%>%
-  #dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T))
+  mutate(max_weight_species = max(body_mass_g, na.rm = T))
+  dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T))
 
-
-## ---- eval = F----------------------------------------------------------------------------------------
 penguins %>%
   dplyr::group_by(species, year) %>%
   dplyr::summarize(lightest_penguin = min(body_mass_g, na.rm = T))
@@ -168,6 +179,7 @@ stocks = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
   Z = rnorm(2, 0, 4)
   )
 stocks
+
 stocks %>% pivot_longer(-time, names_to="stock", values_to="price")
 
 ## other example
@@ -180,7 +192,7 @@ panel = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
 )
 panel
 
-panel %>% pivot_longer(-unit , names_to="time", values_to="rating")
+pivot_longer(panel, -unit , names_to="time", values_to="rating")
 panel %>% pivot_longer(-unit, names_to="time", values_to="rating", names_prefix = "var")
 
 

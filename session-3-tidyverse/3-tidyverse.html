@@ -612,13 +612,13 @@ final_df #to print it in our console</code></pre>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>stocks</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"0.8004282","3":"-1.416188","4":"2.555529"},{"1":"2009-01-02","2":"0.5071943","3":"-4.575419","4":"2.497852"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.1030698","3":"-3.2219107","4":"-1.3794313"},{"1":"2009-01-02","2":"-0.2593783","3":"0.0449777","4":"0.5711238"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"0.8004282"},{"1":"2009-01-01","2":"Y","3":"-1.4161878"},{"1":"2009-01-01","2":"Z","3":"2.5555286"},{"1":"2009-01-02","2":"X","3":"0.5071943"},{"1":"2009-01-02","2":"Y","3":"-4.5754189"},{"1":"2009-01-02","2":"Z","3":"2.4978522"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-0.1030698"},{"1":"2009-01-01","2":"Y","3":"-3.2219107"},{"1":"2009-01-01","2":"Z","3":"-1.3794313"},{"1":"2009-01-02","2":"X","3":"-0.2593783"},{"1":"2009-01-02","2":"Y","3":"0.0449777"},{"1":"2009-01-02","2":"Z","3":"0.5711238"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s quickly save the “tidy” (i.e. long) stocks data frame</p>
@@ -631,13 +631,13 @@ final_df #to print it in our console</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from=</span>price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"0.8004282","3":"-1.416188","4":"2.555529"},{"1":"2009-01-02","2":"0.5071943","3":"-4.575419","4":"2.497852"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.1030698","3":"-3.2219107","4":"-1.3794313"},{"1":"2009-01-02","2":"-0.2593783","3":"0.0449777","4":"0.5711238"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from=</span>price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"0.8004282","3":"0.5071943"},{"1":"Y","2":"-1.4161878","3":"-4.5754189"},{"1":"Z","2":"2.5555286","3":"2.4978522"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-0.1030698","3":"-0.2593783"},{"1":"Y","2":"-3.2219107","3":"0.0449777"},{"1":"Z","2":"-1.3794313","3":"0.5711238"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that the second example; which has combined different pivoting arguments; has effectively transposed the data.</p>
@@ -688,14 +688,14 @@ final_df #to print it in our console</code></pre>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>gdp </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"102.42310"},{"1":"2016","2":"1","3":"2","4":"100.62770"},{"1":"2016","2":"1","3":"3","4":"102.73985"},{"1":"2016","2":"1","3":"4","4":"98.43079"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"97.78041"},{"1":"2016","2":"1","3":"2","4":"100.56864"},{"1":"2016","2":"1","3":"3","4":"97.39997"},{"1":"2016","2":"1","3":"4","4":"101.21311"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Combine &quot;yr&quot;, &quot;mnth&quot;, and &quot;dy&quot; into one &quot;date&quot; column</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>gdp <span class="sc">%&gt;%</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"102.42310"},{"1":"2016-1-2","2":"100.62770"},{"1":"2016-1-3","2":"102.73985"},{"1":"2016-1-4","2":"98.43079"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.78041"},{"1":"2016-1-2","2":"100.56864"},{"1":"2016-1-3","2":"97.39997"},{"1":"2016-1-4","2":"101.21311"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that <code>unite</code> will automatically create a character variable. You can see this better if we convert it to a tibble.</p>
@@ -703,7 +703,7 @@ final_df #to print it in our console</code></pre>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>gdp_u</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"102.42310"},{"1":"2016-1-2","2":"100.62770"},{"1":"2016-1-3","2":"102.73985"},{"1":"2016-1-4","2":"98.43079"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.78041"},{"1":"2016-1-2","2":"100.56864"},{"1":"2016-1-3","2":"97.39997"},{"1":"2016-1-4","2":"101.21311"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>If you want to convert it to something else (e.g. date or numeric) then you will need to modify it using <code>mutate</code>. See below for an example, using the <a href="https://lubridate.tidyverse.org/">lubridate</a> package’s super helpful date conversion functions.</p>
@@ -711,7 +711,7 @@ final_df #to print it in our console</code></pre>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>gdp_u <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"102.42310"},{"1":"2016-01-02","2":"100.62770"},{"1":"2016-01-03","2":"102.73985"},{"1":"2016-01-04","2":"98.43079"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"97.78041"},{"1":"2016-01-02","2":"100.56864"},{"1":"2016-01-03","2":"97.39997"},{"1":"2016-01-04","2":"101.21311"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <hr />
