@@ -7,7 +7,7 @@
 2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-2-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-2-version-control/2-git.Rmd)\]
 3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-3-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-3-tidyverse/3-tidyverse.Rmd)\]
 4. Functions, iteration and data bases \[[**.html**](https://raw.githack.com/) | [**.Rmd**](https://github.com/)\]
-5. Web scraping with R \[[**.html**](https://raw.githack.com/) | [**.Rmd**](https://github.com/)\]
+5. Web scraping with R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-5-web-scraping/5-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/main/session-5-web-scraping/5-web-scraping.html)\]
 
 ## Instructors
 
