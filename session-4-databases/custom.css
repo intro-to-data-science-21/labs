@@ -1,0 +1,26 @@
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #eee;
+}
+
+.noticebox {
+  padding: 1em;
+  background: black;
+  color: white;
+  border: 2px solid orange;
+  border-radius: 10px;
+}
+
+.questionbox {
+  padding: 1em;
+  background: CornflowerBlue;
+  color: white;
+  border: solid CornflowerBlue;
+  border-radius: 5px;
+}
+
+.center {
+  text-align: center;
+}

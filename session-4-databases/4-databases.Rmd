@@ -1,0 +1,537 @@
+---
+title: "Databases"
+subtitle: "Functions, dtplyr and working with SQL in R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+pacman::p_load(tidyverse, purrr)
+```
+
+# Introduction
+
+Many “big data” problems are actually “small data problems in disguise”. That is, we only really need a subset of the data or we want to aggregate the data into some larger dataset. For example, we might want to access Census data… but only for a handful of municipalities. Or, we might want to analyse climate data collected from a large number of weather stations, but aggregated up to the national or monthly level. In such cases, the underlying bottleneck is interacting with the original data, which is too big to fit into memory. How do we store data of this magnitude and and then access it effectively? The answer is through a database.
+
+Databases can exist either locally or remotely, as well as in-memory or on-disk. Regardless of where a database is located, the key point is that information is stored in a way that allows for very quick extraction and/or aggregation. 
+
+More realistically you will need to extract several subsets and harmonise or transform them. To facilitate and automate this task, you will need to write your own functions and know to iterate them over the relevant subsets of data. This week's session thus ties in well with the sections on functions and iteration that we quickly touched upon during the last lab.
+
+# Functions and Databases `r emo::ji("telescope")`
+
+Although this week's session is nominally about databases - and we will spend a substantial part of this session on them - we believe that writing your own functions is a key skill that deserves more attention than we were able to devote to it last week. Therefore, we will split the session in two. First we will cover functions and iterations. In that section you will learn to:
+
+* write your own functions (a key skill for all R users)
+* iterate functions over multiple inputs
+
+The second part of the session will deal with databases and SQL. Here you will learn to: 
+
+* connect to remote databases with R
+* generate SQL queries in R with `dbplyr`
+* manipulate and transform data in a remote database
+* how to collect hosted data and store it locally
+
+
+---
+
+# Functions
+
+In any coding language a fundamental principle should be **DRY** (**D**on't **R**epeat **Y**ourself). You should adhere to this as much as possible. You can do this via functions.
+
+Functions allow you to automate tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
+
+1. You can give a function an evocative name that makes your code easier to understand.
+
+2. As requirements change, you only need to update code in one place, instead of many.
+
+3. You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+
+You can read more on functions in [this section](https://r4ds.had.co.nz/functions.html#functions) of R 
+for Data Science.
+
+Generally, how does code look like that calls for writing a function? For example like this:
+
+```{r, results=FALSE}
+df <- data.frame(
+  a = rnorm(100, 5, 2),
+  b = rnorm(100, 100, 15),
+  c = rnorm(100, 2, 1),
+  d = rnorm(100, 36, 7)
+)
+
+df$a <- (df$a - mean(df$a, na.rm = TRUE)) / sd(df$a, na.rm = TRUE)
+df$b <- (df$b - mean(df$b, na.rm = TRUE)) / sd(df$a, na.rm = TRUE) # spot the mistake?
+df$c <- (df$c - mean(df$c, na.rm = TRUE)) / sd(df$c, na.rm = TRUE)
+df$d <- (df$d - mean(df$d, na.rm = TRUE)) / sd(df$d, na.rm = TRUE)
+```
+
+There are three key steps to creating a new function:
+
+1. Pick a **name** for the function. For us it could be zscale because this function rescales (or z-transforms) a vector to have a mean of 0 and a standard deviation of 1.
+
+2. You list the **inputs**, or **arguments**, to the function inside function. Here we have just one argument. If we had more the call would look like function(x, y, z).
+
+3. You place the code you have developed in **body** of the function, a { block that immediately follows function(...).
+
+The overall structure of a function looks like this in R:
+
+```
+function_name <- function(input_parameters){
+  Do what you want to do in the body of the
+  function, just like you would write other code in R.
+}
+```
+
+In our example, we could simplify the z-transformation of 4 variables with this function:
+
+```{r}
+zscale <- function(x){
+  (x - mean(x, na.rm = T) / sd(x, na.rm = T))
+}
+```
+
+A word on **function names**. Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. mean), or accessing some property of an object (i.e. coefficients). A good sign that a noun might be a better choice is if you’re using a very broad verb like “get”, “compute”, “calculate”, or “determine”. Where possible, avoid overriding existing functions and variables. However, many good names are already taken by other packages, but avoiding the most common names from base R will avoid confusion.
+
+## Conditions
+
+You can of course also add conditions to your function.
+
+```
+if (this) {
+  # do that
+} else if (that) {
+  # do something else
+} else {
+  # 
+}
+```
+You could, for example, only transform numeric variables.
+
+```{r}
+zscale <- function(x){
+  if (is.numeric(x)) {
+  (x - mean(x, na.rm = T) / sd(x, na.rm = T))
+  }
+}
+```
+
+We can now apply our function to any variable that we would like to transform.
+
+```{r, results=FALSE}
+df$a <- zscale(df$a)
+df$b <- zscale(df$b)
+df$c <- zscale(df$c)
+df$d <- zscale(df$d)
+
+# you can also use your function with a pipe!
+df$d %>% zscale()
+```
+
+Note that there is still a lot of repetition. We can get rid of this using iteration `r emo::ji("point_down")`
+
+---
+
+# Iteration
+
+Iteration helps you when you need to do the same thing to multiple inputs: repeating the same operation on different columns, or on different datasets.
+
+On the one hand, you have for loops and while loops which are a great place to start because they make iteration very explicit. On the other hand, functional programming (FP) offers tools to extract out duplicated code, so each common for loop pattern gets its own function.
+
+Remember the code above - it violates the rule of thumb that you should not copy and paste more than twice.
+
+```{r, results=FALSE}
+# repetitive code
+df$a <- zscale(df$a)
+df$b <- zscale(df$b)
+df$c <- zscale(df$c)
+df$d <- zscale(df$d)
+
+# equivalent iteration
+for (i in seq_along(df)) {       # seq_along() similar to length()
+  df[[i]] <- zscale(df[[i]])     # [[]] because we are working on single elements
+}
+```
+
+To solve problems like this one with a for loop we again think about the three components:
+
+1. **Output:** we already have the output — it’s the same as the input because we are modifying data. If that is not the case, make sure to define a space where the output should go (e.g. an empty vector). If the length of your vector is unknown, you might be tempted to solve this problem by progressively growing the vector. However, this is not very efficient because in each iteration, R has to copy all the data from the previous iterations. In technical terms you get “quadratic” (O(n^2)) behaviour which means that a loop with three times as many elements would take nine (3^2) times as long to run. A better solution to save the results in a list, and then combine into a single vector after the loop is done. See more on this [here](https://r4ds.had.co.nz/iteration.html).
+
+2. **Sequence:** we can think about a data frame as a list of columns, so we can iterate over each column with seq_along(df).
+
+3. **Body:** apply zscale() or any other function.
+
+## Functionals `r emo::ji("cat")`
+
+For loops are not as important in R as they are in other languages because R is a functional programming language. This means that it’s possible to wrap up for loops in a function, and call that function instead of using the for loop directly. `r emo::ji("bulb")`
+
+The `purrr` package provides functions that eliminate the need for many common for loops. The apply family of functions in base R (`apply()`, `lapply()`, `tapply()`, etc.) solve a similar problem, but purrr is more consistent and thus is easier to learn.
+
+The pattern of looping over a vector, doing something to each element and saving the results is so common that the purrr package provides a family of functions to do it for you. There is one function for each type of output:
+
+* `map()` makes a list.
+* `map_lgl()` makes a logical vector.
+* `map_int()` makes an integer vector.
+* `map_dbl()` makes a double vector.
+* `map_chr()` makes a character vector.
+
+Each function takes a vector as input, applies a function to each piece, and then returns a new vector that’s the same length (and has the same names) as the input. The type of the vector is determined by the suffix to the map function.
+
+Let's look at this in practice. Imagine you want to calculate the mean of each column in your df:
+
+```{r, results=FALSE}
+# repetitive code
+mean(df$a)
+mean(df$b)
+mean(df$c)
+mean(df$d)
+
+# equivalent map function
+map_dbl(df,mean)
+
+# map function in tidyverse style
+df %>% map_dbl(mean)
+
+```
+
+There is, of course, much more to learn about functions in R and we could dedicate an entire session to it.
+For now, consider this as is the first exposure to functions (that can actually already get you pretty far). However, it is important that you apply `r emo::ji("nerd")` you new skills and practice further on your own. A good starting point is obviously *assignment 2 that is due tonight!!!*. Good luck! `r emo::ji("crossed_fingers")`
+
+
+# Exercises (Part I)
+
+
+---
+
+
+# Working with databases
+
+## Necessary packages
+
+```{r, include=FALSE}
+pacman::p_load(RSQLite, DBI, bigrquery, nycflights13)
+```
+
+
+## Connecting to a database 
+
+To connect to the database, we will use `dbConnect()` from the DBI package which defines a common interface between R and database management systems. The first input is the database driver which in our case is SQLite and the second input is the name and location of the database. Since we are connecting to a local database, it is sufficient to specify the name and location of the database. The database connection is saved in _con_ for further use in exploring and querying data.
+
+SQLite only needs a path to the database. (Here, ":memory:" is a special path that creates an in-memory database.) Other database drivers will require more details (like user, password, host, port, etc.)
+
+```{r}
+# set up connection with DBI and RSQLite
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+```
+
+Next, let us get a quick summary of the database connection using summary(). It shows SQLiteConnection under class and we can ignore the other details for the time being. Great!
+
+```{r}
+summary(con)
+```
+
+If you were to connect to a real online database that someone else generated, you could now call `DBI::dbListTables(con)` to see a list of the tables present in the database. To reduce the amount of time we lose by registering and connecting to a real database we create our own locally hosted database.
+
+The next step is to populate our database. We copy the data from last week to our database connection (empty for the time being).
+
+```{r}
+
+# upload local data frame into remote data source; here: database
+copy_to(
+  dest = con, 
+  df = nycflights13::flights, 
+  name = "flights")
+
+```
+
+
+Some more general notes on database connections:
+* The arguments to `DBI::dbConnect()` vary from database to database, but the first argument is always the database backend. 
+* For instance, it’s 
+  + `RSQLite::SQLite()` for RSQLite,
+  + `RMariaDB::MariaDB()` for RMariaDB,
+  + `RPostgres::Postgres()` for RPostgres,
+  + `odbc::odbc()` for odbc, 
+  + and `bigrquery::bigquery()` for BigQuery.
+
+Most existing databases don’t live in a file, but instead live on another server. That means in real-life that your code will often look more like this:
+
+```{r, eval=FALSE}
+con <- DBI::dbConnect(RMariaDB::MariaDB(), 
+                      host = "database.rstudio.com",
+                      user = "tom",
+                      password = rstudioapi::askForPassword("Tom's password")
+)
+
+```
+ 
+
+
+## Indexing 
+
+We're basically following the approach from above, but are now also passing a list of indexes to the function. In this example, we set up indexes that will allow us to quickly process the data by day, carrier, plane, and destination. Creating the right indices is key to good database performance. In common applications where we don't set up the database, this will be taken care of by the database maintainer.
+
+```{r}
+
+copy_to(
+  dest = con, 
+  df = nycflights13::flights, 
+  name = "flights",
+  temporary = FALSE, 
+  indexes = list(
+    c("year", "month", "day"), 
+    "carrier", 
+    "tailnum",
+    "dest"
+  ),
+  overwrite = T # throws error as table already exists
+)
+
+```
+
+## List Tables in Database
+
+Now that we are connected to a database, let us list all the tables present in it using dbListTables().
+
+```{r}
+DBI::dbListTables(con)
+```
+
+As you can see there is only one table for now (flights), and the SQLite versions that can interact (need to double check this). Usually you would find many different tables in a relational database.
+
+# Queries
+
+
+## Reference Table
+
+So how do you access this table? 
+
+It is actually fairly straightforward. You use the `tbl()`function where you indicate the connection and the name of the table you want to interact with. 
+
+```{r}
+# generate reference table from the database
+flights_db <- tbl(con, "flights")
+flights_db 
+```
+
+The console output shows that this is a remote source; the table is not stored in our local environment. Nor do you need to transfer the entire table to your local environment. You can perform operations directly on the remote source. What is more you can rely on the `dplyr` syntax from last week to formulate your queries. R will automatically translate it into SQL (more on that below).
+
+
+## Selecting Columns
+
+You can select specific colums:
+
+```{r}
+# perform various queries
+flights_db %>% select(year:day, dep_delay, arr_delay)
+
+```
+## Filtering by Rows
+
+Access only specific rows: 
+
+```{r}
+
+flights_db %>% filter(dep_delay > 240)
+```
+## Summary Statisitics 
+
+Or immediately generate summary statistics for different groups:
+
+```{r}
+flights_db %>% 
+  group_by(dest) %>%
+  summarise(delay = mean(dep_time))
+```
+
+## More advance Operations
+
+You can even generate and plot figures whitout the need to store the data in your local environment:
+
+```{r,echo=FALSE, results='hide', fig.keep='all'}
+
+flights_db %>% 
+  filter(distance > 75) %>%
+  group_by(origin, hour) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(hour, delay, color = origin)) + geom_line()
+
+```
+
+
+## Joins 
+
+Databases become more exciting with more tables. So let's add a couple more:
+
+```{r}
+copy_to(
+  dest = con, 
+  df = nycflights13::planes, 
+  name = "planes",
+  temporary = FALSE, 
+  indexes = "tailnum"
+)
+
+copy_to(
+  dest = con, 
+  df = nycflights13::airlines, 
+  name = "airlines",
+  temporary = FALSE, 
+  indexes = "carrier"
+)
+
+copy_to(
+  dest = con, 
+  df = nycflights13::airports, 
+  name = "airports",
+  temporary = FALSE, 
+  indexes = "faa"
+)
+
+copy_to(
+  dest = con, 
+  df = nycflights13::weather, 
+  name = "weather",
+  temporary = FALSE, 
+  indexes = list(
+    c("year", "month", "day", "hour", "origin")
+  )
+)
+```
+
+
+List tables in our "con" database connection
+
+```{r}
+dbListTables(con)
+
+```
+
+
+A left join: 
+```{r}
+planes_db = tbl(con, 'planes')
+left_join(
+  flights_db,
+  planes_db %>% rename(year_built = year),
+  by = "tailnum" ## Important: Be specific about the joining column
+) %>%
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum,
+         year_built, type, model) 
+
+
+```
+
+In short, you can conduct almost all your analysis in R in a way that you are used to without these data having to be stored locally. There are however some differences between ordinary data frames and remote database queries. 
+
+# A look under the Hood
+
+The most important among these is that your R code is translated into SQL and executed in the database on the remote server, not in R on your local machine. 
+
+This has the following implications. When working with databases, dplyr tries to be as lazy as possible:
+   - It never pulls data into R unless you explicitly ask for it.
+   - It delays doing any work until the last possible moment: it collects together everything you want to do and then sends it to the database in one step.
+
+This even applies when you assign the output of a database query to an object:
+ 
+```{r, warning=TRUE}
+
+tailnum_delay_db <- flights_db %>% 
+  group_by(tailnum) %>%
+  summarise(
+    delay = mean(arr_delay),
+    n = n()
+  ) %>% 
+  arrange(desc(delay)) %>%
+  filter(n > 100)
+
+```
+
+Evidently, this can also have some downsides.
+
+Exhibit A: Because there’s generally no way to determine how many rows a query will return unless you actually run it, `nrow()` is always `NA`.
+
+```{r}
+nrow(tailnum_delay_db)
+```
+
+Exhibit B: Because you can’t find the last few rows without executing the whole query, you can’t use `tail()`.
+
+```{r, error=TRUE}
+tail(tailnum_delay_db)
+```
+
+
+## Inspecting queries 
+
+We can always inspect the SQL that dbplyr is generating:
+
+```{r}
+
+tailnum_delay_db %>% show_query()
+```
+
+That's probably not how you would have written it, but it works.
+
+More information about SQL translation can be found here:
+`vignette("translation-verb")`. 
+
+# From remote to local storage 
+
+If you then want to pull the data into a local data frame, use collect():
+
+```{r}
+tailnum_delay <- tailnum_delay_db %>% collect()
+tailnum_delay
+```
+
+# Using SQL directly in R 
+
+If for whatever reason you might want to write your SQL queries yourself, you can use DBI::dbGetQuery() to run SQL queries in R scripts:
+
+```{r}
+sql_query <- "SELECT * FROM flights WHERE dep_delay > 240.0 LIMIT 5"
+dbGetQuery(con, sql_query)
+```
+
+If you want to learn more about writing SQL with dbplyr, check out `vignette('sql', package = 'dbplyr')`.
+
+# Disconnect from database 
+
+When you are done with your SQL queries, it is a good idea to disconnect from the database. What seems evident, becomes increasingly important if you work with servers that charge you for their services!
+
+```{r}
+
+DBI::dbDisconnect(con)
+
+```
+
+
+# Exercises (Part II)
+
+
+# (Advanced) BigQuery
+
+## Actually learning R `r emo::ji("backpack")`
+
+Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
+
+---
+
+# Sources {-}
+
+The section on functions and iteration is partly based on [_R for Data Science_](http://r4ds.had.co.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3; as well as the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott. 
+
+The section on databases and SQL relies on the vignette from the [_dbplyr package_](https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html), [_RStudio Tutorial on databases_](https://db.rstudio.com/getting-started/connect-to-database) as well as the [_Databases Session_](https://github.com/uo-ec607/lectures/blob/master/16-databases/16-databases.html) in McDermott's Data Science for Economists by Grant McDermott.
