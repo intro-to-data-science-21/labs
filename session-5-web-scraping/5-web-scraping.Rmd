@@ -23,9 +23,9 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 After talking quite a bit about data formats and data processing in the past weeks, today's session is dedicated to data collection - from the web!
 
-What we will cover:2
+What we will cover:
 
-* basic web technologies
+* basic web technologies (html, xpath)
 * scraping static webpages
 * scraping multiple static webpages 
 * building up and maintaining you own original sets of web-based data
@@ -34,8 +34,9 @@ What we will not cover (today):
 
 * scraping dynamic webpages
 * APIs 
+* extensive data cleaning using regular expressions
 
-# Why webscrape with R?
+# Why webscrape with R? `r emo::ji("globe")`
 
 Webscraping broadly includes a) getting (unstructured) data from the web and b) 
 bringing it into shape (e.g. cleaning it, getting it into tabular format).
@@ -48,8 +49,8 @@ Why webscrape? While some influential people consider "Data Scientist" `r emo::j
 
 BUT online data are usually meant for display, not (clean) download!
 
-Also, getting access to online data would be incredibly interesting when you think of 
-very pragmatic things like financial resources, time resources, reproducibility and updateability.
+But getting access to online data would also be incredibly interesting when you think of 
+very pragmatic things like financial resources, time resources, reproducibility and updateability...
 
 Luckily, with `R` we can automate the whole pipeline of downloading, parsing and post-processing to make our projects easily reproducible. 
 
@@ -59,7 +60,7 @@ In general, remember, the basic **workflow for scraping static webpages** is the
 knitr::include_graphics("pics/workflow.png")
 ```
 
-# Scraping static websites with `rvest`
+# Scraping static websites with `rvest` `r emo::ji("tractor")`
 
 Who doesn't love Wikipedia? Let's use this as our first, straight forward test case.
 
@@ -73,44 +74,91 @@ library(stringr)
 **Step 2.** Parse the page source.
 
 ```{r}
-parsed_url <- read_html("https://en.wikipedia.org/wiki/Berlin")
+parsed_url <- read_html("https://en.wikipedia.org/wiki/Cologne")
 ```
 
 **Step 3.** Extract information.
 
 ```{r}
-parsed_nodes <- html_nodes(parsed_url, xpath = "//div[contains(@class, 'column-count-3')]//li"
-)
-cities <- html_text(parsed_nodes)
-cities[1:10]
+parsed_nodes <- html_nodes(parsed_url, 
+                           xpath = '//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]')
+carnival <- html_text(parsed_nodes)
+carnival
 ```
 
-How can do I know THIS `xpath = "//div[contains(@class, 'column-count-3')]//li"` ?
+How can do I know THIS `xpath = '//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]'` ?
 
-On your page of interest, go to a table that you'd like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View > Developer > inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy > Copy Xpath. That's it. 
+There are two options: 
 
-**Step 4.** Clean extracted data. Need help with regular expressions (me, everytime I use them), visit, for example, the section of [R for Data Science](https://r4ds.had.co.nz/strings.html) or simply this [cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf).
+**Option 1.** On your page of interest, go to a table that you'd like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View > Developer > inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy > Copy Xpath. That's it. 
+
+```{r, fig.align='center', echo=F, out.width = "90%"}
+knitr::include_graphics("pics/inspect.png")
+```
+
+**Option 2.** You download the [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=de) `SelectorGadget` and activate it while browsing the page you'd like to scrape from. You will see a selection box moving with your cursor. You select an element by clickin on it. It turns green - and so does all other content that would be selected with the current XPath.
+
+```{r, fig.align='center', echo=F, out.width = "90%"}
+knitr::include_graphics("pics/selector.png")
+
+```
+
+You can now de-select everything that is irrelevant to you by clicking it again (it then turns red). Final step, then just click the XPath button at the bottom of the browser window. Make sure to use single quotation marks with this XPath!
+
+```{r, fig.align='center', echo=F, out.width = "90%"}
+
+knitr::include_graphics("pics/selector2.png")
+```
+
+
+
+Let's repeat step 2 and 3 with a more data-sciency example. `r emo::ji("man_dancing")`
+
+**Step 2.** Parse the page source.
 ```{r}
-# remove footnotes with a regular expression
-cities <- str_replace(cities, "\\[\\d+\\]", "")
-cities[1:10]
-
-# extract relevant information with regular expressions
-year <- str_extract(cities, "\\d{4}")
-city <- str_extract(cities, "[[:alpha:] ]+") %>% str_trim
-country <- str_extract(cities, "[[:alpha:] ]+$") %>% str_trim
-year[1:10]
-city[1:10]
-country[1:10]
+hot100page <- "https://www.billboard.com/charts/hot-100"
+hot100 <- read_html(hot100page)
 ```
 
-**Step 5.** Put everything into a data frame.
+**Step 3.** Extract information. When going through different levels of html, you can also use tidyverse logic.
+```{r, eval=F}
+body_nodes <- hot100 %>% 
+ html_node("body") %>% 
+ html_children()
+
+body_nodes %>% 
+ html_children()
+```
+play with that yourself if you like...
+
+Now let's get more specific - `xml_find_all()` takes xpath syntax!
 ```{r}
-cities_df <- data.frame(year, city, country)
-head(cities_df)
+rank <- hot100 %>% 
+  rvest::html_nodes('body') %>% 
+  xml2::xml_find_all("//span[contains(@class, 'chart-element__rank__number')]") %>% 
+  rvest::html_text()
+
+artist <- hot100 %>% 
+  rvest::html_nodes('body') %>% 
+  xml2::xml_find_all("//span[contains(@class, 'chart-element__information__artist')]") %>% 
+  rvest::html_text()
+
+title <- hot100 %>% 
+  rvest::html_nodes('body') %>% 
+  xml2::xml_find_all("//span[contains(@class, 'chart-element__information__song')]") %>% 
+  rvest::html_text()
+
+```
+**Step 4.** Usually, step 4 is to clean extracted data. In this case, it actually is very clean already. However, if you need help with data cleaning using regular expressions (me, always.), visit the section of [R for Data Science](https://r4ds.had.co.nz/strings.html) or simply this [cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf).
+
+**Step 5.** Put everything into a data frame. `r emo::ji("musical_note")`
+```{r}
+chart_df <- data.frame(rank, artist, title)
+
+knitr::kable(chart_df  %>% head(10))
 ```
 
-## Scraping HTML tables
+## Scraping HTML tables `r emo::ji("rocket")`
 
 We have just been scraping an html table... but there is even an easier way to do this in `rvest`!
 
@@ -118,24 +166,116 @@ We have just been scraping an html table... but there is even an easier way to d
 url_p <- read_html("https://en.wikipedia.org/wiki/List_of_human_spaceflights")
 tables <- html_table(url_p, header = TRUE, fill = TRUE)
 spaceflights <- tables[[1]]
-spaceflights
+
+knitr::kable(spaceflights[,1:7]  %>% head(10))
 ```
 Another R workaround for more complex tables is the package `htmltab` that offers some more flexibility.
 
-# Scraping multiple pages 
-```{r}
+# Scraping multiple pages `r emo::ji("robot")`
 
+Whenever you want to really understand what's going on within the functions of a new R package, it is very likely that there is a relevant article published in the [Journal of Statistical Software](https://www.jstatsoft.org/index). Let's say you are interested in how the journal was doing over the past years.
+
+**Step 1.** Inspect the source. Basically, follow steps to extract the Xpath information.
+```{r, eval=F}
+browseURL("http://www.jstatsoft.org/issue/archive")
 ```
 
+**Step 2** Develop a scraping strategy. We need a set of URLs leading to all sources. Inspect the URLs of different sources and find the pattern. Then, construct the list of URLs from scratch.
 ```{r}
-
+baseurl <- "http://www.jstatsoft.org/article/view/v"
+volurl <- paste0("0", seq(1, 99, 1))
+volurl[1:9] <- paste0("00", seq(1, 9, 1))
+brurl <- paste0("0", seq(1, 9, 1))
+urls_list <- paste0(baseurl, volurl)
+urls_list <- paste0(rep(urls_list, each = 9), "i", brurl)
+urls_list[1:5]
 ```
+
+**Step 3** Think about where you want your scraped material to be stored and create a directory.
+```{r, eval=F}
+tempwd <- ("data/jstatsoftStats")
+dir.create(tempwd)
+setwd(tempwd)
+```
+
+**Step 4** Download the pages. Note that we did not do this step last time, when we were only scraping one page.
+```{r, eval=F}
+folder <- "html_articles/"
+dir.create(folder)
+
+for (i in 1:length(urls_list)) {
+  # only update, don't replace
+    if (!file.exists(paste0(folder, names[i]))) {  
+  # skip article when we run into an error   
+      tryCatch( 
+        download.file(urls_list[i], destfile = paste0(folder, names[i])),
+        error = function(e) e
+      )
+  # don't kill their server   
+      Sys.sleep(runif(1, 0, 1)) 
+        
+} }
+```
+
+While R is downloading the pages for you, you can watch it directly in the directory you defined...
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+knitr::include_graphics("pics/html_files.png")
+```
+
+**Step 5** Check whether it worked.
+```{r, eval=F}
+list_files <- list.files(folder, pattern = "0.*")
+list_files_path <- list.files(folder, pattern = "0.*", full.names = TRUE)
+length(list_files)
+```
+Yay! Apparently, we scraped the html pages of 802 articles. 
+
+**Step 5** Import files and parse out information. A loop is helpful here!
+```{r, eval=F}
+# define output first
+authors <- character()
+title <- character()
+datePublish <- character()
+
+# then run the loop
+for (i in 1:length(list_files_path)) {
+  html_out <- read_html(list_files_path[i])
+    
+  authors[i] <- html_text(html_nodes(html_out , xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "authors_long", " " ))]//strong'))
+    
+  title[i] <- html_text(html_nodes(html_out , xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "page-header", " " ))]'))
+    
+  datePublish[i] <- html_text(html_nodes(html_out , xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "article-meta", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "row", " " )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( " ", @class, " " ), concat( " ", "col-sm-8", " " ))]'))
+}
+
+# inspect data
+authors[1:3]
+title[1:2]
+datePublish[1:3]
+
+# create a data frame
+dat <- data.frame(authors = authors, title = title, datePublish = datePublish)
+dim(dat)
+```
+**Step 6** Clean data...
+
+You see, scraping data from multiple pages is no problem in R. Most of the brain work often goes into developing a scraping strategy and tidying the data, not into the actual downloading/scraping part.
+
+Scraping is also possible in much more complex scenarios! Watch out for workshop presentations on 
+
+* Dynamic webscraping with RSelenium
+* Web APIs
+* Regular expressions with stringr
+* Data cleaning with janitor
+
+and many more `r emo::ji("star_struck")`
 
 
 
 # Sources
 
-This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). 
+This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). We also used an [example](https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47) from Keith McNulty's blog post on tidy web scraping in R.
 
 
 

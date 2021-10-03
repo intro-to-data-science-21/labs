@@ -332,9 +332,9 @@ div.tocify {
 
 <hr />
 <p>After talking quite a bit about data formats and data processing in the past weeks, today’s session is dedicated to data collection - from the web!</p>
-<p>What we will cover:2</p>
+<p>What we will cover:</p>
 <ul>
-<li>basic web technologies</li>
+<li>basic web technologies (html, xpath)</li>
 <li>scraping static webpages</li>
 <li>scraping multiple static webpages</li>
 <li>building up and maintaining you own original sets of web-based data</li>
@@ -343,9 +343,10 @@ div.tocify {
 <ul>
 <li>scraping dynamic webpages</li>
 <li>APIs</li>
+<li>extensive data cleaning using regular expressions</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R?</h1>
+<h1>Why webscrape with R? 🌎</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the web and b) bringing it into shape (e.g. cleaning it, getting it into tabular format).</p>
 <p>Why webscrape? While some influential people consider “Data Scientist” 👩‍💻 as the <a href="https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century">sexiest job</a> of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so?</p>
 <ul>
@@ -354,71 +355,335 @@ div.tocify {
 <li>services track social behavior</li>
 </ul>
 <p>BUT online data are usually meant for display, not (clean) download!</p>
-<p>Also, getting access to online data would be incredibly interesting when you think of very pragmatic things like financial resources, time resources, reproducibility and updateability.</p>
+<p>But getting access to online data would also be incredibly interesting when you think of very pragmatic things like financial resources, time resources, reproducibility and updateability…</p>
 <p>Luckily, with <code>R</code> we can automate the whole pipeline of downloading, parsing and post-processing to make our projects easily reproducible.</p>
 <p>In general, remember, the basic <strong>workflow for scraping static webpages</strong> is the following.</p>
 <p><img src="pics/workflow.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="scraping-static-websites-with-rvest" class="section level1">
-<h1>Scraping static websites with <code>rvest</code></h1>
+<h1>Scraping static websites with <code>rvest</code> 🚜</h1>
 <p>Who doesn’t love Wikipedia? Let’s use this as our first, straight forward test case.</p>
 <p><strong>Step 1.</strong> Load the packages <code>rvest</code> and <code>stringr</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div>
 <p><strong>Step 2.</strong> Parse the page source.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>parsed_url <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/Berlin&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>parsed_url <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/Cologne&quot;</span>)</span></code></pre></div>
 <p><strong>Step 3.</strong> Extract information.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>parsed_nodes <span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(parsed_url, <span class="at">xpath =</span> <span class="st">&quot;//div[contains(@class, &#39;column-count-3&#39;)]//li&quot;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">html_text</span>(parsed_nodes)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>cities[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
-<p>How can do I know THIS <code>xpath = "//div[contains(@class, 'column-count-3')]//li"</code> ?</p>
-<p>On your page of interest, go to a table that you’d like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View &gt; Developer &gt; inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy &gt; Copy Xpath. That’s it.</p>
-<p><strong>Step 4.</strong> Clean extracted data. Need help with regular expressions (me, everytime I use them), visit, for example, the section of <a href="https://r4ds.had.co.nz/strings.html">R for Data Science</a> or simply this <a href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf">cheat sheet</a>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove footnotes with a regular expression</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(cities, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cities[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract relevant information with regular expressions</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(cities, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{4}&quot;</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(cities, <span class="st">&quot;[[:alpha:] ]+&quot;</span>) <span class="sc">%&gt;%</span> str_trim</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>country <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(cities, <span class="st">&quot;[[:alpha:] ]+$&quot;</span>) <span class="sc">%&gt;%</span> str_trim</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>year[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>city[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>country[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
-<p><strong>Step 5.</strong> Put everything into a data frame.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cities_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(year, city, country)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cities_df)</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["city"],"name":[2],"type":["chr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]}],"data":[],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>parsed_nodes <span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(parsed_url, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">xpath =</span> <span class="st">&#39;//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]&#39;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>carnival <span class="ot">&lt;-</span> <span class="fu">html_text</span>(parsed_nodes)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>carnival</span></code></pre></div>
+<pre><code>## [1] &quot;The Cologne carnival is one of the largest street festivals in Europe. In Cologne, the carnival season officially starts on 11 November at 11 minutes past 11 a.m. with the proclamation of the new Carnival Season, and continues until Ash Wednesday. However, the so-called \&quot;Tolle Tage\&quot; (crazy days) do not start until Weiberfastnacht (Women&#39;s Carnival) or, in dialect, Wieverfastelovend, the Thursday before Ash Wednesday, which is the beginning of the street carnival. Zülpicher Strasse and its surroundings, Neumarkt square, Heumarkt and all bars and pubs in the city are crowded with people in costumes dancing and drinking in the streets. Hundreds of thousands of visitors flock to Cologne during this time. Generally, around a million people celebrate in the streets on the Thursday before Ash Wednesday.[67]&quot;</code></pre>
+<p>How can do I know THIS <code>xpath = '//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]'</code> ?</p>
+<p>There are two options:</p>
+<p><strong>Option 1.</strong> On your page of interest, go to a table that you’d like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View &gt; Developer &gt; inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy &gt; Copy Xpath. That’s it.</p>
+<p><img src="pics/inspect.png" width="90%" style="display: block; margin: auto;" /></p>
+<p><strong>Option 2.</strong> You download the <a href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=de">Chrome Extension</a> <code>SelectorGadget</code> and activate it while browsing the page you’d like to scrape from. You will see a selection box moving with your cursor. You select an element by clickin on it. It turns green - and so does all other content that would be selected with the current XPath.</p>
+<p><img src="pics/selector.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>You can now de-select everything that is irrelevant to you by clicking it again (it then turns red). Final step, then just click the XPath button at the bottom of the browser window. Make sure to use single quotation marks with this XPath!</p>
+<p><img src="pics/selector2.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>Let’s repeat step 2 and 3 with a more data-sciency example. 🕺</p>
+<p><strong>Step 2.</strong> Parse the page source.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hot100page <span class="ot">&lt;-</span> <span class="st">&quot;https://www.billboard.com/charts/hot-100&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>hot100 <span class="ot">&lt;-</span> <span class="fu">read_html</span>(hot100page)</span></code></pre></div>
+<p><strong>Step 3.</strong> Extract information. When going through different levels of html, you can also use tidyverse logic.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>body_nodes <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">html_node</span>(<span class="st">&quot;body&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">html_children</span>()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>body_nodes <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">html_children</span>()</span></code></pre></div>
+<p>play with that yourself if you like…</p>
+<p>Now let’s get more specific - <code>xml_find_all()</code> takes xpath syntax!</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_nodes</span>(<span class="st">&#39;body&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  xml2<span class="sc">::</span><span class="fu">xml_find_all</span>(<span class="st">&quot;//span[contains(@class, &#39;chart-element__rank__number&#39;)]&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_text</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>artist <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_nodes</span>(<span class="st">&#39;body&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  xml2<span class="sc">::</span><span class="fu">xml_find_all</span>(<span class="st">&quot;//span[contains(@class, &#39;chart-element__information__artist&#39;)]&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_text</span>()</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_nodes</span>(<span class="st">&#39;body&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  xml2<span class="sc">::</span><span class="fu">xml_find_all</span>(<span class="st">&quot;//span[contains(@class, &#39;chart-element__information__song&#39;)]&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_text</span>()</span></code></pre></div>
+<p><strong>Step 4.</strong> Usually, step 4 is to clean extracted data. In this case, it actually is very clean already. However, if you need help with data cleaning using regular expressions (me, always.), visit the section of <a href="https://r4ds.had.co.nz/strings.html">R for Data Science</a> or simply this <a href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf">cheat sheet</a>.</p>
+<p><strong>Step 5.</strong> Put everything into a data frame. 🎵</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chart_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(rank, artist, title)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(chart_df  <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">rank</th>
+<th align="left">artist</th>
+<th align="left">title</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">The Kid LAROI &amp; Justin Bieber</td>
+<td align="left">Stay</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Lil Nas X &amp; Jack Harlow</td>
+<td align="left">Industry Baby</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">Drake Featuring Future &amp; Young Thug</td>
+<td align="left">Way 2 Sexy</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">Ed Sheeran</td>
+<td align="left">Bad Habits</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="left">Walker Hayes</td>
+<td align="left">Fancy Like</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="left">Olivia Rodrigo</td>
+<td align="left">Good 4 U</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="left">Doja Cat Featuring SZA</td>
+<td align="left">Kiss Me More</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="left">Drake Featuring 21 Savage &amp; Project Pat</td>
+<td align="left">Knife Talk</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="left">Lil Nas X</td>
+<td align="left">Montero (Call Me By Your Name)</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="left">Lil Nas X</td>
+<td align="left">Thats What I Want</td>
+</tr>
+</tbody>
+</table>
 <div id="scraping-html-tables" class="section level2">
-<h2>Scraping HTML tables</h2>
+<h2>Scraping HTML tables 🚀</h2>
 <p>We have just been scraping an html table… but there is even an easier way to do this in <code>rvest</code>!</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>url_p <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/List_of_human_spaceflights&quot;</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">html_table</span>(url_p, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>spaceflights <span class="ot">&lt;-</span> tables[[<span class="dv">1</span>]]</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>spaceflights</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Entity"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Soviet Union"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Soviet Union"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Soviet Union"],"name":[4],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[5],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[6],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[7],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[8],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[9],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[10],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[11],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[12],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[13],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[14],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[15],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[16],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[17],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[18],"type":["chr"],"align":["left"]},{"label":["United States"],"name":[19],"type":["chr"],"align":["left"]},{"label":["Russia"],"name":[20],"type":["chr"],"align":["left"]},{"label":["Russia"],"name":[21],"type":["chr"],"align":["left"]},{"label":["Russia"],"name":[22],"type":["chr"],"align":["left"]},{"label":["China"],"name":[23],"type":["chr"],"align":["left"]},{"label":["China"],"name":[24],"type":["chr"],"align":["left"]},{"label":["China"],"name":[25],"type":["chr"],"align":["left"]},{"label":["Subtotals  by decade"],"name":[26],"type":["chr"],"align":["left"]},{"label":["Subtotals  by decade"],"name":[27],"type":["chr"],"align":["left"]}],"data":[{"1":"Agency","2":"Soviet space program","3":"Soviet space program","4":"Soviet space program","5":"NASA","6":"NASA","7":"NASA","8":"Scaled Composites","9":"Scaled Composites","10":"Scaled Composites","11":"Virgin Galactic","12":"Virgin Galactic","13":"Virgin Galactic","14":"SpaceX","15":"SpaceX","16":"SpaceX","17":"Blue Origin","18":"Blue Origin","19":"Blue Origin","20":"Roscosmos","21":"Roscosmos","22":"Roscosmos","23":"CMSA","24":"CMSA","25":"CMSA","26":"Subtotals  by decade","27":"Subtotals  by decade"},{"1":"Decades","2":"Program","3":"Dates[a]","4":"No.[b]","5":"Program[c]","6":"Dates","7":"No.[d]","8":"Program","9":"Dates","10":"No.","11":"Program","12":"Dates","13":"No.[e]","14":"Program","15":"Dates","16":"No.","17":"Program","18":"Dates","19":"No.","20":"Program","21":"Dates","22":"No.[f]","23":"Program","24":"Dates","25":"No.","26":"Subtotals  by decade","27":"Subtotals  by decade"},{"1":"1961–1970","2":"Vostok","3":"1961–1963","4":"6","5":"Mercury","6":"1961–1963","7":"6","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"52","27":"52"},{"1":"1961–1970","2":"Voskhod","3":"1964–1965","4":"2","5":"X-15","6":"1962–1968","7":"13","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"52","27":"52"},{"1":"1961–1970","2":"Soyuz","3":"1967–1991","4":"63","5":"Gemini","6":"1965–1966","7":"10","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"52","27":"52"},{"1":"1961–1970","2":"Soyuz","3":"1967–1991","4":"63","5":"Apollo","6":"1968–1972","7":"11","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"52","27":"52"},{"1":"1971–1980","2":"Soyuz","3":"1967–1991","4":"63","5":"Apollo","6":"1968–1972","7":"11","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"38","27":"38"},{"1":"1971–1980","2":"Soyuz","3":"1967–1991","4":"63","5":"Skylab","6":"1973–1974","7":"3","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"38","27":"38"},{"1":"1971–1980","2":"Soyuz","3":"1967–1991","4":"63","5":"Apollo–Soyuz","6":"1975","7":"1","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"38","27":"38"},{"1":"1981–1990","2":"Soyuz","3":"1967–1991","4":"63","5":"Space  Shuttle","6":"1981–2011","7":"135","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"","21":"","22":"","23":"","24":"","25":"","26":"63","27":"63"},{"1":"1991–2000","2":"Soyuz","3":"1967–1991","4":"63","5":"Space  Shuttle","6":"1981–2011","7":"135","8":"","9":"","10":"","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"Soyuz","21":"1992–present","22":"80","23":"","24":"","25":"","26":"83","27":"83"},{"1":"2001–2010","2":"","3":"","4":"","5":"Space  Shuttle","6":"1981–2011","7":"135","8":"SpaceShipOne","9":"2004","10":"3","11":"","12":"","13":"","14":"","15":"","16":"","17":"","18":"","19":"","20":"Soyuz","21":"1992–present","22":"80","23":"Shenzhou","24":"2003–present","25":"7","26":"61","27":"61"},{"1":"2011–2020","2":"","3":"","4":"","5":"Space  Shuttle","6":"1981–2011","7":"135","8":"","9":"","10":"","11":"SpaceShipTwo","12":"2018–present","13":"4","14":"Crew Dragon","15":"2020–present","16":"4","17":"","18":"","19":"","20":"Soyuz","21":"1992–present","22":"80","23":"Shenzhou","24":"2003–present","25":"7","26":"45","27":"45"},{"1":"2021–2030","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","10":"","11":"SpaceShipTwo","12":"2018–present","13":"4","14":"Crew Dragon","15":"2020–present","16":"4","17":"New Shepard","18":"2021–present","19":"1","20":"Soyuz","21":"1992–present","22":"80","23":"Shenzhou","24":"2003–present","25":"7","26":"7","27":"7"},{"1":"Subtotals  by entity","2":"","3":"","4":"71","5":"","6":"","7":"179","8":"","9":"","10":"3","11":"","12":"","13":"4","14":"","15":"","16":"4","17":"","18":"","19":"1","20":"","21":"","22":"80","23":"","24":"","25":"7","26":"Total","27":"349"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>url_p <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/List_of_human_spaceflights&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">html_table</span>(url_p, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>spaceflights <span class="ot">&lt;-</span> tables[[<span class="dv">1</span>]]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(spaceflights[,<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>]  <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>))</span></code></pre></div>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Entity</th>
+<th align="left">Soviet Union</th>
+<th align="left">Soviet Union</th>
+<th align="left">Soviet Union</th>
+<th align="left">United States</th>
+<th align="left">United States</th>
+<th align="left">United States</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Agency</td>
+<td align="left">Soviet space program</td>
+<td align="left">Soviet space program</td>
+<td align="left">Soviet space program</td>
+<td align="left">NASA</td>
+<td align="left">NASA</td>
+<td align="left">NASA</td>
+</tr>
+<tr class="even">
+<td align="left">Decades</td>
+<td align="left">Program</td>
+<td align="left">Dates[a]</td>
+<td align="left">No.[b]</td>
+<td align="left">Program[c]</td>
+<td align="left">Dates</td>
+<td align="left">No.[d]</td>
+</tr>
+<tr class="odd">
+<td align="left">1961–1970</td>
+<td align="left">Vostok</td>
+<td align="left">1961–1963</td>
+<td align="left">6</td>
+<td align="left">Mercury</td>
+<td align="left">1961–1963</td>
+<td align="left">6</td>
+</tr>
+<tr class="even">
+<td align="left">1961–1970</td>
+<td align="left">Voskhod</td>
+<td align="left">1964–1965</td>
+<td align="left">2</td>
+<td align="left">X-15</td>
+<td align="left">1962–1968</td>
+<td align="left">13</td>
+</tr>
+<tr class="odd">
+<td align="left">1961–1970</td>
+<td align="left">Soyuz</td>
+<td align="left">1967–1991</td>
+<td align="left">63</td>
+<td align="left">Gemini</td>
+<td align="left">1965–1966</td>
+<td align="left">10</td>
+</tr>
+<tr class="even">
+<td align="left">1961–1970</td>
+<td align="left">Soyuz</td>
+<td align="left">1967–1991</td>
+<td align="left">63</td>
+<td align="left">Apollo</td>
+<td align="left">1968–1972</td>
+<td align="left">11</td>
+</tr>
+<tr class="odd">
+<td align="left">1971–1980</td>
+<td align="left">Soyuz</td>
+<td align="left">1967–1991</td>
+<td align="left">63</td>
+<td align="left">Apollo</td>
+<td align="left">1968–1972</td>
+<td align="left">11</td>
+</tr>
+<tr class="even">
+<td align="left">1971–1980</td>
+<td align="left">Soyuz</td>
+<td align="left">1967–1991</td>
+<td align="left">63</td>
+<td align="left">Skylab</td>
+<td align="left">1973–1974</td>
+<td align="left">3</td>
+</tr>
+<tr class="odd">
+<td align="left">1971–1980</td>
+<td align="left">Soyuz</td>
+<td align="left">1967–1991</td>
+<td align="left">63</td>
+<td align="left">Apollo–Soyuz</td>
+<td align="left">1975</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">1981–1990</td>
+<td align="left">Soyuz</td>
+<td align="left">1967–1991</td>
+<td align="left">63</td>
+<td align="left">Space Shuttle</td>
+<td align="left">1981–2011</td>
+<td align="left">135</td>
+</tr>
+</tbody>
+</table>
 <p>Another R workaround for more complex tables is the package <code>htmltab</code> that offers some more flexibility.</p>
 </div>
 </div>
 <div id="scraping-multiple-pages" class="section level1">
-<h1>Scraping multiple pages</h1>
+<h1>Scraping multiple pages 🤖</h1>
+<p>Whenever you want to really understand what’s going on within the functions of a new R package, it is very likely that there is a relevant article published in the <a href="https://www.jstatsoft.org/index">Journal of Statistical Software</a>. Let’s say you are interested in how the journal was doing over the past years.</p>
+<p><strong>Step 1.</strong> Inspect the source. Basically, follow steps to extract the Xpath information.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">browseURL</span>(<span class="st">&quot;http://www.jstatsoft.org/issue/archive&quot;</span>)</span></code></pre></div>
+<p><strong>Step 2</strong> Develop a scraping strategy. We need a set of URLs leading to all sources. Inspect the URLs of different sources and find the pattern. Then, construct the list of URLs from scratch.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&quot;http://www.jstatsoft.org/article/view/v&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>volurl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;0&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">99</span>, <span class="dv">1</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>volurl[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;00&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">1</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>brurl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;0&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">1</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>urls_list <span class="ot">&lt;-</span> <span class="fu">paste0</span>(baseurl, volurl)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>urls_list <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(urls_list, <span class="at">each =</span> <span class="dv">9</span>), <span class="st">&quot;i&quot;</span>, brurl)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>urls_list[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>## [1] &quot;http://www.jstatsoft.org/article/view/v001i01&quot;
+## [2] &quot;http://www.jstatsoft.org/article/view/v001i02&quot;
+## [3] &quot;http://www.jstatsoft.org/article/view/v001i03&quot;
+## [4] &quot;http://www.jstatsoft.org/article/view/v001i04&quot;
+## [5] &quot;http://www.jstatsoft.org/article/view/v001i05&quot;</code></pre>
+<p><strong>Step 3</strong> Think about where you want your scraped material to be stored and create a directory.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tempwd <span class="ot">&lt;-</span> (<span class="st">&quot;data/jstatsoftStats&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(tempwd)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(tempwd)</span></code></pre></div>
+<p><strong>Step 4</strong> Download the pages. Note that we did not do this step last time, when we were only scraping one page.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;html_articles/&quot;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(folder)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(urls_list)) {</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># only update, don&#39;t replace</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">paste0</span>(folder, names[i]))) {  </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># skip article when we run into an error   </span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tryCatch</span>( </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">download.file</span>(urls_list[i], <span class="at">destfile =</span> <span class="fu">paste0</span>(folder, names[i])),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> <span class="cf">function</span>(e) e</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># don&#39;t kill their server   </span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Sys.sleep</span>(<span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)) </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>} }</span></code></pre></div>
+<p>While R is downloading the pages for you, you can watch it directly in the directory you defined…</p>
+<p><img src="pics/html_files.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><strong>Step 5</strong> Check whether it worked.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>list_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>list_files_path <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(list_files)</span></code></pre></div>
+<p>Yay! Apparently, we scraped the html pages of 802 articles.</p>
+<p><strong>Step 5</strong> Import files and parse out information. A loop is helpful here!</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define output first</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>datePublish <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then run the loop</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_files_path)) {</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  html_out <span class="ot">&lt;-</span> <span class="fu">read_html</span>(list_files_path[i])</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  authors[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;authors_long&quot;, &quot; &quot; ))]//strong&#39;</span>))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  title[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;page-header&quot;, &quot; &quot; ))]&#39;</span>))</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  datePublish[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;article-meta&quot;, &quot; &quot; ))]//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;row&quot;, &quot; &quot; )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;col-sm-8&quot;, &quot; &quot; ))]&#39;</span>))</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect data</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>authors[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>title[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>datePublish[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">authors =</span> authors, <span class="at">title =</span> title, <span class="at">datePublish =</span> datePublish)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(dat)</span></code></pre></div>
+<p><strong>Step 6</strong> Clean data…</p>
+<p>You see, scraping data from multiple pages is no problem in R. Most of the brain work often goes into developing a scraping strategy and tidying the data, not into the actual downloading/scraping part.</p>
+<p>Scraping is also possible in much more complex scenarios! Watch out for workshop presentations on</p>
+<ul>
+<li>Dynamic webscraping with RSelenium</li>
+<li>Web APIs</li>
+<li>Regular expressions with stringr</li>
+<li>Data cleaning with janitor</li>
+</ul>
+<p>and many more 🤩</p>
 </div>
 <div id="sources" class="section level1">
 <h1>Sources</h1>
-<p>This tutorial drew heavily on Simon Munzert’s book <a href="http://r-datacollection.com/">Automated Data Collection with R</a> and related <a href="https://github.com/simonmunzert/web-scraping-with-r-extended-edition">course materials</a>.</p>
+<p>This tutorial drew heavily on Simon Munzert’s book <a href="http://r-datacollection.com/">Automated Data Collection with R</a> and related <a href="https://github.com/simonmunzert/web-scraping-with-r-extended-edition">course materials</a>. We also used an <a href="https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47">example</a> from Keith McNulty’s blog post on tidy web scraping in R.</p>
 </div>
 
 &nbsp;
