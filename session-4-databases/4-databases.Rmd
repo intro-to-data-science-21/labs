@@ -24,15 +24,13 @@ pacman::p_load(tidyverse, purrr)
 
 # Introduction
 
-Many “big data” problems are actually “small data problems in disguise”. That is, we only really need a subset of the data or we want to aggregate the data into some larger dataset. For example, we might want to access Census data… but only for a handful of municipalities. Or, we might want to analyse climate data collected from a large number of weather stations, but aggregated up to the national or monthly level. In such cases, the underlying bottleneck is interacting with the original data, which is too big to fit into memory. How do we store data of this magnitude and and then access it effectively? The answer is through a database.
+Many “big data” problems are actually “small data problems in disguise”. That is, we only really need a subset of the data, or maybe we want to aggregate the data into some larger dataset. For example, we might want to access Census data, but only for a handful of municipalities. Or, we might want to analyse climate data collected from a large number of weather stations, but aggregated up to the national or monthly level. In such cases, the underlying bottleneck is interacting with the original data, which is too big to fit into memory. How do we store data of this magnitude and and then access it effectively? The answer is through a database.
 
-Databases can exist either locally or remotely, as well as in-memory or on-disk. Regardless of where a database is located, the key point is that information is stored in a way that allows for very quick extraction and/or aggregation. 
-
-More realistically you will need to extract several subsets and harmonise or transform them. To facilitate and automate this task, you will need to write your own functions and know to iterate them over the relevant subsets of data. This week's session thus ties in well with the sections on functions and iteration that we quickly touched upon during the last lab.
+Databases can exist either locally or remotely, as well as in-memory or on-disk. Regardless of where a database is located, the key point is that information is stored in a way that allows for very quick extraction and/or aggregation. More oftne than not you will probably need to extract several subsets and harmonise or transform them. To facilitate and automate this task, you will need to write your own functions and know to iterate them over the relevant subsets of data. This week's session thus ties in well with the sections on functions and iteration that we quickly touched upon during the last lab.
 
 # Functions and Databases `r emo::ji("telescope")`
 
-Although this week's session is nominally about databases - and we will spend a substantial part of this session on them - we believe that writing your own functions is a key skill that deserves more attention than we were able to devote to it last week. Therefore, we will split the session in two. First we will cover functions and iterations. In that section you will learn to:
+Although this week's session is nominally about databases - and we will spend a substantial part of this session on them - we believe that writing your own functions is a key skill that deserves more attention than we were able to devote to it during last week's session. Therefore, we will split the session in two. First we will cover functions and iterations. In that section you will learn to:
 
 * write your own functions (a key skill for all R users)
 * iterate functions over multiple inputs
@@ -49,7 +47,7 @@ The second part of the session will deal with databases and SQL. Here you will l
 
 # Functions
 
-In any coding language a fundamental principle should be **DRY** (**D**on't **R**epeat **Y**ourself). You should adhere to this as much as possible. You can do this via functions.
+In any coding language a fundamental principle should be **DRY** (**D**on't **R**epeat **Y**ourself). You should adhere to this as much as possible. Functions are the perfec tool for this.
 
 Functions allow you to automate tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
 
@@ -209,6 +207,7 @@ df %>% map_dbl(mean)
 There is, of course, much more to learn about functions in R and we could dedicate an entire session to it.
 For now, consider this as is the first exposure to functions (that can actually already get you pretty far). However, it is important that you apply `r emo::ji("nerd")` you new skills and practice further on your own. A good starting point is obviously *assignment 2 that is due tonight!!!*. Good luck! `r emo::ji("crossed_fingers")`
 
+---
 
 # Exercises (Part I)
 
@@ -218,10 +217,21 @@ For now, consider this as is the first exposure to functions (that can actually 
 
 # Working with databases
 
+So far, we have dealt with small datasets that easily fit into your computer’s memory. But what about datasets that are too large for your computer to handle as a whole? In this case, storing the data outside of R and organizing it in a database is helpful. Connecting to the database allows you to retrieve only the chunks needed for the current analysis.
+
+Even better, many large datasets are already available in public or private databases. You can query them without having to download the data first.
+
 ## Necessary packages
 
+Accessing databhasses in R requires a few packages: 
+
+* `dbplyr`makes use of the same functions as dplyr, but also works with remote data stored in databases.
+* `DBI` is a package that allows R to connect easily to a DBMS (**D**ata**B**ase **M**anagement **S**ystem)
+ * Some package to interact with the back-end of the remote database such as `RSQLite`(there are other options though)
+
+
 ```{r, include=FALSE}
-pacman::p_load(RSQLite, DBI, bigrquery, nycflights13)
+pacman::p_load(RSQLite, DBI, bigrquery, dbplyr, nycflights13)
 ```
 
 
@@ -258,7 +268,8 @@ copy_to(
 
 
 Some more general notes on database connections:
-* The arguments to `DBI::dbConnect()` vary from database to database, but the first argument is always the database backend. 
+
+* The arguments to `DBI::dbConnect()` vary from database to database, but the first argument is always the database backend (a way to control your queries).
 * For instance, it’s 
   + `RSQLite::SQLite()` for RSQLite,
   + `RMariaDB::MariaDB()` for RMariaDB,
@@ -303,7 +314,7 @@ copy_to(
 
 ## List Tables in Database
 
-Now that we are connected to a database, let us list all the tables present in it using dbListTables().
+Now that we are connected to a database, let us list all the tables present in it using `dbListTables()`.
 
 ```{r}
 DBI::dbListTables(con)
@@ -311,12 +322,15 @@ DBI::dbListTables(con)
 
 As you can see there is only one table for now (flights), and the SQLite versions that can interact (need to double check this). Usually you would find many different tables in a relational database.
 
+---
+
 # Queries
 
+A query is a request for data or information from a database table or combination of tables. `r emo::ji("book")`
 
 ## Reference Table
 
-So how do you access this table? 
+So how do you query a table in the flights database? 
 
 It is actually fairly straightforward. You use the `tbl()`function where you indicate the connection and the name of the table you want to interact with. 
 
@@ -356,11 +370,11 @@ flights_db %>%
   summarise(delay = mean(dep_time))
 ```
 
-## More advance Operations
+## More advanced operations
 
 You can even generate and plot figures whitout the need to store the data in your local environment:
 
-```{r,echo=FALSE, results='hide', fig.keep='all'}
+```{r,echo=TRUE, results='hide', fig.keep='all'}
 
 flights_db %>% 
   filter(distance > 75) %>%
@@ -412,15 +426,15 @@ copy_to(
 ```
 
 
-List tables in our "con" database connection
+Let us call `dbListTables()` again on our "con" database connection. As you can see, there are several more tables now. If you work with an already existing database, you are likely to encounter several tables. 
 
 ```{r}
 dbListTables(con)
 
 ```
 
+As we saw last week, the `join` syntax had its origin in SQL. Unsurprisingly, you can join tables without having to store the data in memory. Here is how you perform a left join: 
 
-A left join: 
 ```{r}
 planes_db = tbl(con, 'planes')
 left_join(
@@ -434,7 +448,9 @@ left_join(
 
 ```
 
-In short, you can conduct almost all your analysis in R in a way that you are used to without these data having to be stored locally. There are however some differences between ordinary data frames and remote database queries. 
+In short, you can conduct almost all your analysis in R in a way that you are used to without these data having to be stored locally. There are however some differences between ordinary data frames and remote database queries that are worth pointing out. 
+
+---
 
 # A look under the Hood
 
@@ -476,30 +492,33 @@ tail(tailnum_delay_db)
 
 ## Inspecting queries 
 
-We can always inspect the SQL that dbplyr is generating:
+We can always inspect the SQL that `dbplyr` is generating:
 
 ```{r}
 
 tailnum_delay_db %>% show_query()
 ```
 
-That's probably not how you would have written it, but it works.
+That's probably not how you would write the SQL yourself, but it works.
 
-More information about SQL translation can be found here:
-`vignette("translation-verb")`. 
+More information about SQL translation can be found here: `vignette("translation-verb")`. 
+
+--- 
 
 # From remote to local storage 
 
-If you then want to pull the data into a local data frame, use collect():
+If you then want to pull the data into a local data frame, use `collect()`:
 
 ```{r}
 tailnum_delay <- tailnum_delay_db %>% collect()
 tailnum_delay
 ```
 
+---
+
 # Using SQL directly in R 
 
-If for whatever reason you might want to write your SQL queries yourself, you can use DBI::dbGetQuery() to run SQL queries in R scripts:
+If for whatever reason you might want to write your SQL queries yourself, you can use `DBI::dbGetQuery()` to run SQL queries in R scripts:
 
 ```{r}
 sql_query <- "SELECT * FROM flights WHERE dep_delay > 240.0 LIMIT 5"
@@ -507,6 +526,8 @@ dbGetQuery(con, sql_query)
 ```
 
 If you want to learn more about writing SQL with dbplyr, check out `vignette('sql', package = 'dbplyr')`.
+
+--- 
 
 # Disconnect from database 
 
@@ -518,12 +539,28 @@ DBI::dbDisconnect(con)
 
 ```
 
+---
 
 # Exercises (Part II)
 
+---
 
 # (Advanced) BigQuery
 
+If you are still curious about databases and SQL and wonder how you might scale all this up in for the purposes of real project, you might be interested to look into [Google's BigQuery](https://cloud.google.com/bigquery) service. You can register for a free Google Cloud account [here](https://cloud.google.com/bigquery/?utm_source=google&utm_medium=cpc&utm_campaign=emea-gb-all-en-dr-bkws-all-solutions-trial-b-gcp-1010042&utm_content=text-ad-none-any-DEV_c-CRE_502351626221-ADGP_Hybrid%20%7C%20BKWS%20-%20BMM%20%7C%20Txt%20~%20Data%20Analytics%20~%20BigQuery%23v1-KWID_43700053279048301-aud-606988877734%3Akwd-41385121591-userloc_1003853&utm_term=KW_%2Bgoogle%20%2Bbigquery-NET_g-PLAC_&ds_rl=1242853&ds_rl=1245734&ds_rl=1242853&ds_rl=1245734&gclid=EAIaIQobChMI9MCA2tKw8wIVgtKyCh33uAdiEAAYASAAEgJRbfD_BwE&gclsrc=aw.ds). Be aware that you only have a certain amount of free queries (1 TB / month) before you are charged. BigQuery is the most widely used service to interact with online databses and it has a number of public datasets that you can easily practice with. Everything we saw above applies, with the exception that you need to specify the backend `bigrquery::bigquery()`.
+
+Here is an example of how it would look:
+
+```{r, eval=F}
+con <- dbConnect(
+  bigrquery::bigquery(),
+  project = "publicdata",
+  dataset = "samples",
+  billing = billing
+)
+```
+
+---
 ## Actually learning R `r emo::ji("backpack")`
 
 Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
