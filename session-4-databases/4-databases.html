@@ -769,8 +769,8 @@ div.tocify {
 <hr />
 </div>
 </div>
-<div id="advanced-bigquery" class="section level1">
-<h1>(Advanced) BigQuery</h1>
+<div id="advanced-exercises-bigquery" class="section level1">
+<h1>(Advanced Exercises) BigQuery</h1>
 <p>If you are still curious about databases and SQL and wonder how you might scale all this up in for the purposes of a real project, you might be interested to look into <a href="https://cloud.google.com/bigquery">Google’s BigQuery</a> service. You can register for a free Google Cloud account <a href="https://cloud.google.com/bigquery/?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=emea-gb-all-en-dr-bkws-all-solutions-trial-b-gcp-1010042&amp;utm_content=text-ad-none-any-DEV_c-CRE_502351626221-ADGP_Hybrid%20%7C%20BKWS%20-%20BMM%20%7C%20Txt%20~%20Data%20Analytics%20~%20BigQuery%23v1-KWID_43700053279048301-aud-606988877734%3Akwd-41385121591-userloc_1003853&amp;utm_term=KW_%2Bgoogle%20%2Bbigquery-NET_g-PLAC_&amp;ds_rl=1242853&amp;ds_rl=1245734&amp;ds_rl=1242853&amp;ds_rl=1245734&amp;gclid=EAIaIQobChMI9MCA2tKw8wIVgtKyCh33uAdiEAAYASAAEgJRbfD_BwE&amp;gclsrc=aw.ds">here</a>. Be aware that you only have a certain amount of free queries (1 TB / month) before you are charged. BigQuery is the most widely used service to interact with online databses and it has a number of public datasets that you can easily practice with. Everything we saw above applies, with the exception that you need to specify the backend <code>bigrquery::bigquery()</code>.</p>
 <p>Here is an example of how it would look:</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(</span>

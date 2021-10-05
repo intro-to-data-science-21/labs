@@ -591,7 +591,7 @@ DBI::dbDisconnect(con)
 
 ---
 
-# (Advanced) BigQuery
+# (Advanced Exercises) BigQuery
 
 If you are still curious about databases and SQL and wonder how you might scale all this up in for the purposes of a real project, you might be interested to look into [Google's BigQuery](https://cloud.google.com/bigquery) service. You can register for a free Google Cloud account [here](https://cloud.google.com/bigquery/?utm_source=google&utm_medium=cpc&utm_campaign=emea-gb-all-en-dr-bkws-all-solutions-trial-b-gcp-1010042&utm_content=text-ad-none-any-DEV_c-CRE_502351626221-ADGP_Hybrid%20%7C%20BKWS%20-%20BMM%20%7C%20Txt%20~%20Data%20Analytics%20~%20BigQuery%23v1-KWID_43700053279048301-aud-606988877734%3Akwd-41385121591-userloc_1003853&utm_term=KW_%2Bgoogle%20%2Bbigquery-NET_g-PLAC_&ds_rl=1242853&ds_rl=1245734&ds_rl=1242853&ds_rl=1245734&gclid=EAIaIQobChMI9MCA2tKw8wIVgtKyCh33uAdiEAAYASAAEgJRbfD_BwE&gclsrc=aw.ds). Be aware that you only have a certain amount of free queries (1 TB / month) before you are charged. BigQuery is the most widely used service to interact with online databses and it has a number of public datasets that you can easily practice with. Everything we saw above applies, with the exception that you need to specify the backend `bigrquery::bigquery()`.
 
