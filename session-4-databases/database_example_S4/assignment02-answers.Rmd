@@ -1,0 +1,182 @@
+---
+title: "Assignment 2. Databasing"
+author: "Introduction to Data Science"
+date: "9/24/2020"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "")
+```
+
+We're going to be using event data harvested by Phil Schrodt 
+(and a lot of C-code) from newswire stories about the Middle East. 
+This event data has rows of the form
+```
+1979-04-15 ISRMIL JOR 190
+```
+which says that the Israeli military did an event of type 190 to Jordan. 
+To understand what these events mean, there is a codebook with entries in 
+the form
+```
+190 Use conventional military force, not specified below
+```
+Each such event type has a manually assigned conflict-cooperation score, 
+described in another table with lines of the form
+```
+190 19 -10
+```
+which states that score 190 has 'top level' 19 (just the first two digits, 
+indicating a coarser categorization) and is strongly negative -10. 
+(The scale goes from -10 to 10.)
+
+## Talking to the DB
+
+First create a connection to the database file and ask for the names of the tables.
+
+```{r}
+library(DBI)
+library(RSQLite)
+con <- dbConnect(RSQLite::SQLite(), "levant.cameo.sqlite3")
+dbListTables(con)
+```
+
+## Wrapping things up
+
+There are three tables of interest (you don't care about anything beginning 
+`sqlite_`). And now you know what they are called, use `dplyr` to make them 
+appear as if they were data.frames
+
+```{r}
+library(tidyverse) # loads the database backend for dplyr
+
+event <- tbl(con, "event")
+score <- tbl(con, "score")
+desc <- tbl(con, "description")
+
+event
+# Note that we're not a data.frame 'really':
+#
+#   Source:   table<event> [?? x 4]"
+#   Database: sqlite 3.34.0
+```
+
+## Scoring the events
+
+To get conflict scores for events in this period, join the score table to the 
+events table with a left join. Hint: think about which table should be left and why.
+
+```{r}
+scored_events <- left_join(event, score, by = "code") # add the 'by', to be sure
+
+# parameter 1 ('event') is left and parameter 2 ('score') is right.
+# We left left join so if there's an event in 'event' that has no corresponding 
+# score in 'score', we will assign it NA rather than throw it away (left_ retains
+# all rows on the left (the 'event's), inner_ only retains rows with a 'code' on 
+# both sides, and right_ retains all rows on the right (the 'score's)
+```
+
+## Second Intifada
+
+We can date the Second Intifada from 27th of September 2000 to 8th of February 
+2005. Create and name these two R dates (Hint: R works well with strings in 
+ISO-standard date format) and use them to filter your copy of the events table 
+to contain only events in the Second Intifada.
+
+```{r}
+# iso standard date notation
+int_begin <- "2000-09-27"
+int_end <- "2005-02-08"
+
+int_event <- filter(scored_events, date >= int_begin & date <= int_end)
+# we're using the fact that alphabetical order is an order
+# that is: "1" < "11" < "2000-09-27" < "2000-10-01"
+# iso-dates will work well for this kind of sorting. 
+# 
+# In real applications we'd most likely convert the variables to real dates, 
+# e.g. if we wanted to subtract dates to get durations, identify weekends, etc.
+
+head(int_event) # still not a real data.frame!
+```
+
+Now `collect` the result so you have it as a regular R data.frame. 
+
+```{r}
+real_int_event <- collect(int_event) # instantiate all rows in a real data.frame
+head(real_int_event)
+```
+
+## Working in R
+
+Next, filter it further to include only events where an source actor with name 
+beginning ISR, e.g. ISRMIL or ISRGOV does something to a target actor beginning 
+with PAL. You could use `filter` with `grepl` or a test of the first three 
+letters. This is what conflict scholars call 'the Israel-Palestine dyad'.
+
+If you prefer, you could instead generate the Palestine-Israel dyad which tracks events done by Palestinian actors to Israeli actors.
+
+```{r}
+# Let's do PAL -> ISR
+pal_isr <- filter(real_int_event, 
+                  grepl("^PAL", source) & grepl("ISR", target)) 
+
+# alternative, less flexible version checking substring:
+# pal_isr <- filter(real_int_event, 
+#                   (substring(source, 1, 3) == "PAL") & 
+#                    (substring(target, 1, 3) == "ISR")) 
+pal_isr
+```
+
+## Time series
+
+Finally we will visualize the conflict levels in this dyad. This will be less noisy if you aggregate temporally. To aggregate events by week, use cut. If your data.frame is called `evscore` and has a column called `date` then
+```
+evscore <- mutate(evscore, 
+  week = cut(as.Date(date), breaks = "week"),
+  week = as.Date(as.character(week)))
+```
+where we have ensured date really is a date  with `as.Date` (sometimes classes get mixed up in and out of databases), and created a nominal variable to represent dates that are in the same week using `cut.Date`. Then we have taken advantage of the fact that this variable is named after the date of the *first* day of the week it represents, so we can turn that into a character (it's a factor label after `cut`), and then back into a proper date.
+
+```{r}
+pal_isr <- mutate(pal_isr, 
+                  week = cut(as.Date(date), breaks = "week"),
+                  week = as.Date(as.character(week)))
+head(pal_isr, 10)
+```
+
+Lastly, average the score in each week of your dyad and plot the time series of conflict.
+
+```{r}
+# average scores by week
+pal_isr_weekly <- summarise(group_by(pal_isr, week), 
+                            av_score = mean(score))
+head(pal_isr_weekly)
+
+# and plot as a time series
+ggplot(pal_isr_weekly, aes(x = week, y = av_score)) +
+  geom_point(alpha = 0.5) + 
+  geom_smooth(span = 0.1, colour = "black") +
+  labs(x = "Conflict week",
+       y = "Average conflict-cooperation score",
+       title = "Conflict in the Palestine-Israel dyad during the Second Intifada")
+
+# Note: I've added a smooth line to pick out the structure (and also forced 
+# the smoother to smooth less vigorously by setting the span smaller than the default). 
+# You don't need to have done either - a line chart would have been fine
+```
+
+This is the kind of data and graphic that conflict forecasters use for 
+prediction in governments around the world. And now we can do it too.
+
+```{r}
+# close our database connection now we don't need it anymore (not essential)
+dbDisconnect(con)
+```
+
+## Handing it all in
+
+This time around, just compile this document with code and answers and upload 
+it to moodle. Specifically, I'll be looking for a single knitted pdf, Word, or 
+html file. I think that's probably fancy enough, while we get used to the 
+cloud business. 
