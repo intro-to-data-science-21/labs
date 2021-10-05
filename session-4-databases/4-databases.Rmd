@@ -591,7 +591,7 @@ DBI::dbDisconnect(con)
 
 ## Exercises on Databases
 
-If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/database_example_S4). It comes with a database file so you can open the connection locally without the need to register. 
+If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/database_example_S4). It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague [Will Lowe](https://conjugateprior.org/)!
 
 ---
 

@@ -13,8 +13,8 @@
 
 <title>Databases</title>
 
-<script src="4-databases_files/header-attrs-2.11/header-attrs.js"></script>
-<script src="4-databases_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="4-databases_files/header-attrs-2.9/header-attrs.js"></script>
+<script src="4-databases_files/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="4-databases_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
 <script src="4-databases_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -704,7 +704,7 @@ div.tocify {
 <p>As you saw, you can conduct your analyses in a database, the same way you are <strong>used to</strong> do it in R. All that without your data having to be stored on your own device.</p>
 <p>Unfortunately, there are however <strong>some differences</strong> between <strong>ordinary data frames and remote database queries</strong> that are worth pointing out.</p>
 <p>The most important among these is that your R code is translated into SQL and executed in the database on the remote server, not in R on your local machine.</p>
-<p>This has the following implications. When working with databases, dplyr tries to be as <strong>lazy as possible</strong> 🛏:</p>
+<p>This has the following implications. When working with databases, dplyr tries to be as <strong>lazy as possible</strong> 🛌:</p>
 <ul>
 <li>It never pulls data into R unless you explicitly ask for it.</li>
 <li>It delays doing any work until the last possible moment: it collects together everything you want to do and then sends it to the database in one step.</li>
@@ -772,7 +772,7 @@ div.tocify {
 </div>
 <div id="exercises-on-databases" class="section level2">
 <h2>Exercises on Databases</h2>
-<p>If you want to practice accessing databases going forward, have a look at the practice script <a href="https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/database_example_S4">here</a>. It comes with a database file so you can open the connection locally without the need to register.</p>
+<p>If you want to practice accessing databases going forward, have a look at the practice script <a href="https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/database_example_S4">here</a>. It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague <a href="https://conjugateprior.org/">Will Lowe</a>!</p>
 <hr />
 </div>
 </div>
