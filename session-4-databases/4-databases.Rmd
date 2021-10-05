@@ -211,6 +211,50 @@ For now, consider this as is the first exposure to functions (that can actually 
 
 # Exercises (Part I)
 
+For the following exercises let's load a fictional experimental study dataset "study.csv" that was generated for this course.
+
+```{r, eval=T}
+library(tidyverse)
+study <- read_csv("./study.csv")
+
+glimpse(study)
+```
+
+1. You feel that the variable on emotions is badly represented in the data and you decide to replace it with Emoticons! You want to write a function to automate this task. Transform this pseudo code into an R function: 
+
+```{r, eval=F}
+
+replace_w_emoticons <- # If person is "happy", person is ":)", 
+                       # Else if person is emotion "neutral", person is ":/"
+                       # Else person is ":("
+  
+```
+
+
+2. Create a new column in the dataset that contains these Smiles.
+
+
+3. You are also interested in getting some descriptive statistics, notably for age, height and weight. Since this is but a sample of the overall population you should use inference and calculate the mean with a Confidence Interval around it. Here is a function that does it, but we only get NAs. How do we fix this function?
+
+```{r, eval=T}
+mean_ci <- function(x, conf = 0.95) {
+  se <- sd(x) / sqrt(length(x)) 
+  alpha <- 1 - conf
+  mean(x) + se * qnorm(c(alpha / 2, 1 - alpha / 2))
+}
+
+mean_ci(study$age)
+```
+
+4. Now that we fixed the function, how can we apply it to the different variables? Rewrite this chunk of code so that we do not repeat ourselves: 
+
+```{r, eval=F}
+mean_ci(study$age)
+mean_ci(study$ht_in)
+mean_ci(study$wt_lbs)
+
+```
+
 
 ---
 
@@ -539,9 +583,7 @@ DBI::dbDisconnect(con)
 
 ```
 
----
 
-# Exercises (Part II)
 
 ---
 
@@ -561,6 +603,7 @@ con <- dbConnect(
 ```
 
 ---
+
 ## Actually learning R `r emo::ji("backpack")`
 
 Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
