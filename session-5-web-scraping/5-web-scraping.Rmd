@@ -171,6 +171,30 @@ knitr::kable(spaceflights[,1:7]  %>% head(10))
 ```
 Another R workaround for more complex tables is the package `htmltab` that offers some more flexibility.
 
+## It's your turn! `r emo::ji("hammer_and_wrench")`
+
+Think about web data hosted on a **static webpage** that you might be interested in scraping!
+Comparably easy to scrape webpages are Wikipedia pages or pages that contain data in table format (as we've seen already). 
+
+Before you start - it might be worth a thought to get Chrome + Selector Gadget. This will make your future as web scraper a bit easier. 
+
+**Option A**
+
+1. Inspect the page and try to find the elements you are interested in in the html code.
+
+2. Parse the url.
+
+3. Extract the XPath for the element you would like to scrape and parse the nodes.
+
+4. Inspect the html output you get. What would be the next steps now? Can you already put your output into a dataframe? 
+
+**Option B**
+
+1. Find an html table that you'd like to scrape.
+
+2. Scrape it.
+
+
 # Scraping multiple pages `r emo::ji("robot")`
 
 Whenever you want to really understand what's going on within the functions of a new R package, it is very likely that there is a relevant article published in the [Journal of Statistical Software](https://www.jstatsoft.org/index). Let's say you are interested in how the journal was doing over the past years.

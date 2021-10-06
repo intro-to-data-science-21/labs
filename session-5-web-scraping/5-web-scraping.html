@@ -346,7 +346,7 @@ div.tocify {
 <li>extensive data cleaning using regular expressions</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌎</h1>
+<h1>Why webscrape with R? 🌍</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the web and b) bringing it into shape (e.g. cleaning it, getting it into tabular format).</p>
 <p>Why webscrape? While some influential people consider “Data Scientist” 👩‍💻 as the <a href="https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century">sexiest job</a> of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so?</p>
 <ul>
@@ -425,23 +425,23 @@ div.tocify {
 <tbody>
 <tr class="odd">
 <td align="left">1</td>
-<td align="left">The Kid LAROI &amp; Justin Bieber</td>
-<td align="left">Stay</td>
+<td align="left">Coldplay x BTS</td>
+<td align="left">My Universe</td>
 </tr>
 <tr class="even">
 <td align="left">2</td>
-<td align="left">Lil Nas X &amp; Jack Harlow</td>
-<td align="left">Industry Baby</td>
+<td align="left">The Kid LAROI &amp; Justin Bieber</td>
+<td align="left">Stay</td>
 </tr>
 <tr class="odd">
 <td align="left">3</td>
-<td align="left">Drake Featuring Future &amp; Young Thug</td>
-<td align="left">Way 2 Sexy</td>
+<td align="left">Lil Nas X &amp; Jack Harlow</td>
+<td align="left">Industry Baby</td>
 </tr>
 <tr class="even">
 <td align="left">4</td>
-<td align="left">Ed Sheeran</td>
-<td align="left">Bad Habits</td>
+<td align="left">Drake Featuring Future &amp; Young Thug</td>
+<td align="left">Way 2 Sexy</td>
 </tr>
 <tr class="odd">
 <td align="left">5</td>
@@ -450,28 +450,28 @@ div.tocify {
 </tr>
 <tr class="even">
 <td align="left">6</td>
-<td align="left">Olivia Rodrigo</td>
-<td align="left">Good 4 U</td>
+<td align="left">Ed Sheeran</td>
+<td align="left">Bad Habits</td>
 </tr>
 <tr class="odd">
 <td align="left">7</td>
-<td align="left">Doja Cat Featuring SZA</td>
-<td align="left">Kiss Me More</td>
+<td align="left">Olivia Rodrigo</td>
+<td align="left">Good 4 U</td>
 </tr>
 <tr class="even">
 <td align="left">8</td>
-<td align="left">Drake Featuring 21 Savage &amp; Project Pat</td>
-<td align="left">Knife Talk</td>
+<td align="left">Doja Cat Featuring SZA</td>
+<td align="left">Kiss Me More</td>
 </tr>
 <tr class="odd">
 <td align="left">9</td>
-<td align="left">Lil Nas X</td>
-<td align="left">Montero (Call Me By Your Name)</td>
+<td align="left">Drake Featuring 21 Savage &amp; Project Pat</td>
+<td align="left">Knife Talk</td>
 </tr>
 <tr class="even">
 <td align="left">10</td>
-<td align="left">Lil Nas X</td>
-<td align="left">Thats What I Want</td>
+<td align="left">Dua Lipa</td>
+<td align="left">Levitating</td>
 </tr>
 </tbody>
 </table>
@@ -598,6 +598,23 @@ div.tocify {
 </tbody>
 </table>
 <p>Another R workaround for more complex tables is the package <code>htmltab</code> that offers some more flexibility.</p>
+</div>
+<div id="its-your-turn" class="section level2">
+<h2>It’s your turn! 🛠</h2>
+<p>Think about web data hosted on a <strong>static webpage</strong> that you might be interested in scraping! Comparably easy to scrape webpages are Wikipedia pages or pages that contain data in table format (as we’ve seen already).</p>
+<p>Before you start - it might be worth a thought to get Chrome + Selector Gadget. This will make your future as web scraper a bit easier.</p>
+<p><strong>Option A</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Inspect the page and try to find the elements you are interested in in the html code.</p></li>
+<li><p>Parse the url.</p></li>
+<li><p>Extract the XPath for the element you would like to scrape and parse the nodes.</p></li>
+<li><p>Inspect the html output you get. What would be the next steps now? Can you already put your output into a dataframe?</p></li>
+</ol>
+<p><strong>Option B</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Find an html table that you’d like to scrape.</p></li>
+<li><p>Scrape it.</p></li>
+</ol>
 </div>
 </div>
 <div id="scraping-multiple-pages" class="section level1">
