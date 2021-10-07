@@ -296,6 +296,13 @@ Scraping is also possible in much more complex scenarios! Watch out for workshop
 and many more `r emo::ji("star_struck")`
 
 
+# Some final remarks on good practice
+
+What is "polite" scraping?
+
+a) Terms of use stated by the website provider?
+b) Causing (unnecessary) server traffic (and CO2 emissions...)
+
 
 # Sources
 
