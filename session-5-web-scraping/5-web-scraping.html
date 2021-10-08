@@ -346,7 +346,7 @@ div.tocify {
 <li>extensive data cleaning using regular expressions</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌐</h1>
+<h1>Why webscrape with R? 🌍</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the web and b) bringing it into shape (e.g. cleaning it, getting it into tabular format).</p>
 <p>Why webscrape? While some influential people consider “Data Scientist” 👩‍💻 as the <a href="https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century">sexiest job</a> of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so?</p>
 <ul>
@@ -651,17 +651,20 @@ div.tocify {
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">download.file</span>(urls_list[i], <span class="at">destfile =</span> <span class="fu">paste0</span>(folder, names[i])),</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> <span class="cf">function</span>(e) e</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># don&#39;t kill their server   </span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># don&#39;t kill their server --&gt; be polite!  </span></span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Sys.sleep</span>(<span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)) </span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>} }</span></code></pre></div>
 <p>While R is downloading the pages for you, you can watch it directly in the directory you defined…</p>
 <p><img src="pics/html_files.png" width="70%" style="display: block; margin: auto;" /></p>
-<p><strong>Step 5</strong> Check whether it worked.</p>
+<p>Check whether it worked.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>list_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>list_files_path <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(list_files)</span></code></pre></div>
 <p>Yay! Apparently, we scraped the html pages of 802 articles.</p>
+<div id="gitignoring-files" class="section level2">
+<h2>(Git)ignoring files 🙅</h2>
+<p>In case you scraping project is is linked to GitHub (as it will be in your assignment!), it can be useful to <strong>.gitignore</strong> the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using <a href="https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html">RStudio</a>. In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on <code>Repository</code> &gt; <code>Repository Settings</code> &gt; <code>Ignored Files</code> and edit the .gitignore file (add the name of the new folder / files you don’t want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.</p>
 <p><strong>Step 5</strong> Import files and parse out information. A loop is helpful here!</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define output first</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
@@ -698,13 +701,46 @@ div.tocify {
 </ul>
 <p>and many more 🤩</p>
 </div>
-<div id="some-final-remarks-on-good-practice" class="section level1">
-<h1>Some final remarks on good practice</h1>
-<p>What is “polite” scraping?</p>
-<ol style="list-style-type: lower-alpha">
-<li>Terms of use stated by the website provider?</li>
-<li>Causing (unnecessary) server traffic (and CO2 emissions…)</li>
+</div>
+<div id="good-scraping-practice" class="section level1">
+<h1>Good scraping practice</h1>
+<p>There is a set of general rules to the game:</p>
+<ol style="list-style-type: decimal">
+<li>You take all the responsibility for your web scraping work.</li>
+<li>Think about the nature of the data. Does it entail sensitive information? Do not collect personal data without explicit permission.</li>
+<li>Take all copyrights of a country’s jurisdiction into account. If you publish data, do not commit copyright fraud.</li>
+<li>If possible, stay identifiable. Stay polite. Stay friendly. Obey the scraping etiquette.</li>
+<li>If in doubt, ask the author/creator/provider of data for permission—if your interest is entirely scientific, chances aren’t bad that you get data.</li>
 </ol>
+<div id="how-do-i-know-the-scraping-etiquette-of-a-site" class="section level2">
+<h2>How do I know the scraping etiquette of a site? 🤝</h2>
+<p>Robot exclusion standards (<code>robot.txt</code>) are informal protocols to prohibit web robots from crawling content. They list documents that are allowed to crawl and which not. It is not a technical barrier but an ask for compliance. They are located in the root directory of a website (e.g <code>https://de.wikipedia.org/robots.txt</code>).</p>
+<p>For example, let’s have a look at wikipedia’s <a href="https://de.wikipedia.org/robots.txt">robot.txt</a> file, which is very human readable.</p>
+<p>General rules are listed under <code>User-agent: *</code> which is most interesting for R-based crawlers. A universal ban for a directory looks like this <code>Disallows: /</code>, sometimes Crawl-delays are suggested (in seconds) <code>Crawl-delay: 2</code>.</p>
+</div>
+<div id="what-is-polite-scraping" class="section level2">
+<h2>What is “polite” scraping? 🐌</h2>
+<p>First thing would be not to scrape at a speed that causes trouble for their server. Therefore, whenever you loop over a list of URLs, add a <code>Sys.sleep(runif(1, 1, 2))</code> at the end of the loop.</p>
+<p>And generally, it is better practice to store data on your local drive first (<code>download.file()</code>), then parse (<code>read_html()</code>).</p>
+<p><strong>A footnote on sustainability.</strong> In the digital context, we often forget that or actions do have physical consequences. For example, training AI, using blockchain and just streaming videos do cause considerable amounts of CO2 emissions. So does bombarding a server with requests - certainly to a much lesser extent than the examples before - but please consider whether you have to re-run a large scraping project 100 times in order to debug things.</p>
+<p>Furthermore, downloading massive amounts of data may arouse attention from server administrators. Assuming that you’ve got nothing to hide, you should stay identifiable beyond your IP address.</p>
+</div>
+<div id="how-can-i-stay-identifyable" class="section level2">
+<h2>How can I stay identifyable? 👤</h2>
+<p>Option 1: Get in touch with website administrators / data owners.</p>
+<p>Option 2: Use HTTP header fields From and User-Agent to provide information about yourself.</p>
+<pre><code>url &lt;- &quot;http://a-totally-random-website.com&quot;
+
+rvest_session &lt;- session(url, 
+  add_headers(From = &quot;my@email.com&quot;, 
+              `UserAgent` = R.Version()$version.string))
+                
+scraped_text &lt;- rvest_session %&gt;% 
+            html_elements(xpath = &quot;p//a&quot;) %&gt;% 
+            html_text()
+</code></pre>
+<p>rvest’s <code>session()</code> creates a session object that responds to HTTP and HTML methods. Here, we provide our email address and the current R version as User-Agent information. This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.</p>
+</div>
 </div>
 <div id="sources" class="section level1">
 <h1>Sources</h1>

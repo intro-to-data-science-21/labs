@@ -235,7 +235,7 @@ for (i in 1:length(urls_list)) {
         download.file(urls_list[i], destfile = paste0(folder, names[i])),
         error = function(e) e
       )
-  # don't kill their server   
+  # don't kill their server --> be polite!  
       Sys.sleep(runif(1, 0, 1)) 
         
 } }
@@ -247,13 +247,17 @@ While R is downloading the pages for you, you can watch it directly in the direc
 knitr::include_graphics("pics/html_files.png")
 ```
 
-**Step 5** Check whether it worked.
+Check whether it worked.
 ```{r, eval=F}
 list_files <- list.files(folder, pattern = "0.*")
 list_files_path <- list.files(folder, pattern = "0.*", full.names = TRUE)
 length(list_files)
 ```
 Yay! Apparently, we scraped the html pages of 802 articles. 
+
+## (Git)ignoring files `r emo::ji("no_good_woman")`
+In case you scraping project is is linked to GitHub (as it will be in your assignment!), it can be useful to **.gitignore** the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using [RStudio](https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html). In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on `Repository` > `Repository Settings` > `Ignored Files` and edit the .gitignore file (add the name of the new folder / files you don't want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.
+
 
 **Step 5** Import files and parse out information. A loop is helpful here!
 ```{r, eval=F}
@@ -296,12 +300,58 @@ Scraping is also possible in much more complex scenarios! Watch out for workshop
 and many more `r emo::ji("star_struck")`
 
 
-# Some final remarks on good practice
+# Good scraping practice
 
-What is "polite" scraping?
+There is a set of general rules to the game: 
 
-a) Terms of use stated by the website provider?
-b) Causing (unnecessary) server traffic (and CO2 emissions...)
+1. You take all the responsibility for your web scraping work.
+2. Think about the nature of the data. Does it entail sensitive information? Do not collect personal data without explicit permission.
+3. Take all copyrights of a country’s jurisdiction into account. If you publish data, do not commit copyright fraud.
+4. If possible, stay identifiable. Stay polite. Stay friendly. Obey the scraping etiquette.
+5. If in doubt, ask the author/creator/provider of data for permission—if your interest is entirely scientific, chances aren’t bad that you get data.
+
+## How do I know the scraping etiquette of a site? `r emo::ji("handshake")`
+
+Robot exclusion standards (`robot.txt`) are informal protocols to prohibit web robots from crawling content. They list documents that are allowed to crawl and which not. It is not a technical barrier but an ask for compliance.
+They are located in the root directory of a website (e.g `https://de.wikipedia.org/robots.txt`). 
+
+For example, let's have a look at wikipedia's [robot.txt](https://de.wikipedia.org/robots.txt) file, which is very human readable.
+
+General rules are listed under `User-agent: *` which is most interesting for R-based crawlers. A universal ban for a directory looks like this `Disallows: /`, sometimes Crawl-delays are suggested (in seconds) `Crawl-delay: 2`.
+
+## What is "polite" scraping? `r emo::ji("snail")`
+
+First thing would be not to scrape at a speed that causes trouble for their server. Therefore, whenever you loop over a list of URLs, add a `Sys.sleep(runif(1, 1, 2))` at the end of the loop. 
+
+And generally, it is better practice to store data on your local drive first (`download.file()`), then parse (`read_html()`). 
+
+**A footnote on sustainability.** In the digital context, we often forget that or actions do have physical consequences. For example, training AI, using blockchain and just streaming videos do cause considerable amounts of CO2 emissions. So does bombarding a server with requests - certainly to a much lesser extent than the examples before - but please consider whether you have to re-run a large scraping project 100 times in order to debug things. 
+
+Furthermore, downloading massive amounts of data may arouse attention from server administrators.
+Assuming that you've got nothing to hide, you should stay identifiable beyond your IP address.
+
+## How can I stay identifyable? `r emo::ji("bust_in_silhouette")`
+
+Option 1: Get in touch with website administrators / data owners.
+
+Option 2: Use HTTP header fields From and User-Agent to provide information about yourself.
+
+```
+url <- "http://a-totally-random-website.com"
+
+rvest_session <- session(url, 
+  add_headers(From = "my@email.com", 
+              `UserAgent` = R.Version()$version.string))
+                
+scraped_text <- rvest_session %>% 
+            html_elements(xpath = "p//a") %>% 
+            html_text()
+
+```
+
+rvest's `session()` creates a session object that responds to HTTP and HTML methods.
+Here, we provide our email address and the current R version as User-Agent information.
+This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.
 
 
 # Sources
