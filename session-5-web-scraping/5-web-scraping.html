@@ -346,7 +346,7 @@ div.tocify {
 <li>extensive data cleaning using regular expressions</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌍</h1>
+<h1>Why webscrape with R? 🌏</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the web and b) bringing it into shape (e.g. cleaning it, getting it into tabular format).</p>
 <p>Why webscrape? While some influential people consider “Data Scientist” 👩‍💻 as the <a href="https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century">sexiest job</a> of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so?</p>
 <ul>
@@ -373,7 +373,7 @@ div.tocify {
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">xpath =</span> <span class="st">&#39;//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]&#39;</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>carnival <span class="ot">&lt;-</span> <span class="fu">html_text</span>(parsed_nodes)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>carnival</span></code></pre></div>
-<pre><code>## [1] &quot;The Cologne carnival is one of the largest street festivals in Europe. In Cologne, the carnival season officially starts on 11 November at 11 minutes past 11 a.m. with the proclamation of the new Carnival Season, and continues until Ash Wednesday. However, the so-called \&quot;Tolle Tage\&quot; (crazy days) do not start until Weiberfastnacht (Women&#39;s Carnival) or, in dialect, Wieverfastelovend, the Thursday before Ash Wednesday, which is the beginning of the street carnival. Zülpicher Strasse and its surroundings, Neumarkt square, Heumarkt and all bars and pubs in the city are crowded with people in costumes dancing and drinking in the streets. Hundreds of thousands of visitors flock to Cologne during this time. Generally, around a million people celebrate in the streets on the Thursday before Ash Wednesday.[67]&quot;</code></pre>
+<pre><code>## [1] &quot;Cologne is also famous for Eau de Cologne (German: Kölnisch Wasser; lit: \&quot;Water of Cologne\&quot;), a perfume created by Italian expatriate Johann Maria Farina at the beginning of the 18th century. During the 18th century, this perfume became increasingly popular, was exported all over Europe by the Farina family and Farina became a household name for Eau de Cologne. In 1803 Wilhelm Mülhens entered into a contract with an unrelated person from Italy named Carlo Francesco Farina who granted him the right to use his family name and Mühlens opened a small factory at Cologne&#39;s Glockengasse. In later years, and after various court battles, his grandson Ferdinand Mülhens was forced to abandon the name Farina for the company and their product. He decided to use the house number given to the factory at Glockengasse during the French occupation in the early 19th century, 4711. Today, original Eau de Cologne is still produced in Cologne by both the Farina family, currently in the eighth generation, and by Mäurer &amp; Wirtz who bought the 4711 brand in 2006.\n&quot;</code></pre>
 <p>How can do I know THIS <code>xpath = '//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]'</code> ?</p>
 <p>There are two options:</p>
 <p><strong>Option 1.</strong> On your page of interest, go to a table that you’d like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View &gt; Developer &gt; inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy &gt; Copy Xpath. That’s it.</p>
@@ -387,12 +387,12 @@ div.tocify {
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hot100page <span class="ot">&lt;-</span> <span class="st">&quot;https://www.billboard.com/charts/hot-100&quot;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>hot100 <span class="ot">&lt;-</span> <span class="fu">read_html</span>(hot100page)</span></code></pre></div>
 <p><strong>Step 3.</strong> Extract information. When going through different levels of html, you can also use tidyverse logic.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>body_nodes <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">html_node</span>(<span class="st">&quot;body&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">html_children</span>()</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>body_nodes <span class="sc">%&gt;%</span> </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">html_children</span>()</span></code></pre></div>
+<pre><code>body_nodes &lt;- hot100 %&gt;% 
+ html_node(&quot;body&quot;) %&gt;% 
+ html_children()
+
+body_nodes %&gt;% 
+ html_children()</code></pre>
 <p>play with that yourself if you like…</p>
 <p>Now let’s get more specific - <code>xml_find_all()</code> takes xpath syntax!</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
@@ -425,18 +425,18 @@ div.tocify {
 <tbody>
 <tr class="odd">
 <td align="left">1</td>
-<td align="left">Coldplay x BTS</td>
-<td align="left">My Universe</td>
-</tr>
-<tr class="even">
-<td align="left">2</td>
 <td align="left">The Kid LAROI &amp; Justin Bieber</td>
 <td align="left">Stay</td>
 </tr>
-<tr class="odd">
-<td align="left">3</td>
+<tr class="even">
+<td align="left">2</td>
 <td align="left">Lil Nas X &amp; Jack Harlow</td>
 <td align="left">Industry Baby</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">Walker Hayes</td>
+<td align="left">Fancy Like</td>
 </tr>
 <tr class="even">
 <td align="left">4</td>
@@ -445,23 +445,23 @@ div.tocify {
 </tr>
 <tr class="odd">
 <td align="left">5</td>
-<td align="left">Walker Hayes</td>
-<td align="left">Fancy Like</td>
-</tr>
-<tr class="even">
-<td align="left">6</td>
 <td align="left">Ed Sheeran</td>
 <td align="left">Bad Habits</td>
 </tr>
-<tr class="odd">
-<td align="left">7</td>
+<tr class="even">
+<td align="left">6</td>
 <td align="left">Olivia Rodrigo</td>
 <td align="left">Good 4 U</td>
 </tr>
-<tr class="even">
-<td align="left">8</td>
+<tr class="odd">
+<td align="left">7</td>
 <td align="left">Doja Cat Featuring SZA</td>
 <td align="left">Kiss Me More</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="left">Dua Lipa</td>
+<td align="left">Levitating</td>
 </tr>
 <tr class="odd">
 <td align="left">9</td>
@@ -470,8 +470,8 @@ div.tocify {
 </tr>
 <tr class="even">
 <td align="left">10</td>
-<td align="left">Dua Lipa</td>
-<td align="left">Levitating</td>
+<td align="left">Wizkid Featuring Justin Bieber &amp; Tems</td>
+<td align="left">Essence</td>
 </tr>
 </tbody>
 </table>

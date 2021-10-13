@@ -121,7 +121,7 @@ hot100 <- read_html(hot100page)
 ```
 
 **Step 3.** Extract information. When going through different levels of html, you can also use tidyverse logic.
-```{r, eval=F}
+```
 body_nodes <- hot100 %>% 
  html_node("body") %>% 
  html_children()
