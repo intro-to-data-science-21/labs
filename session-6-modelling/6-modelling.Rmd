@@ -1,0 +1,88 @@
+---
+title: "Modelling"
+subtitle: "Reporting, summarising and communicating models in R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+***
+Welcome back! I hope you all enjoyed the course-free Midterm Week! `r emo::ji("beach with umbrella")`
+
+Last week we talked a bit about how you might scrape innovative data from the web. Collecting data is not an end in itself, rather you do it to be able to run models that explore, infer or predict outcomes. We won't focus on the statistical considerations that inform your model choice, instead we will show you how to: 
+
+* use formulas to specify multiple models
+* processing (estimation) model results with `broom`
+* summarise outputs with `modelsummary`
+* communicate results through plots and tables
+
+# The Model Workflow with R
+
+While the last session dealt with one of the sexier areas of Data Science (Web Scraping), today we will go back to the **bread and butter** `r emo::ji("bread")` of any self-respecting data scientist - modelling! 
+
+But if we are not even talking about ML, DL or model choice, why bother? Well, as with most things it is worth to revisit fundamentals from time to time. By investing just a little more effort here, we can create *much better* reports and papers! 
+
+In general, remember, your basic **workflow for evaluating and reporting models** is the following:
+
+```{r}
+
+```
+
+# Using formulae in R 
+
+R was specifically designed with statistical analysis in mind, it even includes a special object class `formula` for formulating models.
+
+## Syntax
+
+A quick recap on the syntax that you need to use within formulae.
+
+```{r, eval=F}
+y ~ x1 + x2 # 2 independent variables
+
+y ~ x1 * x2 # Interaction terms
+
+y ~ x + I(x^2) # higher order terms
+```
+
+## Most common applications 
+
+Since we encourage you to **fit many models**, formulae can facilitate the iteration process. 
+
+```{r}
+formula_string <- paste("mpg", "~ am")
+form <- as.formula(formula_string) # needs to be transformed to correct class
+
+
+# they are equivalent 
+lm(form, data = mtcars)
+lm(mpg ~ am, data = mtcars)
+```
+This way of using model formulas makes running many similar models (i.e.. iterating over differnt indep. vars or dep. vars) super easy:
+
+```{r, eval=F}
+# iterate over different y vars.
+
+lm_fun_iter_y <-  function(dep_var) {
+  lm( as.formula( paste(dep_var, "~ am") ), data = mtcars)
+}
+
+# iterate over different x vars. 
+
+lm_fun_iter_x <- function(indep_var) {
+  lm( as.formula( paste("mpg ~", paste(indep_var, collapse = "+") ), data = mtcars)
+}
+```
+
