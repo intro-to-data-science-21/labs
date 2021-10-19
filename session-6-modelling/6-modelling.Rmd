@@ -29,6 +29,7 @@ Last week we talked a bit about how you might scrape innovative data from the we
 * summarise outputs with `modelsummary`
 * communicate results through plots and tables
 
+***
 # The Model Workflow with R
 
 While the last session dealt with one of the sexier areas of Data Science (Web Scraping), today we will go back to the **bread and butter** `r emo::ji("bread")` of any self-respecting data scientist - modelling! 
@@ -41,7 +42,8 @@ In general, remember, your basic **workflow for evaluating and reporting models*
 
 ```
 
-# Using formulae in R 
+***
+# Using Formulae in R 
 
 R was specifically designed with statistical analysis in mind, it even includes a special object class `formula` for formulating models.
 
@@ -52,14 +54,16 @@ A quick recap on the syntax that you need to use within formulae.
 ```{r, eval=F}
 y ~ x1 + x2 # 2 independent variables
 
+y ~ . # include all other columns in data as x
+
 y ~ x1 * x2 # Interaction terms
 
 y ~ x + I(x^2) # higher order terms
 ```
 
-## Most common applications 
+## For Iteration 
 
-Since we encourage you to **fit many models**, formulae can facilitate the iteration process. 
+We encourage you to **fit many models**, ranging from simple to complex, and formulae can help you in the iteration process. 
 
 ```{r}
 formula_string <- paste("mpg", "~ am")
@@ -76,13 +80,36 @@ This way of using model formulas makes running many similar models (i.e.. iterat
 # iterate over different y vars.
 
 lm_fun_iter_y <-  function(dep_var) {
-  lm( as.formula( paste(dep_var, "~ am") ), data = mtcars)
+  lm( as.formula(paste(dep_var, "~ am")), data = mtcars)
 }
 
 # iterate over different x vars. 
 
 lm_fun_iter_x <- function(indep_var) {
-  lm( as.formula( paste("mpg ~", paste(indep_var, collapse = "+") ), data = mtcars)
+  lm( as.formula(paste("mpg ~", paste(indep_var, collapse = "+")), data = mtcars)
 }
 ```
 
+***
+# Model Output with `broom`
+
+## Tidying Model Ojects
+
+## Broom with Many Models
+
+***
+# Modelling Results with `modelsummary`
+
+## Using Regression Tables
+
+## Using Plots
+
+***
+# Further Resources 
+
+## Modelling Packages
+
+## Visualisation tools
+
+***
+# Appendix: Tools to Prepare the Workshop
