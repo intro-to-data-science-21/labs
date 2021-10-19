@@ -339,27 +339,31 @@ div.tocify {
 <li>summarise outputs with <code>modelsummary</code></li>
 <li>communicate results through plots and tables</li>
 </ul>
+<hr />
 <div id="the-model-workflow-with-r" class="section level1">
 <h1>The Model Workflow with R</h1>
 <p>While the last session dealt with one of the sexier areas of Data Science (Web Scraping), today we will go back to the <strong>bread and butter</strong> 🍞 of any self-respecting data scientist - modelling!</p>
 <p>But if we are not even talking about ML, DL or model choice, why bother? Well, as with most things it is worth to revisit fundamentals from time to time. By investing just a little more effort here, we can create <em>much better</em> reports and papers!</p>
 <p>In general, remember, your basic <strong>workflow for evaluating and reporting models</strong> is the following:</p>
+<hr />
 </div>
 <div id="using-formulae-in-r" class="section level1">
-<h1>Using formulae in R</h1>
+<h1>Using Formulae in R</h1>
 <p>R was specifically designed with statistical analysis in mind, it even includes a special object class <code>formula</code> for formulating models.</p>
 <div id="syntax" class="section level2">
 <h2>Syntax</h2>
 <p>A quick recap on the syntax that you need to use within formulae.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="co"># 2 independent variables</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">*</span> x2 <span class="co"># Interaction terms</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> . <span class="co"># include all other columns in data as x</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="co"># higher order terms</span></span></code></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">*</span> x2 <span class="co"># Interaction terms</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="co"># higher order terms</span></span></code></pre></div>
 </div>
-<div id="most-common-applications" class="section level2">
-<h2>Most common applications</h2>
-<p>Since we encourage you to <strong>fit many models</strong>, formulae can facilitate the iteration process.</p>
+<div id="for-iteration" class="section level2">
+<h2>For Iteration</h2>
+<p>We encourage you to <strong>fit many models</strong>, ranging from simple to complex, and formulae can help you in the iteration process.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>formula_string <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;mpg&quot;</span>, <span class="st">&quot;~ am&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(formula_string) <span class="co"># needs to be transformed to correct class</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -385,15 +389,49 @@ div.tocify {
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate over different y vars.</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lm_fun_iter_y <span class="ot">&lt;-</span>  <span class="cf">function</span>(dep_var) {</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>( <span class="fu">paste</span>(dep_var, <span class="st">&quot;~ am&quot;</span>) ), <span class="at">data =</span> mtcars)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>(<span class="fu">paste</span>(dep_var, <span class="st">&quot;~ am&quot;</span>)), <span class="at">data =</span> mtcars)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate over different x vars. </span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>lm_fun_iter_x <span class="ot">&lt;-</span> <span class="cf">function</span>(indep_var) {</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>( <span class="fu">paste</span>(<span class="st">&quot;mpg ~&quot;</span>, <span class="fu">paste</span>(indep_var, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>) ), <span class="at">data =</span> mtcars)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;mpg ~&quot;</span>, <span class="fu">paste</span>(indep_var, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>)), <span class="at">data =</span> mtcars)</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+<hr />
 </div>
+</div>
+<div id="model-output-with-broom" class="section level1">
+<h1>Model Output with <code>broom</code></h1>
+<div id="tidying-model-ojects" class="section level2">
+<h2>Tidying Model Ojects</h2>
+</div>
+<div id="broom-with-many-models" class="section level2">
+<h2>Broom with Many Models</h2>
+<hr />
+</div>
+</div>
+<div id="modelling-results-with-modelsummary" class="section level1">
+<h1>Modelling Results with <code>modelsummary</code></h1>
+<div id="using-regression-tables" class="section level2">
+<h2>Using Regression Tables</h2>
+</div>
+<div id="using-plots" class="section level2">
+<h2>Using Plots</h2>
+<hr />
+</div>
+</div>
+<div id="further-resources" class="section level1">
+<h1>Further Resources</h1>
+<div id="modelling-packages" class="section level2">
+<h2>Modelling Packages</h2>
+</div>
+<div id="visualisation-tools" class="section level2">
+<h2>Visualisation tools</h2>
+<hr />
+</div>
+</div>
+<div id="appendix-tools-to-prepare-the-workshop" class="section level1">
+<h1>Appendix: Tools to Prepare the Workshop</h1>
 </div>
 
 &nbsp;
