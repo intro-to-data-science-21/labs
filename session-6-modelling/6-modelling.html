@@ -479,7 +479,7 @@ div.tocify {
 {"columns":[{"label":["r.squared"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["adj.r.squared"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sigma"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["df.residual"],"name":[11],"type":["int"],"align":["right"]},{"label":["nobs"],"name":[12],"type":["int"],"align":["right"]}],"data":[{"1":"0.24","2":"0.24","3":"8.6","4":"169","5":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013","6":"4","7":"-7569","8":"15149","9":"15183","10":"156607","11":"2115","12":"2120"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<ol start="2" style="list-style-type: decimal">
+<ol start="3" style="list-style-type: decimal">
 <li><code>augment()</code>: Adds information about observations to a dataset.</li>
 </ol>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(multiv_model_out[[<span class="dv">3</span>]], <span class="at">se_fit =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
@@ -488,7 +488,7 @@ div.tocify {
 {"columns":[{"label":[".rownames"],"name":[1],"type":["chr"],"align":["left"]},{"label":["life_expectancy"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["population"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["total_expenditure"],"name":[5],"type":["dbl"],"align":["right"]},{"label":[".fitted"],"name":[6],"type":["dbl"],"align":["right"]},{"label":[".se.fit"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".resid"],"name":[8],"type":["dbl"],"align":["right"]},{"label":[".hat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":[".sigma"],"name":[10],"type":["dbl"],"align":["right"]},{"label":[".cooksd"],"name":[11],"type":["dbl"],"align":["right"]},{"label":[".std.resid"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"65","3":"33736494","4":"584","5":"8.2","6":"68","7":"0.31","8":"-3.3","9":"0.0013","10":"8.6","11":"0.000037","12":"-0.38"},{"1":"2","2":"60","3":"327582","4":"613","5":"8.2","6":"68","7":"0.30","8":"-8.4","9":"0.0012","10":"8.6","11":"0.000228","12":"-0.98"},{"1":"3","2":"60","3":"31731688","4":"632","5":"8.1","6":"68","7":"0.30","8":"-8.4","9":"0.0012","10":"8.6","11":"0.000234","12":"-0.98"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>I mean, doesn’t this look a lot nicer?</p>
+<p>I mean, doesn’t this look a lot more accessible?</p>
 </div>
 <div id="broom-with-many-models" class="section level2">
 <h2>Broom with Many Models</h2>
@@ -500,7 +500,8 @@ div.tocify {
 {"columns":[{"label":["model_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Bivariate OLS","2":"(Intercept)","3":"67.03504","4":"0.193911","5":"346","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},{"1":"Bivariate OLS","2":"gdp","3":"0.00031","4":"0.000012","5":"26","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000027087"},{"1":"Multivariate OLS","2":"(Intercept)","3":"57.72851","4":"0.459634","5":"126","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},{"1":"Multivariate OLS","2":"gdp","3":"0.00019","4":"0.000011","5":"16","6":"0.000000000000000000000000000000000000000000000000000000007046080207159205252956879604681944349109276933753942198877070380110675200163545"},{"1":"Multivariate OLS","2":"alcohol","3":"0.30043","4":"0.042876","5":"7","6":"0.000000000003186303894786989532530612929583701880761892333282503386726602911949157714843750000000000000000000000000000000000000000000000"},{"1":"Multivariate OLS","2":"bmi","3":"0.22044","4":"0.008342","5":"26","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results.</p>
+<p>Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results. You can plot the residuals, the goodness of fit statistics etc. Similarly you could also use the <code>glance()</code> to provide some robustness statistics or descriptive tables.</p>
+<p>What we will be focusing on in the next section is how to <strong>present your results</strong>!</p>
 <hr />
 </div>
 </div>
@@ -1206,21 +1207,42 @@ F
 </div>
 <div id="using-plots" class="section level2">
 <h2>Using Plots</h2>
+<p>If you are after an alternative way to present your results, you might also consider a nice <strong>coefficient plot</strong> 🎨</p>
+<p>Again <code>modelsummary</code> provides a very accessible function to do so: <code>modelplot()</code>. As with the regression table you input the <span style="color: red;">Model List</span> and not the tidied output. This already happens under the hood.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelplot</span>(multiv_model_out[[<span class="dv">2</span>]], <span class="at">coef_omit =</span> <span class="st">&#39;Interc&#39;</span> )</span></code></pre></div>
+<p><img src="6-modelling_files/figure-html/unnamed-chunk-21-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>The default output is already pretty good, but how can we improve on it? More importantly can we create a coefficient plot that displays all our models?</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelplot</span>(multiv_model_out, <span class="at">coef_omit =</span> <span class="st">&#39;Interc&#39;</span>)</span></code></pre></div>
+<p><img src="6-modelling_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Now we only need to customise the plot to our liking:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The palette with grey:</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cbPalette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#999999&quot;</span>, <span class="st">&quot;#E69F00&quot;</span>, <span class="st">&quot;#56B4E9&quot;</span>, <span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;#F0E442&quot;</span>, <span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>, <span class="st">&quot;#CC79A7&quot;</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or you might use any other Paletter inherent to R</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">modelplot</span>(multiv_model_out, <span class="at">coef_omit =</span> <span class="st">&quot;Intercept&quot;</span>) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Coefficients&#39;</span>, </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">&#39;Term names&#39;</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&#39;Linear regression models of &quot;Life expectancy&quot;&#39;</span>,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">&quot;Comparing multiple models, the data originated at the WHO&quot;</span>) <span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> cbPalette)</span></code></pre></div>
+<p><img src="6-modelling_files/figure-html/unnamed-chunk-23-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>We will cover the visualisation aspect in R in much greater detail in the coming session, so hopefuly the section on <strong>coefficient plot</strong> will become clearer then!</p>
 <hr />
 </div>
 </div>
-<div id="further-resources" class="section level1">
-<h1>Further Resources</h1>
+<div id="appendix-1-tools-to-prepare-the-workshop" class="section level1">
+<h1>Appendix 1: Tools to Prepare the Workshop</h1>
+<hr />
+</div>
+<div id="appenidx-2-further-resources" class="section level1">
+<h1>Appenidx 2: Further Resources</h1>
 <div id="modelling-packages" class="section level2">
 <h2>Modelling Packages</h2>
 </div>
 <div id="visualisation-tools" class="section level2">
 <h2>Visualisation tools</h2>
-<hr />
 </div>
-</div>
-<div id="appendix-tools-to-prepare-the-workshop" class="section level1">
-<h1>Appendix: Tools to Prepare the Workshop</h1>
 </div>
 
 &nbsp;

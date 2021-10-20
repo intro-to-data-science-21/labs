@@ -220,13 +220,15 @@ broom::tidy(multiv_model_out[[3]], conf.int = TRUE, conf.level = 0.95)
 broom::glance(multiv_model_out[[3]])
 ```
 
-2) `augment()`: Adds information about observations to a dataset.
+3) `augment()`: Adds information about observations to a dataset.
 
 ```{r}
 augment(multiv_model_out[[3]], se_fit = TRUE) %>% head(3)
 ```
 
-I mean, doesn't this look a lot nicer?
+I mean, doesn't this look a lot more accessible?
+
+
 
 ## Broom with Many Models
 
@@ -237,7 +239,9 @@ multiv_model_out_broom <- map_dfr(multiv_model_out, broom::tidy, .id = "model_ty
 multiv_model_out_broom %>% head()
 ```
 
-Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results.
+Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results. You can plot the residuals, the goodness of fit statistics etc. Similarly you could also use the `glance()` to provide some robustness statistics or descriptive tables. 
+
+What we will be focusing on in the next section is how to **present your results**!
 
 ***
 # Modelling Results with `modelsummary`
@@ -307,12 +311,47 @@ mod_table %>%
 
 ## Using Plots
 
+If you are after an alternative way to present your results, you might also consider a nice **coefficient plot** `r emo::ji("artist palette")`
+
+Again `modelsummary` provides a very accessible function to do so: `modelplot()`. As with the regression table you input the `r colorise("Model List", "red")` and not the tidied output. This already happens under the hood. 
+
+```{r, fig.align='center', echo=T, out.width = "70%"}
+modelplot(multiv_model_out[[2]], coef_omit = 'Interc' )
+```
+
+The default output is already pretty good, but how can we improve on it? More importantly can we create a coefficient plot that displays all our models?
+
+```{r, fig.align='center', echo=T, out.width = "70%"}
+modelplot(multiv_model_out, coef_omit = 'Interc')
+```
+
+Now we only need to customise the plot to our liking:
+
+```{r, fig.align='center', echo=T, out.width = "70%"}
+# The palette with grey:
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# Or you might use any other Paletter inherent to R
+
+modelplot(multiv_model_out, coef_omit = "Intercept") +
+    labs(x = 'Coefficients', 
+         y = 'Term names',
+         title = 'Linear regression models of "Life expectancy"',
+         caption = "Comparing multiple models, the data originated at the WHO") +
+    scale_color_manual(values = cbPalette)
+```
+
+We will cover the visualisation aspect in R in much greater detail in the coming session, so hopefuly the section on **coefficient plot** will become clearer then! 
+
 ***
-# Further Resources 
+# Appendix 1: Tools to Prepare the Workshop
+
+
+***
+# Appenidx 2: Further Resources 
 
 ## Modelling Packages
 
+
 ## Visualisation tools
 
-***
-# Appendix: Tools to Prepare the Workshop
