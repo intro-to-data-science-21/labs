@@ -49,10 +49,10 @@ colorise <- function(x, color) {
 ***
 Welcome back! I hope you all enjoyed the course-free Midterm Week! `r emo::ji("beach with umbrella")`
 
-Last week we talked a bit about how you might scrape innovative data from the web. Collecting data is not an end in itself, rather you do it to be able to run models that explore, infer or predict outcomes. We won't focus on the statistical considerations that inform your model choice, instead we will show you how to: 
+Last session we talked a bit about how you might scrape innovative data from the web. Collecting data is not an end in itself, rather you do it to be able to run models that explore, infer or predict outcomes. We won't focus on the statistical considerations that inform your model choice, instead we will show you how to: 
 
 * use formulas to specify multiple models
-* processing (estimation) model results with `broom`
+* process (estimate) model results with `broom`
 * summarise outputs with `modelsummary`
 * communicate results through plots and tables
 
@@ -135,17 +135,22 @@ Often, the modelling process requires you to run the same specification with **m
 **Step 1**: You define a function that let's you plug in different variables at x or y. These functions take the y or x variable(s) as a string and return a model object.
 
 ```{r}
-# iterate over different y variables.
+# function to include different y variables.
 
 lm_fun_iter_y <-  function(dep_var) {
   lm( as.formula(paste(dep_var, "~ gdp")), data = life_expec_dat)
 }
 
-# iterate over different x variables. 
+# function to include different x variables. 
 
 lm_fun_iter_x <- function(indep_var) {
   lm( as.formula(paste("life_expectancy ~", paste(indep_var, collapse = "+"))), data = life_expec_dat)
 }
+
+## check what the function does
+#lm_fun_iter_x <- function(indep_var) {
+#  print(paste("life_expectancy ~", paste(indep_var, collapse = "+")))
+#}
 ```
 
 `r colorise("Notice:", "red")` It is unlikely you will run just a simple bivariate regression (i.e. your model will include many independent variables). Therefore, we need to use a nested paste function that combines (`collapse()`) the input character vector with `+`.
@@ -202,7 +207,7 @@ Extracting this information from the vanilla model output is possible, but hardl
 ```{r, out.lines = 10}
 str(multiv_model_out[[3]])
 ```
-## Tidying Model Ojects
+## Tidying Model Objects
 
 Luckily we don't have to deal with this. We use a package called `broom` that is part of the [tidyverse](https://www.tidyverse.org/) and more precisely [tidymodels](https://www.tidymodels.org/). The latter offers a lot of cool packages that have their own tutorials, so check them out! `r emo::ji("strong")`. 
 
