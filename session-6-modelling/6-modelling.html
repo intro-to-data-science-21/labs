@@ -35,6 +35,8 @@
 <script src="6-modelling_files/navigation-1.1/tabsets.js"></script>
 <link href="6-modelling_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="6-modelling_files/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="6-modelling_files/kePrint-0.0.1/kePrint.js"></script>
+<link href="6-modelling_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -352,7 +354,7 @@ div.tocify {
 <div id="setup" class="section level1">
 <h1>Setup</h1>
 <p>Before we get started with the actual coding we need to load a few packages and get some data. We are using <a href="https://www.kaggle.com/kumarajarshi/life-expectancy-who">this WHO dataset</a> on life expectancy.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, broom, modelsummary, estimatr, janitor, modelr)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(kableExtra, tidyverse, broom, modelsummary, estimatr, janitor, modelr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>life_expec_dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;life_expectancy.csv&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">clean_names</span>()</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(life_expec_dat)</span></code></pre></div>
@@ -423,10 +425,10 @@ div.tocify {
 <p>What if you want to run several different multivariate models? In addition to the code from the lectures you could use <code>modelR::formulas</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create list of combinations of vars</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>indep_vars_combos <span class="ot">&lt;-</span> modelr<span class="sc">::</span><span class="fu">formulas</span>(<span class="sc">~</span>life_expectancy,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">bivariate =</span> <span class="sc">~</span> gdp,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">multivariate =</span> <span class="sc">~</span> gdp <span class="sc">+</span> population <span class="sc">+</span> total_expenditure,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">interaction =</span> <span class="sc">~</span> gdp <span class="sc">+</span> population <span class="sc">*</span> total_expenditure,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">higher_order =</span> <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">I</span>(gdp<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Bivariate OLS&quot;</span>  <span class="ot">=</span> <span class="er">~</span> gdp,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Multivariate OLS&quot;</span> <span class="ot">=</span> <span class="er">~</span> gdp <span class="sc">+</span> alcohol <span class="sc">+</span> bmi <span class="sc">+</span> total_expenditure,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Interaction&quot;</span> <span class="ot">=</span> <span class="er">~</span> population <span class="sc">+</span> gdp <span class="sc">*</span> total_expenditure,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Polynomial&quot;</span> <span class="ot">=</span> <span class="er">~</span> gdp <span class="sc">+</span> <span class="fu">I</span>(gdp<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>multiv_model_out <span class="ot">&lt;-</span> indep_vars_combos <span class="sc">%&gt;%</span>  <span class="fu">map</span>(lm, <span class="at">data =</span> life_expec_dat)</span></code></pre></div>
@@ -445,14 +447,14 @@ div.tocify {
 <p>Extracting this information from the vanilla model output is possible, but hardly ideal:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(multiv_model_out[[<span class="dv">3</span>]])</span></code></pre></div>
 <pre><code>## List of 13
-##  $ coefficients : Named num [1:5] 63.16424473843 0.000312881029 0.000000002532 0.558525960045 -0.000000000508
-##   ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;(Intercept)&quot; &quot;gdp&quot; &quot;population&quot; &quot;total_expenditure&quot; ...
-##  $ residuals    : Named num [1:2120] -2.85 -8.02 -7.95 -8.63 -8.38 ...
+##  $ coefficients : Named num [1:5] 61.927179692098 0.000000000642 0.000465810506 0.757103785746 -0.000020625313
+##   ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;(Intercept)&quot; &quot;population&quot; &quot;gdp&quot; &quot;total_expenditure&quot; ...
+##  $ residuals    : Named num [1:2120] -3.3 -8.4 -8.39 -9.07 -8.71 ...
 ##   ..- attr(*, &quot;names&quot;)= chr [1:2120] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
-##  $ effects      : Named num [1:2120] -3158.94 212.28 3.59 -58.45 -1.47 ...
-##   ..- attr(*, &quot;names&quot;)= chr [1:2120] &quot;(Intercept)&quot; &quot;gdp&quot; &quot;population&quot; &quot;total_expenditure&quot; ...
+##  $ effects      : Named num [1:2120] -3158.9 -10.1 212.1 -58.4 -39.1 ...
+##   ..- attr(*, &quot;names&quot;)= chr [1:2120] &quot;(Intercept)&quot; &quot;population&quot; &quot;gdp&quot; &quot;total_expenditure&quot; ...
 ##  $ rank         : int 5
-##  $ fitted.values: Named num [1:2120] 67.9 67.9 67.9 68.1 67.6 ...
+##  $ fitted.values: Named num [1:2120] 68.3 68.3 68.3 68.6 67.9 ...
 ##   ..- attr(*, &quot;names&quot;)= chr [1:2120] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ....</code></pre>
 <div id="tidying-model-ojects" class="section level2">
@@ -465,7 +467,7 @@ div.tocify {
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">tidy</span>(multiv_model_out[[<span class="dv">3</span>]], <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"63.16424473843","3":"0.537655308","4":"117.48","5":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","6":"62.1098563030","7":"64.2186331739"},{"1":"gdp","2":"0.00031288103","3":"0.000014068","4":"22.24","5":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012","6":"0.0002852918","7":"0.0003404702"},{"1":"population","2":"0.00000000253","3":"0.000000014","4":"0.19","5":"0.851715766630702475481484725605696439743041992187500000000000000000000000000000000000000000000000000","6":"-0.0000000240","7":"0.0000000291"},{"1":"total_expenditure","2":"0.55852596004","3":"0.086556446","4":"6.45","5":"0.000000000135778740068988845293867444032856906660500229122590098995715379714965820312500000000000000","6":"0.3887813028","7":"0.7282706173"},{"1":"population:total_expenditure","2":"-0.00000000051","3":"0.000000003","4":"-0.17","5":"0.864618461973088225924755079176975414156913757324218750000000000000000000000000000000000000000000000","6":"-0.0000000064","7":"0.0000000053"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"61.92717969210","3":"0.586489419","4":"105.59","5":"0.000000000000000000000000000000000000","6":"60.7770233522","7":"63.0773360320"},{"1":"population","2":"0.00000000064","3":"0.000000003","4":"0.22","5":"0.829501797154820419422094346373341978","6":"-0.0000000052","7":"0.0000000065"},{"1":"gdp","2":"0.00046581051","3":"0.000036477","4":"12.77","5":"0.000000000000000000000000000000000005","6":"0.0003942763","7":"0.0005373447"},{"1":"total_expenditure","2":"0.75710378575","3":"0.093027946","4":"8.14","5":"0.000000000000000675625136553460870407","6":"0.5746679593","7":"0.9395396122"},{"1":"gdp:total_expenditure","2":"-0.00002062531","3":"0.000004545","4":"-4.54","5":"0.000005984860834873340188237375580904","6":"-0.0000295376","7":"-0.0000117130"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <ol start="2" style="list-style-type: decimal">
@@ -474,7 +476,7 @@ div.tocify {
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">glance</span>(multiv_model_out[[<span class="dv">3</span>]])</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["r.squared"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["adj.r.squared"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sigma"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["df.residual"],"name":[11],"type":["int"],"align":["right"]},{"label":["nobs"],"name":[12],"type":["int"],"align":["right"]}],"data":[{"1":"0.23","2":"0.23","3":"8.6","4":"162","5":"0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000036","6":"4","7":"-7579","8":"15170","9":"15204","10":"158130","11":"2115","12":"2120"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["r.squared"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["adj.r.squared"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sigma"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["df.residual"],"name":[11],"type":["int"],"align":["right"]},{"label":["nobs"],"name":[12],"type":["int"],"align":["right"]}],"data":[{"1":"0.24","2":"0.24","3":"8.6","4":"169","5":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013","6":"4","7":"-7569","8":"15149","9":"15183","10":"156607","11":"2115","12":"2120"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <ol start="2" style="list-style-type: decimal">
@@ -483,30 +485,724 @@ div.tocify {
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(multiv_model_out[[<span class="dv">3</span>]], <span class="at">se_fit =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[".rownames"],"name":[1],"type":["chr"],"align":["left"]},{"label":["life_expectancy"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["gdp"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["population"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["total_expenditure"],"name":[5],"type":["dbl"],"align":["right"]},{"label":[".fitted"],"name":[6],"type":["dbl"],"align":["right"]},{"label":[".se.fit"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".resid"],"name":[8],"type":["dbl"],"align":["right"]},{"label":[".hat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":[".sigma"],"name":[10],"type":["dbl"],"align":["right"]},{"label":[".cooksd"],"name":[11],"type":["dbl"],"align":["right"]},{"label":[".std.resid"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"65","3":"584","4":"33736494","5":"8.2","6":"68","7":"0.41","8":"-2.9","9":"0.0023","10":"8.6","11":"0.000049","12":"-0.33"},{"1":"2","2":"60","3":"613","4":"327582","5":"8.2","6":"68","7":"0.30","8":"-8.0","9":"0.0012","10":"8.6","11":"0.000205","12":"-0.93"},{"1":"3","2":"60","3":"632","4":"31731688","5":"8.1","6":"68","7":"0.39","8":"-8.0","9":"0.0021","10":"8.6","11":"0.000349","12":"-0.92"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[".rownames"],"name":[1],"type":["chr"],"align":["left"]},{"label":["life_expectancy"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["population"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["total_expenditure"],"name":[5],"type":["dbl"],"align":["right"]},{"label":[".fitted"],"name":[6],"type":["dbl"],"align":["right"]},{"label":[".se.fit"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".resid"],"name":[8],"type":["dbl"],"align":["right"]},{"label":[".hat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":[".sigma"],"name":[10],"type":["dbl"],"align":["right"]},{"label":[".cooksd"],"name":[11],"type":["dbl"],"align":["right"]},{"label":[".std.resid"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"65","3":"33736494","4":"584","5":"8.2","6":"68","7":"0.31","8":"-3.3","9":"0.0013","10":"8.6","11":"0.000037","12":"-0.38"},{"1":"2","2":"60","3":"327582","4":"613","5":"8.2","6":"68","7":"0.30","8":"-8.4","9":"0.0012","10":"8.6","11":"0.000228","12":"-0.98"},{"1":"3","2":"60","3":"31731688","4":"632","5":"8.1","6":"68","7":"0.30","8":"-8.4","9":"0.0012","10":"8.6","11":"0.000234","12":"-0.98"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>I mean, doesn’t this look a lot nicer?</p>
 </div>
 <div id="broom-with-many-models" class="section level2">
 <h2>Broom with Many Models</h2>
-<p>Where <code>broom</code> really shines, is in dealing with many models like we have in our <code>multiv_model_out</code>. I include the .id argument in map to add a model identifier that consists of the names of the elements in the list.</p>
+<p>Where <code>broom</code> really shines, is in dealing with many models like we have in our <code>multiv_model_out</code>. It allows us to easily move away from the generally painful-to-deal-with lists and create yet retain each of the three important model returns. Since our example replicates several variables in different models, I include the .id argument in map. It adds a column to our tibble with an <strong>model identifier</strong>. In our case this identifier consists of the names of the elements in the list.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>multiv_model_out_broom <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(multiv_model_out, broom<span class="sc">::</span>tidy, <span class="at">.id =</span> <span class="st">&quot;model_type&quot;</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>multiv_model_out_broom <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["model_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"bivariate","2":"(Intercept)","3":"67.03504314149","4":"0.193910883","5":"345.700","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},{"1":"bivariate","2":"gdp","3":"0.00031165668","4":"0.000012024","5":"25.919","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000027"},{"1":"multivariate","2":"(Intercept)","3":"63.18818377039","4":"0.518883849","5":"121.777","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},{"1":"multivariate","2":"gdp","3":"0.00031293506","4":"0.000014062","5":"22.255","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009235167065323018065818641326655543"},{"1":"multivariate","2":"population","3":"0.00000000028","4":"0.000000003","5":"0.093","6":"0.925582555157076547480698991421377286314964294433593750000000000000000000000000000000000000000000000000000000000000000000000000000000"},{"1":"multivariate","2":"total_expenditure","3":"0.55376178488","4":"0.081904424","5":"6.761","6":"0.000000000017657666686321208992724521990079847039850635681546009436715394258499145507812500000000000000000000000000000000000000000000"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["model_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Bivariate OLS","2":"(Intercept)","3":"67.03504","4":"0.193911","5":"346","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},{"1":"Bivariate OLS","2":"gdp","3":"0.00031","4":"0.000012","5":"26","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000027087"},{"1":"Multivariate OLS","2":"(Intercept)","3":"57.72851","4":"0.459634","5":"126","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},{"1":"Multivariate OLS","2":"gdp","3":"0.00019","4":"0.000011","5":"16","6":"0.000000000000000000000000000000000000000000000000000000007046080207159205252956879604681944349109276933753942198877070380110675200163545"},{"1":"Multivariate OLS","2":"alcohol","3":"0.30043","4":"0.042876","5":"7","6":"0.000000000003186303894786989532530612929583701880761892333282503386726602911949157714843750000000000000000000000000000000000000000000000"},{"1":"Multivariate OLS","2":"bmi","3":"0.22044","4":"0.008342","5":"26","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Now that we have our multiple model outputs in a format that we can work with, we can finally start thinking about visualizing our results.</p>
+<p>Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results.</p>
 <hr />
 </div>
 </div>
 <div id="modelling-results-with-modelsummary" class="section level1">
 <h1>Modelling Results with <code>modelsummary</code></h1>
 <p>For this we will use the excellent <code>modelsummary</code> package by <a href="https://vincentarelbundock.github.io/modelsummary/">Vincent Arel-Bundock’s</a>. Though there are many other options to choose from, we highly recommend you give it a shot!</p>
+<p>One reason that we like this package, is that it combines both ways of presenting model results, in a <strong>table</strong> or in a <strong>coefficient plot</strong>. As we saw in the lecture each method has its advantages and its drawbacks. Therefore, we will cover both here.</p>
 <div id="using-regression-tables" class="section level2">
 <h2>Using Regression Tables</h2>
+<p>The workhorse function in <code>modelsummary</code> is unsurprisingly <code>modelsummary()</code>. 🤔</p>
+<p>Here we only need to input the <span style="color: red;">models list</span> as, the function already takes care of the tidying for us.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(multiv_model_out, <span class="at">output =</span> <span class="st">&quot;kableExtra&quot;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Bivariate OLS
+</th>
+<th style="text-align:center;">
+Multivariate OLS
+</th>
+<th style="text-align:center;">
+Interaction
+</th>
+<th style="text-align:center;">
+Polynomial
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+67.035
+</td>
+<td style="text-align:center;">
+57.729
+</td>
+<td style="text-align:center;">
+61.927
+</td>
+<td style="text-align:center;">
+65.878
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.194)
+</td>
+<td style="text-align:center;">
+(0.460)
+</td>
+<td style="text-align:center;">
+(0.586)
+</td>
+<td style="text-align:center;">
+(0.202)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gdp
+</td>
+<td style="text-align:center;">
+0.000
+</td>
+<td style="text-align:center;">
+0.000
+</td>
+<td style="text-align:center;">
+0.000
+</td>
+<td style="text-align:center;">
+0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.000)
+</td>
+<td style="text-align:center;">
+(0.000)
+</td>
+<td style="text-align:center;">
+(0.000)
+</td>
+<td style="text-align:center;">
+(0.000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+alcohol
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.300
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.043)
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bmi
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.220
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.008)
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_expenditure
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.068
+</td>
+<td style="text-align:center;">
+0.757
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.067)
+</td>
+<td style="text-align:center;">
+(0.093)
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+population
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.000
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.000)
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gdp × total_expenditure
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.000
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.000)
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+I(gdp^2)
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+2485
+</td>
+<td style="text-align:center;">
+2308
+</td>
+<td style="text-align:center;">
+2120
+</td>
+<td style="text-align:center;">
+2485
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R2
+</td>
+<td style="text-align:center;">
+0.213
+</td>
+<td style="text-align:center;">
+0.441
+</td>
+<td style="text-align:center;">
+0.242
+</td>
+<td style="text-align:center;">
+0.276
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R2 Adj.
+</td>
+<td style="text-align:center;">
+0.213
+</td>
+<td style="text-align:center;">
+0.440
+</td>
+<td style="text-align:center;">
+0.241
+</td>
+<td style="text-align:center;">
+0.276
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AIC
+</td>
+<td style="text-align:center;">
+17726.8
+</td>
+<td style="text-align:center;">
+15706.7
+</td>
+<td style="text-align:center;">
+15149.2
+</td>
+<td style="text-align:center;">
+17519.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIC
+</td>
+<td style="text-align:center;">
+17744.2
+</td>
+<td style="text-align:center;">
+15741.1
+</td>
+<td style="text-align:center;">
+15183.2
+</td>
+<td style="text-align:center;">
+17542.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Log.Lik.
+</td>
+<td style="text-align:center;">
+−8860.382
+</td>
+<td style="text-align:center;">
+−7847.329
+</td>
+<td style="text-align:center;">
+−7568.612
+</td>
+<td style="text-align:center;">
+−8755.827
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:center;">
+671.782
+</td>
+<td style="text-align:center;">
+454.175
+</td>
+<td style="text-align:center;">
+168.870
+</td>
+<td style="text-align:center;">
+474.181
+</td>
+</tr>
+</tbody>
+</table>
+<p>It looks pretty solid already, but unfortunately it is not yet good enough.</p>
+<p><strong>Set acceptable number of digits</strong>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(multiv_model_out, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;kableExtra&quot;</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">fmt =</span> <span class="st">&quot;%.2f&quot;</span>) <span class="co"># 2-digits and trailing 0</span></span></code></pre></div>
+<p>And let us also report <strong>only the C.I.</strong> and get rid of the p-values and the Intercept term:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model_table <span class="ot">&lt;-</span> <span class="fu">modelsummary</span>(multiv_model_out, </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;kableExtra&quot;</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">fmt =</span> <span class="st">&quot;%.2f&quot;</span>,  <span class="co"># 2-digits and trailing 0  </span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">estimate  =</span> <span class="st">&quot;{estimate}&quot;</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">statistic =</span> <span class="st">&quot;conf.int&quot;</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">coef_omit =</span> <span class="st">&quot;Intercept&quot;</span>) </span></code></pre></div>
+<p>Would it not also look more professional if we had our <strong>coefficients begin with capital letter</strong>? And how about we get rid of some of the bloated goodness of fit statistics?</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mod_table <span class="ot">&lt;-</span> <span class="fu">modelsummary</span>(multiv_model_out, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;default&quot;</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">fmt =</span> <span class="st">&quot;%.2f&quot;</span>,  <span class="co"># 2-digits and trailing 0  </span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">estimate  =</span> <span class="st">&quot;{estimate}&quot;</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">statistic =</span> <span class="st">&quot;conf.int&quot;</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">coef_omit =</span> <span class="st">&quot;Intercept&quot;</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">coef_rename=</span><span class="fu">c</span>(<span class="st">&quot;gdp&quot;</span><span class="ot">=</span><span class="st">&quot;Gdp&quot;</span>, <span class="st">&quot;bmi&quot;</span><span class="ot">=</span><span class="st">&quot;Avg. BMI&quot;</span>, <span class="st">&quot;alcohol&quot;</span> <span class="ot">=</span> <span class="st">&quot;Alcohol Consum.&quot;</span>,<span class="st">&quot;population&quot;</span><span class="ot">=</span> <span class="st">&quot;Pop.&quot;</span>, </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;gdp:total_expenditure&quot;</span> <span class="ot">=</span> <span class="st">&quot;Gdp * Health Expenditure (total)&quot;</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;total_expenditure&quot;</span><span class="ot">=</span><span class="st">&quot;Health Expenditure (total)&quot;</span>, <span class="st">&quot;I(gdp^2)&quot;</span> <span class="ot">=</span><span class="st">&quot;Gdp²&quot;</span>),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;DF|Deviance|Log.Lik|AIC|BIC&#39;</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">title =</span> <span class="st">&#39;A Most Beautiful Regression Table&#39;</span>)</span></code></pre></div>
+<p>When using the <code>kableExtra</code> package you can even post-process your table:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mod_table <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>, <span class="st">&quot;responsive&quot;</span>), <span class="at">full_width =</span> F, <span class="at">fixed_thead =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">3</span>, <span class="at">color =</span> <span class="st">&#39;red&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">5</span>, <span class="at">background =</span> <span class="st">&#39;lightblue&#39;</span>)</span></code></pre></div>
+<table class="table table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+A Most Beautiful Regression Table
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Bivariate OLS
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Multivariate OLS
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Interaction
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+Polynomial
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Gdp
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+[0.00, 0.00]
+</td>
+<td style="text-align:center;">
+[0.00, 0.00]
+</td>
+<td style="text-align:center;">
+[0.00, 0.00]
+</td>
+<td style="text-align:center;">
+[0.00, 0.00]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: red !important;">
+Alcohol Consum.
+</td>
+<td style="text-align:center;color: red !important;">
+</td>
+<td style="text-align:center;color: red !important;">
+0.30
+</td>
+<td style="text-align:center;color: red !important;">
+</td>
+<td style="text-align:center;color: red !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+[0.22, 0.38]
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: lightblue !important;">
+Avg. BMI
+</td>
+<td style="text-align:center;background-color: lightblue !important;">
+</td>
+<td style="text-align:center;background-color: lightblue !important;">
+0.22
+</td>
+<td style="text-align:center;background-color: lightblue !important;">
+</td>
+<td style="text-align:center;background-color: lightblue !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+[0.20, 0.24]
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health Expenditure (total)
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.76
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+[−0.06, 0.20]
+</td>
+<td style="text-align:center;">
+[0.57, 0.94]
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pop.
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+[−0.00, 0.00]
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gdp * Health Expenditure (total)
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+−0.00
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+[−0.00, −0.00]
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gdp²
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+−0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+[−0.00, −0.00]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+2485
+</td>
+<td style="text-align:center;">
+2308
+</td>
+<td style="text-align:center;">
+2120
+</td>
+<td style="text-align:center;">
+2485
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R2
+</td>
+<td style="text-align:center;">
+0.213
+</td>
+<td style="text-align:center;">
+0.441
+</td>
+<td style="text-align:center;">
+0.242
+</td>
+<td style="text-align:center;">
+0.276
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R2 Adj.
+</td>
+<td style="text-align:center;">
+0.213
+</td>
+<td style="text-align:center;">
+0.440
+</td>
+<td style="text-align:center;">
+0.241
+</td>
+<td style="text-align:center;">
+0.276
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:center;">
+671.782
+</td>
+<td style="text-align:center;">
+454.175
+</td>
+<td style="text-align:center;">
+168.870
+</td>
+<td style="text-align:center;">
+474.181
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="using-plots" class="section level2">
 <h2>Using Plots</h2>

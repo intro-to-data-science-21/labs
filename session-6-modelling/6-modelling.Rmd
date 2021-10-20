@@ -77,7 +77,7 @@ Today we will mostly deal with the model and communicate steps in the graph.
 Before we get started with the actual coding we need to load a few packages and get some data. We are using [this WHO dataset](https://www.kaggle.com/kumarajarshi/life-expectancy-who) on life expectancy.
 
 ```{r, message=F, comment=F}
-pacman::p_load(tidyverse, broom, modelsummary, estimatr, janitor, modelr)
+pacman::p_load(kableExtra, tidyverse, broom, modelsummary, estimatr, janitor, modelr)
 
 life_expec_dat <- read_csv("life_expectancy.csv") %>% clean_names()
 head(life_expec_dat)
@@ -177,10 +177,10 @@ What if you want to run several different multivariate models? In addition to th
 ```{r}
 # create list of combinations of vars
 indep_vars_combos <- modelr::formulas(~life_expectancy,
-                       bivariate = ~ gdp,
-                       multivariate = ~ gdp + population + total_expenditure,
-                       interaction = ~ gdp + population * total_expenditure,
-                       higher_order = ~ gdp + I(gdp^2))
+                       "Bivariate OLS"  = ~ gdp,
+                       "Multivariate OLS" = ~ gdp + alcohol + bmi + total_expenditure,
+                       "Interaction" = ~ population + gdp * total_expenditure,
+                       "Polynomial" = ~ gdp + I(gdp^2))
   
   
 multiv_model_out <- indep_vars_combos %>%  map(lm, data = life_expec_dat)
@@ -230,21 +230,80 @@ I mean, doesn't this look a lot nicer?
 
 ## Broom with Many Models
 
-Where `broom` really shines, is in dealing with many models like we have in our `multiv_model_out`. I include the .id argument in map to add a model identifier that consists of the names of the elements in the list.
+Where `broom` really shines, is in dealing with many models like we have in our `multiv_model_out`. It allows us to easily move away from the generally painful-to-deal-with lists and create yet retain each of the three important model returns. Since our example replicates several variables in different models, I include the .id argument in map. It adds a column to our tibble with an **model identifier**. In our case this identifier consists of the names of the elements in the list.
 
 ```{r}
 multiv_model_out_broom <- map_dfr(multiv_model_out, broom::tidy, .id = "model_type")
 multiv_model_out_broom %>% head()
 ```
 
-Now that we have our multiple model outputs in a format that we can work with, we can finally start thinking about visualizing our results.
+Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results.
 
 ***
 # Modelling Results with `modelsummary`
 
 For this we will use the excellent `modelsummary` package by [Vincent Arel-Bundock's](https://vincentarelbundock.github.io/modelsummary/). Though there are many other options to choose from, we highly recommend you give it a shot! 
 
+One reason that we like this package, is that it combines both ways of presenting model results, in a **table** or in a **coefficient plot**. As we saw in the lecture each method has its advantages and its drawbacks. Therefore, we will cover both here.
+
 ## Using Regression Tables
+
+The workhorse function in `modelsummary` is unsurprisingly `modelsummary()`. `r emo::ji("thinking")`
+
+Here we only need to input the `r colorise("models list", "red")` as, the function already takes care of the tidying for us.
+
+```{r}
+
+modelsummary(multiv_model_out, output = "kableExtra")
+```
+
+It looks pretty solid already, but unfortunately it is not yet good enough.
+
+**Set acceptable number of digits**:
+
+```{r, eval=F}
+modelsummary(multiv_model_out, 
+             output = "kableExtra",
+             fmt = "%.2f") # 2-digits and trailing 0
+```
+
+And let us also report **only the C.I.** and get rid of the p-values and the Intercept term:
+
+```{r}
+model_table <- modelsummary(multiv_model_out, 
+             output = "kableExtra",
+             fmt = "%.2f",  # 2-digits and trailing 0  
+             estimate  = "{estimate}",
+             statistic = "conf.int",
+             coef_omit = "Intercept") 
+
+```
+
+Would it not also look more professional if we had our **coefficients begin with capital letter**? And how about we get rid of some of the bloated goodness of fit statistics?
+
+```{r}
+mod_table <- modelsummary(multiv_model_out, 
+             output = "default",
+             fmt = "%.2f",  # 2-digits and trailing 0  
+             estimate  = "{estimate}",
+             statistic = "conf.int",
+             coef_omit = "Intercept",
+             coef_rename=c("gdp"="Gdp", "bmi"="Avg. BMI", "alcohol" = "Alcohol Consum.","population"= "Pop.", 
+                           "gdp:total_expenditure" = "Gdp * Health Expenditure (total)",
+                           "total_expenditure"="Health Expenditure (total)", "I(gdp^2)" ="Gdp²"),
+             gof_omit = 'DF|Deviance|Log.Lik|AIC|BIC',
+             title = 'A Most Beautiful Regression Table')
+```
+
+When using the `kableExtra` package you can even post-process your table:
+
+```{r}
+mod_table %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F, fixed_thead = T) %>% 
+  row_spec(3, color = 'red') %>%
+  row_spec(5, background = 'lightblue')
+```
+
 
 ## Using Plots
 
