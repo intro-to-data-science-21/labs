@@ -18,6 +18,16 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+colorise <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+      x)
+  } else x
+}
+
 ```
 ***
 Welcome back! I hope you all enjoyed the course-free Midterm Week! `r emo::ji("beach with umbrella")`
@@ -38,56 +48,97 @@ But if we are not even talking about ML, DL or model choice, why bother? Well, a
 
 In general, remember, your basic **workflow for evaluating and reporting models** is the following:
 
-```{r}
-
+```{r, fig.align='center', echo=F, out.width = "90%"}
+  knitr::include_graphics("pics/data-science-communicate.png")
 ```
+
+Today we will mostly deal with the model and communicate steps in the graph. 
+
+***
+# Setup
+
+Before we get started with the actual coding we need to load a few packages and get some data. We are using [this WHO dataset](https://www.kaggle.com/kumarajarshi/life-expectancy-who) on life expectancy.
+
+```{r, message=F, comment=F}
+pacman::p_load(tidyverse, broom, modelsummary, estimatr, janitor)
+
+life_expec_dat <- read_csv("life_expectancy.csv") %>% clean_names()
+head(life_expec_dat)
+```
+
 
 ***
 # Using Formulae in R 
 
-R was specifically designed with statistical analysis in mind, it even includes a special object class `formula` for formulating models.
+R as coding language was specifically designed with statistical analysis in mind. Therefore the founding fathers of R `r emo::ji("raising hands")` - in their infinite wisdom - decided to create a special object class (called `formula`) to help us run models.
 
 ## Syntax
 
-A quick recap on the syntax that you need to use within formulae.
+A quick recap on the syntax that you can use within formulae. The `~` sign generally differentiates between dependent and independent variables. The `+` sign is used to distinguish between independent variables. Here are a few other lines that are nice to know:   
 
 ```{r, eval=F}
-y ~ x1 + x2 # 2 independent variables
+y ~ x1 + x2 # standard formula
 
-y ~ . # include all other columns in data as x
+y ~ . # include all other columns in data as x vars
 
 y ~ x1 * x2 # Interaction terms
 
 y ~ x + I(x^2) # higher order terms
 ```
 
-## For Iteration 
+Formulae are very straightforward to work with. To avoid any errors you should follow the following two steps. 
 
-We encourage you to **fit many models**, ranging from simple to complex, and formulae can help you in the iteration process. 
+**Step 1:** create a string containing the written formula. The `paste` function from last week is useful for this.
 
 ```{r}
-formula_string <- paste("mpg", "~ am")
-form <- as.formula(formula_string) # needs to be transformed to correct class
-
-
-# they are equivalent 
-lm(form, data = mtcars)
-lm(mpg ~ am, data = mtcars)
+formula_string <- paste("life_expectancy", "~ gdp")
 ```
-This way of using model formulas makes running many similar models (i.e.. iterating over differnt indep. vars or dep. vars) super easy:
 
-```{r, eval=F}
-# iterate over different y vars.
+**Step 2:** transform the string into R class formula. Only then can you plug it into the model function.
+
+```{r}
+form <- as.formula(formula_string) # needs to be transformed to correct class
+```
+
+Here is the proof that both ways of doing it are identical.
+
+```{r}
+form <- lm(form, data = life_expec_dat)
+reg <- lm(life_expectancy ~ gdp, data = life_expec_dat)
+
+form$coefficients == reg$coefficients
+```
+
+## For Iteration 
+
+We encourage you to **fit many models**, ranging from simple to complex, and formulae can help you in the iteration process.
+
+Often, the modelling process requires you to run the same specification with **multiple configurations** of both **dependent** and **independent** variables. Model formulae make running many similar models super easy:
+
+**Step 1**: You define a function that let's you plug in different variables at x or y. These functions take the y or x variable(s) as a string and return a model object.
+
+```{r}
+# iterate over different y variables.
 
 lm_fun_iter_y <-  function(dep_var) {
   lm( as.formula(paste(dep_var, "~ am")), data = mtcars)
 }
 
-# iterate over different x vars. 
+# iterate over different x variables. 
 
 lm_fun_iter_x <- function(indep_var) {
-  lm( as.formula(paste("mpg ~", paste(indep_var, collapse = "+")), data = mtcars)
+  lm( as.formula(paste("mpg ~", paste(indep_var, collapse = "+"))), data = mtcars)
 }
+```
+
+`r colorise("Notice:", "red")` It is unlikely you will run just a simple bivariate regression (i.e. your model will include many independent variables). Therefore, we need to use a nested paste function that combines (`collapse()`) the input character vector with `+`.
+
+**Step 2**: You use `map()` (cf. [lab-session 4](https://raw.githack.com/intro-to-data-science-21/labs/main/session-4-databases/4-databases.html) to iterate the model over a vector or list of input variables:
+
+```{r, eval=F}
+
+models = vars %>%
+     map(lm_fun_iter_x)
 ```
 
 ***

@@ -345,58 +345,70 @@ div.tocify {
 <p>While the last session dealt with one of the sexier areas of Data Science (Web Scraping), today we will go back to the <strong>bread and butter</strong> 🍞 of any self-respecting data scientist - modelling!</p>
 <p>But if we are not even talking about ML, DL or model choice, why bother? Well, as with most things it is worth to revisit fundamentals from time to time. By investing just a little more effort here, we can create <em>much better</em> reports and papers!</p>
 <p>In general, remember, your basic <strong>workflow for evaluating and reporting models</strong> is the following:</p>
+<p><img src="pics/data-science-communicate.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>Today we will mostly deal with the model and communicate steps in the graph.</p>
+<hr />
+</div>
+<div id="setup" class="section level1">
+<h1>Setup</h1>
+<p>Before we get started with the actual coding we need to load a few packages and get some data. We are using <a href="https://www.kaggle.com/kumarajarshi/life-expectancy-who">this WHO dataset</a> on life expectancy.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, broom, modelsummary, estimatr, janitor)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>life_expec_dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;life_expectancy.csv&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">clean_names</span>()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(life_expec_dat)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["status"],"name":[3],"type":["chr"],"align":["left"]},{"label":["life_expectancy"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["adult_mortality"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["infant_deaths"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["alcohol"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["percentage_expenditure"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["hepatitis_b"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["measles"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["bmi"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["under_five_deaths"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["polio"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["total_expenditure"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["diphtheria"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["hiv_aids"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["gdp"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["population"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["thinness_1_19_years"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["thinness_5_9_years"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["income_composition_of_resources"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["schooling"],"name":[22],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"2015","3":"Developing","4":"65.0","5":"263","6":"62","7":"0.01","8":"71.279624","9":"65","10":"1154","11":"19.1","12":"83","13":"6","14":"8.16","15":"65","16":"0.1","17":"584.25921","18":"33736494","19":"17.2","20":"17.3","21":"0.479","22":"10.1"},{"1":"Afghanistan","2":"2014","3":"Developing","4":"59.9","5":"271","6":"64","7":"0.01","8":"73.523582","9":"62","10":"492","11":"18.6","12":"86","13":"58","14":"8.18","15":"62","16":"0.1","17":"612.69651","18":"327582","19":"17.5","20":"17.5","21":"0.476","22":"10.0"},{"1":"Afghanistan","2":"2013","3":"Developing","4":"59.9","5":"268","6":"66","7":"0.01","8":"73.219243","9":"64","10":"430","11":"18.1","12":"89","13":"62","14":"8.13","15":"64","16":"0.1","17":"631.74498","18":"31731688","19":"17.7","20":"17.7","21":"0.470","22":"9.9"},{"1":"Afghanistan","2":"2012","3":"Developing","4":"59.5","5":"272","6":"69","7":"0.01","8":"78.184215","9":"67","10":"2787","11":"17.6","12":"93","13":"67","14":"8.52","15":"67","16":"0.1","17":"669.95900","18":"3696958","19":"17.9","20":"18.0","21":"0.463","22":"9.8"},{"1":"Afghanistan","2":"2011","3":"Developing","4":"59.2","5":"275","6":"71","7":"0.01","8":"7.097109","9":"68","10":"3013","11":"17.2","12":"97","13":"68","14":"7.87","15":"68","16":"0.1","17":"63.53723","18":"2978599","19":"18.2","20":"18.2","21":"0.454","22":"9.5"},{"1":"Afghanistan","2":"2010","3":"Developing","4":"58.8","5":"279","6":"74","7":"0.01","8":"79.679367","9":"66","10":"1989","11":"16.7","12":"102","13":"66","14":"9.20","15":"66","16":"0.1","17":"553.32894","18":"2883167","19":"18.4","20":"18.4","21":"0.448","22":"9.2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <hr />
 </div>
 <div id="using-formulae-in-r" class="section level1">
 <h1>Using Formulae in R</h1>
-<p>R was specifically designed with statistical analysis in mind, it even includes a special object class <code>formula</code> for formulating models.</p>
+<p>R as coding language was specifically designed with statistical analysis in mind. Therefore the founding fathers of R 🙌 - in their infinite wisdom - decided to create a special object class (called <code>formula</code>) to help us run models.</p>
 <div id="syntax" class="section level2">
 <h2>Syntax</h2>
-<p>A quick recap on the syntax that you need to use within formulae.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="co"># 2 independent variables</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> . <span class="co"># include all other columns in data as x</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">*</span> x2 <span class="co"># Interaction terms</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="co"># higher order terms</span></span></code></pre></div>
+<p>A quick recap on the syntax that you can use within formulae. The <code>~</code> sign generally differentiates between dependent and independent variables. The <code>+</code> sign is used to distinguish between independent variables. Here are a few other lines that are nice to know:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="co"># standard formula</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> . <span class="co"># include all other columns in data as x vars</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">*</span> x2 <span class="co"># Interaction terms</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="co"># higher order terms</span></span></code></pre></div>
+<p>Formulae are very straightforward to work with. To avoid any errors you should follow the following two steps.</p>
+<p><strong>Step 1:</strong> create a string containing the written formula. The <code>paste</code> function from last week is useful for this.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>formula_string <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;life_expectancy&quot;</span>, <span class="st">&quot;~ gdp&quot;</span>)</span></code></pre></div>
+<p><strong>Step 2:</strong> transform the string into R class formula. Only then can you plug it into the model function.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(formula_string) <span class="co"># needs to be transformed to correct class</span></span></code></pre></div>
+<p>Here is the proof that both ways of doing it are identical.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">lm</span>(form, <span class="at">data =</span> life_expec_dat)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(life_expectancy <span class="sc">~</span> gdp, <span class="at">data =</span> life_expec_dat)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>form<span class="sc">$</span>coefficients <span class="sc">==</span> reg<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>## (Intercept)         gdp 
+##        TRUE        TRUE</code></pre>
 </div>
 <div id="for-iteration" class="section level2">
 <h2>For Iteration</h2>
 <p>We encourage you to <strong>fit many models</strong>, ranging from simple to complex, and formulae can help you in the iteration process.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>formula_string <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;mpg&quot;</span>, <span class="st">&quot;~ am&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(formula_string) <span class="co"># needs to be transformed to correct class</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># they are equivalent </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(form, <span class="at">data =</span> mtcars)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = form, data = mtcars)
-## 
-## Coefficients:
-## (Intercept)           am  
-##      17.147        7.245</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mpg <span class="sc">~</span> am, <span class="at">data =</span> mtcars)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = mpg ~ am, data = mtcars)
-## 
-## Coefficients:
-## (Intercept)           am  
-##      17.147        7.245</code></pre>
-<p>This way of using model formulas makes running many similar models (i.e.. iterating over differnt indep. vars or dep. vars) super easy:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate over different y vars.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lm_fun_iter_y <span class="ot">&lt;-</span>  <span class="cf">function</span>(dep_var) {</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>(<span class="fu">paste</span>(dep_var, <span class="st">&quot;~ am&quot;</span>)), <span class="at">data =</span> mtcars)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate over different x vars. </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>lm_fun_iter_x <span class="ot">&lt;-</span> <span class="cf">function</span>(indep_var) {</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;mpg ~&quot;</span>, <span class="fu">paste</span>(indep_var, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>)), <span class="at">data =</span> mtcars)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+<p>Often, the modelling process requires you to run the same specification with <strong>multiple configurations</strong> of both <strong>dependent</strong> and <strong>independent</strong> variables. Model formulae make running many similar models super easy:</p>
+<p><strong>Step 1</strong>: You define a function that let’s you plug in different variables at x or y. These functions take the y or x variable(s) as a string and return a model object.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate over different y variables.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>lm_fun_iter_y <span class="ot">&lt;-</span>  <span class="cf">function</span>(dep_var) {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>(<span class="fu">paste</span>(dep_var, <span class="st">&quot;~ am&quot;</span>)), <span class="at">data =</span> mtcars)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate over different x variables. </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>lm_fun_iter_x <span class="ot">&lt;-</span> <span class="cf">function</span>(indep_var) {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>( <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;mpg ~&quot;</span>, <span class="fu">paste</span>(indep_var, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>))), <span class="at">data =</span> mtcars)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><span style="color: red;">Notice:</span> It is unlikely you will run just a simple bivariate regression (i.e. your model will include many independent variables). Therefore, we need to use a nested paste function that combines (<code>collapse()</code>) the input character vector with <code>+</code>.</p>
+<p><strong>Step 2</strong>: You use <code>map()</code> (cf. <a href="https://raw.githack.com/intro-to-data-science-21/labs/main/session-4-databases/4-databases.html">lab-session 4</a> to iterate the model over a vector or list of input variables:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">=</span> vars <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">map</span>(lm_fun_iter_x)</span></code></pre></div>
 <hr />
 </div>
 </div>
