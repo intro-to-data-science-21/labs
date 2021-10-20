@@ -349,8 +349,45 @@ modelplot(multiv_model_out, coef_omit = "Intercept") +
 We will cover the visualisation aspect in R in much greater detail in the coming session, so hopefuly the section on **coefficient plot** will become clearer then! 
 
 ***
-# Appendix 1: Tools to Prepare the Workshop
+# Appendix 1: Tools to Prepare the Workshop {.tabset .tabset-fade .tabset-pills}
 
+Soon the Workshop will be upon us. To help you prepare the recording of your presentation we wanted to present you with two options that 
+
+## Using Zoom
+
+For this to work you need to register for a free Zoom Account [here](https://zoom.us/pricing?zcid=3216&gclid=CjwKCAjw_L6LBhBbEiwA4c46ugXZZvhl6EGXJXvQVROW1m45QMBRwxsIPMQRDHMe6zcNhGoEcKL-WhoC11cQAvD_BwE). In order to record yourself follow these steps:
+
+**Step 1** Host a meeting by yourself and have the video turned on (it should be focused on you):
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+    knitr::include_graphics("pics/Screenshot 2021-10-15 at 12.05.25.png")
+```
+
+**Step 2** Connect to audio and share screen (I usually chose Desktop 1, so I'm flexible to switch between applications - make sure to keep your desktop clean)
+
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+      knitr::include_graphics("pics/Screenshot 2021-10-15 at 12.06.47.png")
+```
+
+
+**Step 3** Open the window/application that you will use for your presentation, place the little window with your face in one of the corners (so it does not hover somewhere distracting) and start recording.
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+      knitr::include_graphics("pics/Screenshot 2021-10-15 at 12.07.41.png")
+```
+
+Now you have complete freedom to work with your laptop as usual (including doing a power point slide show), everything is recorded (except the zoom internal menu / dropdown options).
+
+You can pause, continue (if necessary) and finally, stop the recording. The recording is saved and converted to mp4 after the end of the call.
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+        knitr::include_graphics("pics/Screenshot 2021-10-15 at 12.09.30.png")
+```
+
+Should you feel the need to edit the video (for example, trim the length), the easiest option is to just use the tool inside the Quicktime player. This way you can edit the start and end of the video. 
+
+## Using PowerPoint
 
 ***
 # Appenidx 2: Further Resources 
