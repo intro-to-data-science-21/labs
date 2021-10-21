@@ -268,6 +268,18 @@ plot_specs(results)
 
 Without putting much thought into our model it looks like gdp (depending on the specification) has either no effect or positive effects on life_expectancy. This just goes to show how *careful* one has to approach the task of *correctly specifying a model*! 
 
+
+
+:::: {.noticebox data-latex=""}
+::: {.center data-latex=""}
+**Watch Out!**
+:::
+
+Be careful and **selective** when you use specification curve analysis! It is not a tool that you should apply to each and every potential paper. Especially, if you have not taken a course on causal inference. Specification curve analysis, when it includes variables that act as colliders or mediators might actually legitimise an otherwise wrongly specified model!
+::::
+
+
+
 ***
 # Model Output with `broom`
 

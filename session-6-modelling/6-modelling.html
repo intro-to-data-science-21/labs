@@ -430,11 +430,11 @@ div.tocify {
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>biv_model_out_w_names <span class="ot">&lt;-</span>  vars <span class="sc">%&gt;%</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(lm_fun_iter_x)</span></code></pre></div>
-<p>What if you want to run several different multivariate models? In addition to the code from the lectures you could use <code>modelR::formulas</code>:</p>
+<p>But say we are interested to see what effect gdp has on life_expectancy. Multiple potential combinations make sense. What if you want to run several different multivariate models? In addition to the code from the lectures you could use <code>modelR::formulas</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create list of combinations of vars</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>indep_vars_combos <span class="ot">&lt;-</span> modelr<span class="sc">::</span><span class="fu">formulas</span>(<span class="sc">~</span>life_expectancy,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Bivariate OLS&quot;</span>  <span class="ot">=</span> <span class="er">~</span> gdp,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Multivariate OLS&quot;</span> <span class="ot">=</span> <span class="er">~</span> gdp <span class="sc">+</span> alcohol <span class="sc">+</span> bmi <span class="sc">+</span> total_expenditure,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Multivariate OLS&quot;</span> <span class="ot">=</span> <span class="er">~</span> gdp <span class="sc">+</span> total_expenditure <span class="sc">+</span> population <span class="sc">+</span> alcohol <span class="sc">+</span> bmi ,</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Interaction&quot;</span> <span class="ot">=</span> <span class="er">~</span> population <span class="sc">+</span> gdp <span class="sc">*</span> total_expenditure,</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;Polynomial&quot;</span> <span class="ot">=</span> <span class="er">~</span> gdp <span class="sc">+</span> <span class="fu">I</span>(gdp<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -449,29 +449,33 @@ div.tocify {
 <p>In the above example, I made a conscious choice to run these four specific models. This conscious choice should reflect insights from theory (here: not so much) and be defensible (eh…). Unfortunately, some researchers argue that by making a conscious choice, I select an arbitrary or possibly even biased model specification. They propose to approach model specification analytically.</p>
 <p>They call this Specification Curve Analysis, or Multiverse Analysis. There is a very nice package to run this: <code>specr</code>. In very simplistic terms it follows this path:</p>
 <p><strong>First</strong> you compile a list of defensible “model ingredients”:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setup_specs</span>(<span class="at">y =</span> <span class="fu">c</span>(<span class="st">&quot;life_expectancy&quot;</span>, <span class="st">&quot;adult_mortality&quot;</span>),               <span class="co"># We choose the same dependent variable</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> <span class="fu">c</span>( <span class="st">&quot;alcohol&quot;</span>, <span class="st">&quot;bmi&quot;</span>),         <span class="co"># We are not sure which independent variable is better</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">model =</span> <span class="fu">c</span>(<span class="st">&quot;lm&quot;</span>),           <span class="co"># We only estimate one type of model (linear model)</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">controls =</span> <span class="fu">c</span>(<span class="st">&quot;gdp&quot;</span>, <span class="st">&quot;population&quot;</span>, <span class="st">&quot;total_expenditure&quot;</span>, <span class="st">&quot;schooling&quot;</span>))  <span class="co"># We include two control variable</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setup_specs</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="st">&quot;life_expectancy&quot;</span>),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We add an additional dependent variable</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="st">&quot;gdp&quot;</span>, <span class="st">&quot;log(gdp)&quot;</span>, <span class="st">&quot;I(gdp^2)&quot;</span>, <span class="st">&quot;gdp * total_expenditure&quot;</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We are not sure which independent variable is better</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">c</span>(<span class="st">&quot;lm&quot;</span>, <span class="st">&quot;glm&quot;</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We only use linear model or more complicated one</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">controls =</span> <span class="fu">c</span>(<span class="st">&quot;population&quot;</span>, <span class="st">&quot;alcohol&quot;</span>, <span class="st">&quot;bmi&quot;</span>))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["x"],"name":[1],"type":["chr"],"align":["left"]},{"label":["y"],"name":[2],"type":["chr"],"align":["left"]},{"label":["model"],"name":[3],"type":["chr"],"align":["left"]},{"label":["controls"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"alcohol","2":"life_expectancy","3":"lm","4":"gdp + population + total_expenditure + schooling"},{"1":"bmi","2":"life_expectancy","3":"lm","4":"gdp + population + total_expenditure + schooling"},{"1":"alcohol","2":"adult_mortality","3":"lm","4":"gdp + population + total_expenditure + schooling"},{"1":"bmi","2":"adult_mortality","3":"lm","4":"gdp + population + total_expenditure + schooling"},{"1":"alcohol","2":"life_expectancy","3":"lm","4":"gdp"},{"1":"bmi","2":"life_expectancy","3":"lm","4":"gdp"},{"1":"alcohol","2":"adult_mortality","3":"lm","4":"gdp"},{"1":"bmi","2":"adult_mortality","3":"lm","4":"gdp"},{"1":"alcohol","2":"life_expectancy","3":"lm","4":"population"},{"1":"bmi","2":"life_expectancy","3":"lm","4":"population"},{"1":"alcohol","2":"adult_mortality","3":"lm","4":"population"},{"1":"bmi","2":"adult_mortality","3":"lm","4":"population"},{"1":"alcohol","2":"life_expectancy","3":"lm","4":"total_expenditure"},{"1":"bmi","2":"life_expectancy","3":"lm","4":"total_expenditure"},{"1":"alcohol","2":"adult_mortality","3":"lm","4":"total_expenditure"},{"1":"bmi","2":"adult_mortality","3":"lm","4":"total_expenditure"},{"1":"alcohol","2":"life_expectancy","3":"lm","4":"schooling"},{"1":"bmi","2":"life_expectancy","3":"lm","4":"schooling"},{"1":"alcohol","2":"adult_mortality","3":"lm","4":"schooling"},{"1":"bmi","2":"adult_mortality","3":"lm","4":"schooling"},{"1":"alcohol","2":"life_expectancy","3":"lm","4":"no covariates"},{"1":"bmi","2":"life_expectancy","3":"lm","4":"no covariates"},{"1":"alcohol","2":"adult_mortality","3":"lm","4":"no covariates"},{"1":"bmi","2":"adult_mortality","3":"lm","4":"no covariates"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["x"],"name":[1],"type":["chr"],"align":["left"]},{"label":["y"],"name":[2],"type":["chr"],"align":["left"]},{"label":["model"],"name":[3],"type":["chr"],"align":["left"]},{"label":["controls"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"gdp","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi"},{"1":"log(gdp)","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi"},{"1":"I(gdp^2)","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi"},{"1":"gdp","2":"life_expectancy","3":"glm","4":"population + alcohol + bmi"},{"1":"log(gdp)","2":"life_expectancy","3":"glm","4":"population + alcohol + bmi"},{"1":"I(gdp^2)","2":"life_expectancy","3":"glm","4":"population + alcohol + bmi"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"glm","4":"population + alcohol + bmi"},{"1":"gdp","2":"life_expectancy","3":"lm","4":"population"},{"1":"log(gdp)","2":"life_expectancy","3":"lm","4":"population"},{"1":"I(gdp^2)","2":"life_expectancy","3":"lm","4":"population"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"lm","4":"population"},{"1":"gdp","2":"life_expectancy","3":"glm","4":"population"},{"1":"log(gdp)","2":"life_expectancy","3":"glm","4":"population"},{"1":"I(gdp^2)","2":"life_expectancy","3":"glm","4":"population"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"glm","4":"population"},{"1":"gdp","2":"life_expectancy","3":"lm","4":"alcohol"},{"1":"log(gdp)","2":"life_expectancy","3":"lm","4":"alcohol"},{"1":"I(gdp^2)","2":"life_expectancy","3":"lm","4":"alcohol"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"lm","4":"alcohol"},{"1":"gdp","2":"life_expectancy","3":"glm","4":"alcohol"},{"1":"log(gdp)","2":"life_expectancy","3":"glm","4":"alcohol"},{"1":"I(gdp^2)","2":"life_expectancy","3":"glm","4":"alcohol"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"glm","4":"alcohol"},{"1":"gdp","2":"life_expectancy","3":"lm","4":"bmi"},{"1":"log(gdp)","2":"life_expectancy","3":"lm","4":"bmi"},{"1":"I(gdp^2)","2":"life_expectancy","3":"lm","4":"bmi"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"lm","4":"bmi"},{"1":"gdp","2":"life_expectancy","3":"glm","4":"bmi"},{"1":"log(gdp)","2":"life_expectancy","3":"glm","4":"bmi"},{"1":"I(gdp^2)","2":"life_expectancy","3":"glm","4":"bmi"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"glm","4":"bmi"},{"1":"gdp","2":"life_expectancy","3":"lm","4":"no covariates"},{"1":"log(gdp)","2":"life_expectancy","3":"lm","4":"no covariates"},{"1":"I(gdp^2)","2":"life_expectancy","3":"lm","4":"no covariates"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"lm","4":"no covariates"},{"1":"gdp","2":"life_expectancy","3":"glm","4":"no covariates"},{"1":"log(gdp)","2":"life_expectancy","3":"glm","4":"no covariates"},{"1":"I(gdp^2)","2":"life_expectancy","3":"glm","4":"no covariates"},{"1":"gdp * total_expenditure","2":"life_expectancy","3":"glm","4":"no covariates"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p><strong>Second</strong> you define additional analytical choices such as: model family, potential subgroups to run it over etc.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run specification curve analysis (under the hood it uses setup_specs())</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">run_specs</span>(<span class="at">df =</span> life_expec_dat, </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> <span class="fu">c</span>(<span class="st">&quot;life_expectancy&quot;</span>, <span class="st">&quot;infant_deaths&quot;</span>),               <span class="co"># We add an additional dependent variable</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">x =</span> <span class="fu">c</span>( <span class="st">&quot;alcohol&quot;</span>, <span class="st">&quot;bmi&quot;</span>),         <span class="co"># We are not sure which independent variable is better</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> <span class="fu">c</span>(<span class="st">&quot;life_expectancy&quot;</span>),               <span class="co"># We add an additional dependent variable</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">x =</span> <span class="fu">c</span>(<span class="st">&quot;gdp&quot;</span>, <span class="st">&quot;log(gdp)&quot;</span>, <span class="st">&quot;I(gdp^2)&quot;</span>, <span class="st">&quot;gdp:total_expenditure&quot;</span>),         <span class="co"># We are not sure which independent variable is better</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">model =</span> <span class="fu">c</span>(<span class="st">&quot;lm&quot;</span>, <span class="st">&quot;glm&quot;</span>),           <span class="co"># We only use linear model or more complicated one</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">controls =</span> <span class="fu">c</span>(<span class="st">&quot;gdp&quot;</span>, <span class="st">&quot;population&quot;</span>, <span class="st">&quot;total_expenditure&quot;</span>, <span class="st">&quot;percentage_expenditure&quot;</span>),</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">developed =</span> <span class="fu">unique</span>(life_expec_dat<span class="sc">$</span>developed)) <span class="co"># so it is 1 or 0, not sure why author of pkg choose to do it this way</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">controls =</span> <span class="fu">c</span>(<span class="st">&quot;population&quot;</span>, <span class="st">&quot;alcohol&quot;</span>, <span class="st">&quot;bmi&quot;</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">developed =</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(life_expec_dat<span class="sc">$</span>developed))) <span class="co"># so it is 1 or 0, not sure why author of pkg choose to do it this way</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["x"],"name":[1],"type":["chr"],"align":["left"]},{"label":["y"],"name":[2],"type":["chr"],"align":["left"]},{"label":["model"],"name":[3],"type":["chr"],"align":["left"]},{"label":["controls"],"name":[4],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["obs"],"name":[11],"type":["int"],"align":["right"]},{"label":["subsets"],"name":[12],"type":["chr"],"align":["left"]}],"data":[{"1":"alcohol","2":"life_expectancy","3":"lm","4":"gdp + population + total_expenditure + percentage_expenditure","5":"0.12","6":"0.067","7":"1.78","8":"7.5e-02","9":"-0.012","10":"0.25","11":"1726","12":"developed = 0"},{"1":"bmi","2":"life_expectancy","3":"lm","4":"gdp + population + total_expenditure + percentage_expenditure","5":"0.24","6":"0.010","7":"24.33","8":"1.7e-112","9":"0.223","10":"0.26","11":"1712","12":"developed = 0"},{"1":"alcohol","2":"infant_deaths","3":"lm","4":"gdp + population + total_expenditure + percentage_expenditure","5":"-0.47","6":"0.967","7":"-0.49","8":"6.2e-01","9":"-2.369","10":"1.42","11":"1727","12":"developed = 0"},{"1":"bmi","2":"infant_deaths","3":"lm","4":"gdp + population + total_expenditure + percentage_expenditure","5":"-1.24","6":"0.164","7":"-7.53","8":"8.4e-14","9":"-1.557","10":"-0.91","11":"1714","12":"developed = 0"},{"1":"alcohol","2":"life_expectancy","3":"glm","4":"gdp + population + total_expenditure + percentage_expenditure","5":"0.12","6":"0.067","7":"1.78","8":"7.5e-02","9":"-0.012","10":"0.25","11":"1726","12":"developed = 0"},{"1":"bmi","2":"life_expectancy","3":"glm","4":"gdp + population + total_expenditure + percentage_expenditure","5":"0.24","6":"0.010","7":"24.33","8":"1.7e-112","9":"0.223","10":"0.26","11":"1712","12":"developed = 0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["x"],"name":[1],"type":["chr"],"align":["left"]},{"label":["y"],"name":[2],"type":["chr"],"align":["left"]},{"label":["model"],"name":[3],"type":["chr"],"align":["left"]},{"label":["controls"],"name":[4],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["obs"],"name":[11],"type":["int"],"align":["right"]},{"label":["subsets"],"name":[12],"type":["chr"],"align":["left"]}],"data":[{"1":"gdp","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi","5":"3.8e-04","6":"3.1e-05","7":"12.2","8":"5.9e-33","9":"3.2e-04","10":"4.4e-04","11":"1711","12":"developed = 0"},{"1":"log(gdp)","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi","5":"1.7e+00","6":"1.2e-01","7":"14.2","8":"2.7e-43","9":"1.5e+00","10":"1.9e+00","11":"1711","12":"developed = 0"},{"1":"I(gdp^2)","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi","5":"6.6e-09","6":"8.1e-10","7":"8.2","8":"6.1e-16","9":"5.0e-09","10":"8.2e-09","11":"1711","12":"developed = 0"},{"1":"gdp:total_expenditure","2":"life_expectancy","3":"lm","4":"population + alcohol + bmi","5":"4.2e-05","6":"3.9e-06","7":"10.9","8":"9.5e-27","9":"3.5e-05","10":"5.0e-05","11":"1711","12":"developed = 0"},{"1":"gdp","2":"life_expectancy","3":"glm","4":"population + alcohol + bmi","5":"3.8e-04","6":"3.1e-05","7":"12.2","8":"5.9e-33","9":"3.2e-04","10":"4.4e-04","11":"1711","12":"developed = 0"},{"1":"log(gdp)","2":"life_expectancy","3":"glm","4":"population + alcohol + bmi","5":"1.7e+00","6":"1.2e-01","7":"14.2","8":"2.7e-43","9":"1.5e+00","10":"1.9e+00","11":"1711","12":"developed = 0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p><strong>Third</strong> You inspect the specification curve to understand how robust your findings are to different analytical choices.</p>
@@ -483,14 +487,22 @@ div.tocify {
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">var =</span> <span class="fu">c</span>(<span class="st">&quot;std.error&quot;</span>, <span class="st">&quot;estimate&quot;</span>))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["std.error_median"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["estimate_median"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error_mad"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["estimate_mad"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["std.error_min"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["estimate_min"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["std.error_max"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["estimate_max"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["std.error_q25"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["estimate_q25"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["std.error_q75"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["estimate_q75"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["obs"],"name":[13],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.057","2":"-0.015","3":"0.072","4":"0.58","5":"0.0028","6":"-3.4","7":"0.99","8":"1","9":"0.011","10":"-1.3","11":"0.13","12":"0.24","13":"2060"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["std.error_median"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["estimate_median"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error_mad"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["estimate_mad"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["std.error_min"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["estimate_min"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["std.error_max"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["estimate_max"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["std.error_q25"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["estimate_q25"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["std.error_q75"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["estimate_q75"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["obs"],"name":[13],"type":["dbl"],"align":["right"]}],"data":[{"1":"5.8e-06","2":"6.2e-05","3":"8.7e-06","4":"9.2e-05","5":"9.4e-11","6":"6.4e-10","7":"0.12","8":"3.1","9":"6.4e-07","10":"4.7e-06","11":"0.021","12":"0.19","13":"1904"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p><span style="color: red;">mad</span> stands for <span style="color: red;">median absolute deviation</span>.</p>
+<p>The statistic <span style="color: red;">mad</span> stands for <span style="color: red;">median absolute deviation</span>.</p>
 <p>A more intuitive way of inspecting the results might lie in visualising them.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_specs</span>(results)</span></code></pre></div>
 <p><img src="6-modelling_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Without putting much thought into our model it looks like I could easily have found either significant negative effects or significant positive effects. This just goes to show how <em>careful</em> one has to approach the task of <em>correctly specifying a model</em>!</p>
+<p><strong>Plot A</strong> denotes: * X-axis = ordered model specifications (from most negative effect to most positive effect) * Y-axis = standardized regression coefficient for the IV-DV relationship * Points = the standardized regression coefficient for a specific models * Error bars = 95% confidence intervals around the point estimate</p>
+<p><strong>Plot B</strong> denotes: * X-axis = ordered model specifications (the same as panel A) * Y-axis (right) = analytic decision categories * Y-axis (left) = specific analytic decisions within each category * Lines = denote that a specific analytic decision was true for that model specification</p>
+<p>Without putting much thought into our model it looks like gdp (depending on the specification) has either no effect or positive effects on life_expectancy. This just goes to show how <em>careful</em> one has to approach the task of <em>correctly specifying a model</em>!</p>
+<div class="noticebox">
+<div class="center">
+<p><strong>Watch Out!</strong></p>
+</div>
+<p>Be careful and <strong>selective</strong> when you use specification curve analysis! It is not a tool that you should apply to each and every potential paper. Especially, if you have not taken a course on causal inference. Specification curve analysis, when it includes variables that act as colliders or mediators might actually legitimise an otherwise wrongly specified model!</p>
+</div>
 <hr />
 </div>
 <div id="model-output-with-broom" class="section level1">
@@ -554,7 +566,7 @@ div.tocify {
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>multiv_model_out_broom <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["model_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Bivariate OLS","2":"(Intercept)","3":"6.7e+01","4":"1.9e-01","5":"346","6":"0.0e+00"},{"1":"Bivariate OLS","2":"gdp","3":"3.1e-04","4":"1.2e-05","5":"26","6":"2.7e-131"},{"1":"Multivariate OLS","2":"(Intercept)","3":"5.8e+01","4":"4.6e-01","5":"126","6":"0.0e+00"},{"1":"Multivariate OLS","2":"gdp","3":"1.9e-04","4":"1.1e-05","5":"16","6":"7.0e-57"},{"1":"Multivariate OLS","2":"alcohol","3":"3.0e-01","4":"4.3e-02","5":"7","6":"3.2e-12"},{"1":"Multivariate OLS","2":"bmi","3":"2.2e-01","4":"8.3e-03","5":"26","6":"1.3e-134"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["model_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Bivariate OLS","2":"(Intercept)","3":"6.7e+01","4":"1.9e-01","5":"345.7","6":"0.0e+00"},{"1":"Bivariate OLS","2":"gdp","3":"3.1e-04","4":"1.2e-05","5":"25.9","6":"2.7e-131"},{"1":"Multivariate OLS","2":"(Intercept)","3":"5.7e+01","4":"5.0e-01","5":"114.3","6":"0.0e+00"},{"1":"Multivariate OLS","2":"gdp","3":"1.9e-04","4":"1.3e-05","5":"14.4","6":"1.2e-44"},{"1":"Multivariate OLS","2":"total_expenditure","3":"1.2e-01","4":"7.1e-02","5":"1.7","6":"9.8e-02"},{"1":"Multivariate OLS","2":"population","3":"4.3e-09","4":"2.5e-09","5":"1.7","6":"9.2e-02"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results. You can plot the residuals, the goodness of fit statistics etc. Similarly you could also use the <code>glance()</code> to provide some robustness statistics or descriptive tables.</p>
@@ -599,7 +611,7 @@ Polynomial
 67.035
 </td>
 <td style="text-align:center;">
-57.729
+56.622
 </td>
 <td style="text-align:center;">
 61.927
@@ -615,7 +627,7 @@ Polynomial
 (0.194)
 </td>
 <td style="text-align:center;">
-(0.460)
+(0.496)
 </td>
 <td style="text-align:center;">
 (0.586)
@@ -659,66 +671,12 @@ gdp
 </tr>
 <tr>
 <td style="text-align:left;">
-alcohol
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-0.300
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-(0.043)
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-bmi
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-0.220
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-(0.008)
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 total_expenditure
 </td>
 <td style="text-align:center;">
 </td>
 <td style="text-align:center;">
-0.068
+0.118
 </td>
 <td style="text-align:center;">
 0.757
@@ -732,7 +690,7 @@ total_expenditure
 <td style="text-align:center;">
 </td>
 <td style="text-align:center;">
-(0.067)
+(0.071)
 </td>
 <td style="text-align:center;">
 (0.093)
@@ -747,6 +705,7 @@ population
 <td style="text-align:center;">
 </td>
 <td style="text-align:center;">
+0.000
 </td>
 <td style="text-align:center;">
 0.000
@@ -760,9 +719,64 @@ population
 <td style="text-align:center;">
 </td>
 <td style="text-align:center;">
+(0.000)
 </td>
 <td style="text-align:center;">
 (0.000)
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+alcohol
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.288
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.047)
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bmi
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.232
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.009)
+</td>
+<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 </td>
@@ -829,7 +843,7 @@ Num.Obs.
 2485
 </td>
 <td style="text-align:center;">
-2308
+2101
 </td>
 <td style="text-align:center;">
 2120
@@ -846,7 +860,7 @@ R2
 0.213
 </td>
 <td style="text-align:center;">
-0.441
+0.457
 </td>
 <td style="text-align:center;">
 0.242
@@ -863,7 +877,7 @@ R2 Adj.
 0.213
 </td>
 <td style="text-align:center;">
-0.440
+0.456
 </td>
 <td style="text-align:center;">
 0.241
@@ -880,7 +894,7 @@ AIC
 17726.8
 </td>
 <td style="text-align:center;">
-15706.7
+14320.3
 </td>
 <td style="text-align:center;">
 15149.2
@@ -897,7 +911,7 @@ BIC
 17744.2
 </td>
 <td style="text-align:center;">
-15741.1
+14359.8
 </td>
 <td style="text-align:center;">
 15183.2
@@ -914,7 +928,7 @@ Log.Lik.
 −8860.382
 </td>
 <td style="text-align:center;">
-−7847.329
+−7153.136
 </td>
 <td style="text-align:center;">
 −7568.612
@@ -931,7 +945,7 @@ F
 671.782
 </td>
 <td style="text-align:center;">
-454.175
+352.824
 </td>
 <td style="text-align:center;">
 168.870
@@ -1029,71 +1043,17 @@ Gdp
 </tr>
 <tr>
 <td style="text-align:left;color: red !important;">
-Alcohol Consum.
-</td>
-<td style="text-align:center;color: red !important;">
-</td>
-<td style="text-align:center;color: red !important;">
-0.30
-</td>
-<td style="text-align:center;color: red !important;">
-</td>
-<td style="text-align:center;color: red !important;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-[0.22, 0.38]
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;background-color: lightblue !important;">
-Avg. BMI
-</td>
-<td style="text-align:center;background-color: lightblue !important;">
-</td>
-<td style="text-align:center;background-color: lightblue !important;">
-0.22
-</td>
-<td style="text-align:center;background-color: lightblue !important;">
-</td>
-<td style="text-align:center;background-color: lightblue !important;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-[0.20, 0.24]
-</td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 Health Expenditure (total)
 </td>
-<td style="text-align:center;">
+<td style="text-align:center;color: red !important;">
 </td>
-<td style="text-align:center;">
-0.07
+<td style="text-align:center;color: red !important;">
+0.12
 </td>
-<td style="text-align:center;">
+<td style="text-align:center;color: red !important;">
 0.76
 </td>
-<td style="text-align:center;">
+<td style="text-align:center;color: red !important;">
 </td>
 </tr>
 <tr>
@@ -1102,7 +1062,7 @@ Health Expenditure (total)
 <td style="text-align:center;">
 </td>
 <td style="text-align:center;">
-[−0.06, 0.20]
+[−0.02, 0.26]
 </td>
 <td style="text-align:center;">
 [0.57, 0.94]
@@ -1111,15 +1071,44 @@ Health Expenditure (total)
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;background-color: lightblue !important;">
 Pop.
 </td>
-<td style="text-align:center;">
+<td style="text-align:center;background-color: lightblue !important;">
 </td>
-<td style="text-align:center;">
-</td>
-<td style="text-align:center;">
+<td style="text-align:center;background-color: lightblue !important;">
 0.00
+</td>
+<td style="text-align:center;background-color: lightblue !important;">
+0.00
+</td>
+<td style="text-align:center;background-color: lightblue !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+[−0.00, 0.00]
+</td>
+<td style="text-align:center;">
+[−0.00, 0.00]
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alcohol Consum.
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.29
+</td>
+<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 </td>
@@ -1130,9 +1119,36 @@ Pop.
 <td style="text-align:center;">
 </td>
 <td style="text-align:center;">
+[0.20, 0.38]
 </td>
 <td style="text-align:center;">
-[−0.00, 0.00]
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Avg. BMI
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.23
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+[0.21, 0.25]
+</td>
+<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 </td>
@@ -1199,7 +1215,7 @@ Num.Obs.
 2485
 </td>
 <td style="text-align:center;">
-2308
+2101
 </td>
 <td style="text-align:center;">
 2120
@@ -1216,7 +1232,7 @@ R2
 0.213
 </td>
 <td style="text-align:center;">
-0.441
+0.457
 </td>
 <td style="text-align:center;">
 0.242
@@ -1233,7 +1249,7 @@ R2 Adj.
 0.213
 </td>
 <td style="text-align:center;">
-0.440
+0.456
 </td>
 <td style="text-align:center;">
 0.241
@@ -1250,7 +1266,7 @@ F
 671.782
 </td>
 <td style="text-align:center;">
-454.175
+352.824
 </td>
 <td style="text-align:center;">
 168.870
