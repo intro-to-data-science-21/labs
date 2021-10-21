@@ -18,7 +18,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-options(digits=2,scipen=999)
+options(digits=2)
 
 # save the built-in output hook
 hook_output <- knitr::knit_hooks$get("output")
@@ -77,9 +77,12 @@ Today we will mostly deal with the model and communicate steps in the graph.
 Before we get started with the actual coding we need to load a few packages and get some data. We are using [this WHO dataset](https://www.kaggle.com/kumarajarshi/life-expectancy-who) on life expectancy.
 
 ```{r, message=F, comment=F}
-pacman::p_load(kableExtra, tidyverse, broom, modelsummary, estimatr, janitor, modelr)
+pacman::p_load(kableExtra, tidyverse, broom, modelsummary, specr, janitor, modelr)
 
-life_expec_dat <- read_csv("life_expectancy.csv") %>% clean_names()
+life_expec_dat <- read_csv("life_expectancy.csv") %>% 
+  clean_names() %>% 
+  mutate(developed = if_else(status == "Developed", 1, 0),
+         large = if_else(population > 50000000, 1, 0))
 head(life_expec_dat)
 ```
 
@@ -177,13 +180,13 @@ biv_model_out_w_names <-  vars %>%
   map(lm_fun_iter_x)
 ```
 
-What if you want to run several different multivariate models? In addition to the code from the lectures you could use `modelR::formulas`:
+But say we are interested to see what effect gdp has on life_expectancy. Multiple potential combinations make sense. What if you want to run several different multivariate models? In addition to the code from the lectures you could use `modelR::formulas`:
 
 ```{r}
 # create list of combinations of vars
 indep_vars_combos <- modelr::formulas(~life_expectancy,
                        "Bivariate OLS"  = ~ gdp,
-                       "Multivariate OLS" = ~ gdp + alcohol + bmi + total_expenditure,
+                       "Multivariate OLS" = ~ gdp + total_expenditure + population + alcohol + bmi ,
                        "Interaction" = ~ population + gdp * total_expenditure,
                        "Polynomial" = ~ gdp + I(gdp^2))
   
@@ -194,9 +197,81 @@ multiv_model_out <- indep_vars_combos %>%  map(lm, data = life_expec_dat)
 As you can see the function in the lecture is a lot more powerful, but in my admittedly very modest experience, the preceding code resembles the actual scientific workflow more closely. 
 
 ***
+# Specification Curve Analysis
+
+In the above example, I made a conscious choice to run these four specific models. This conscious choice should reflect insights from theory (here: not so much) and be defensible (eh...). Unfortunately, some researchers argue that by making a conscious choice, I select an arbitrary or possibly even biased model specification. They propose to approach model specification analytically. 
+
+They call this Specification Curve Analysis, or Multiverse Analysis. There is a very nice package to run this: `specr`. In very simplistic terms it follows this path:
+
+**First** you compile a list of defensible “model ingredients”:  
+
+```{r}
+setup_specs(
+  y = c("life_expectancy"),
+  # We add an additional dependent variable
+  x = c("gdp", "log(gdp)", "I(gdp^2)", "gdp * total_expenditure"),
+  # We are not sure which independent variable is better
+  model = c("lm", "glm"),
+  # We only use linear model or more complicated one
+  controls = c("population", "alcohol", "bmi"))
+```
+**Second** you define additional analytical choices such as: model family, potential subgroups to run it over etc. 
+
+```{r}
+# Run specification curve analysis (under the hood it uses setup_specs())
+results <- run_specs(df = life_expec_dat, 
+                     y = c("life_expectancy"),               # We add an additional dependent variable
+                     x = c("gdp", "log(gdp)", "I(gdp^2)", "gdp:total_expenditure"),         # We are not sure which independent variable is better
+                     model = c("lm", "glm"),           # We only use linear model or more complicated one
+                     controls = c("population", "alcohol", "bmi"),
+                     subsets = list(developed = unique(na.omit(life_expec_dat$developed))) # so it is 1 or 0, not sure why author of pkg choose to do it this way
+)
+
+results %>% head()
+
+```
+
+**Third** You inspect the specification curve to understand how robust your findings are to different analytical choices.
+
+```{r}
+plot_decisiontree(results, 
+                  legend = TRUE)
+```
+This decision tree helps illustrate where and when you had to make a choice and how many models you might alternatively have specified.
+
+More concretely you could also look at some summary statistics for your p-values across the different model specifications:
+
+```{r}
+summarise_specs(results, 
+                var = c("std.error", "estimate"))
+```
+
+The statistic `r colorise("mad", "red")` stands for `r colorise("median absolute deviation", "red")`.
+
+A more intuitive way of inspecting the results might lie in visualising them. 
+
+```{r}
+plot_specs(results)
+```
+
+**Plot A** denotes: 
+* X-axis = ordered model specifications (from most negative effect to most positive effect)
+* Y-axis = standardized regression coefficient for the IV-DV relationship
+* Points = the standardized regression coefficient for a specific models
+* Error bars = 95% confidence intervals around the point estimate
+
+**Plot B** denotes: 
+* X-axis = ordered model specifications (the same as panel A)
+* Y-axis (right) = analytic decision categories
+* Y-axis (left) = specific analytic decisions within each category
+* Lines = denote that a specific analytic decision was true for that model specification
+
+Without putting much thought into our model it looks like gdp (depending on the specification) has either no effect or positive effects on life_expectancy. This just goes to show how *careful* one has to approach the task of *correctly specifying a model*! 
+
+***
 # Model Output with `broom`
 
-By inspecting either of these model lists, you can see how unwieldy they can be. In the lecture Simon pointed out that we are interested in three main aspects of out model outputs:
+In the lecture we saw, that vanilla model lists can be unwieldy. Simon also pointed out that we are interested in three main aspects of out model outputs:
 
 * **Estimated coefficients** and associated standard errors, T-statistics, p-values, confidence intervals
 * **Model summaries**, including goodness of fit measures, information on model convergence, number of observations used
@@ -207,6 +282,7 @@ Extracting this information from the vanilla model output is possible, but hardl
 ```{r, out.lines = 10}
 str(multiv_model_out[[3]])
 ```
+
 ## Tidying Model Objects
 
 Luckily we don't have to deal with this. We use a package called `broom` that is part of the [tidyverse](https://www.tidyverse.org/) and more precisely [tidymodels](https://www.tidymodels.org/). The latter offers a lot of cool packages that have their own tutorials, so check them out! `r emo::ji("strong")`. 
@@ -347,6 +423,12 @@ modelplot(multiv_model_out, coef_omit = "Intercept") +
 ```
 
 We will cover the visualisation aspect in R in much greater detail in the coming session, so hopefuly the section on **coefficient plot** will become clearer then! 
+
+
+***
+
+
+
 
 ***
 # Appendix 1: Tools to Prepare the Workshop {.tabset .tabset-fade .tabset-pills}
