@@ -275,7 +275,7 @@ Without putting much thought into our model it looks like gdp (depending on the 
 **Watch Out!**
 :::
 
-Be careful and **selective** when you use specification curve analysis! It is not a tool that you should apply to each and every potential paper. Especially, if you have not taken a course on causal inference. Specification curve analysis, when it includes variables that act as colliders or mediators might actually legitimise an otherwise wrongly specified model!
+Be careful and **selective** when you use specification curve analysis! It is not a tool that you should apply to each and every potential paper. Especially, if you have not taken a course on **causal inference**. Specification curve analysis, when it includes variables that act as **colliders** or **mediators** might actually legitimise an otherwise wrongly specified model!
 ::::
 
 
@@ -438,6 +438,7 @@ We will cover the visualisation aspect in R in much greater detail in the coming
 
 
 ***
+# Exercises 
 
 
 
