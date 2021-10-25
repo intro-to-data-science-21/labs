@@ -9,6 +9,7 @@
 4. Functions, iteration and data bases \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-4-databases/4-databases.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-4-databases/4-databases.Rmd)\]
 5. Web scraping with R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-5-web-scraping/5-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-5-web-scraping/5-web-scraping.html)\]
 6. Modelling with R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-6-modelling/6-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-6-modelling/6-modelling.Rmd)\]
+7. Visualization in R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-7-visualization/6-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-7-visualization/7-visualization.Rmd)\]
 
 ## Instructors
 
