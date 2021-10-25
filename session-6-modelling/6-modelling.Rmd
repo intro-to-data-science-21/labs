@@ -214,6 +214,7 @@ setup_specs(
   model = c("lm", "glm"),
   # We only use linear model or more complicated one
   controls = c("population", "alcohol", "bmi"))
+
 ```
 **Second** you define additional analytical choices such as: model family, potential subgroups to run it over etc. 
 

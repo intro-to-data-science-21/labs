@@ -1,0 +1,238 @@
+---
+title: "Visualization"
+subtitle: "Telling stories with plots in R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(digits=2)
+
+# save the built-in output hook
+hook_output <- knitr::knit_hooks$get("output")
+
+# set a new output hook to truncate text output
+knitr::knit_hooks$set(output = function(x, options) {
+  if (!is.null(n <- options$out.lines)) {
+    x <- xfun::split_lines(x)
+    if (length(x) > n) {
+      # truncate the output
+      x <- c(head(x, n), "....\n")
+    }
+    x <- paste(x, collapse = "\n")
+  }
+  hook_output(x, options)
+})
+
+colorise <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+      x)
+  } else x
+}
+
+```
+***
+Welcome back!  
+
+This weeks session will introduce you to some basic visualization approaches in R.
+
+* We will revisit some fundamental principles of visualization.
+* We will learn some basics of data visualization with `ggplot`. 
+
+***
+# Basics of Visualization
+
+
+***
+# Introduction to `ggplot2`
+
+`ggplot2` is by far the most popular visualization package in **R**. `ggplot2` implements the **grammar of graphics** to render a versatile syntax of creating visuals. The underlying logic of the package relies on deconstructing the structure of graphs (if you are interested in this you can read this [article](http://vita.had.co.nz/papers/layered-grammar.pdf)).  
+
+For the purposes of this introduction to visualization with ggplot, we care about the layered nature of visualizing with `ggplot2`.
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+knitr::include_graphics("https://user-images.githubusercontent.com/54796579/94537983-b94fa100-0243-11eb-8d12-c2e685141092.png")
+```
+
+
+```{r, echo=T, results='hide', warning=FALSE, message=FALSE}
+# Load packages. Install them first, in case you don't have them yet.
+
+library(palmerpenguins) # To get our example's dataset
+library(tidyverse) # To use dplyr functions and the pipe operator when needed
+library(ggplot2) # To visualize data (this package is also loaded by library(tidyverse))
+```
+---
+
+## Our building blocks
+
+During this week, we will learn about the following building blocks:
+
+- **Data**: the data frame, or data frames, we will use to plot
+- **Aesthetics**: the variables we will be working with
+- **Geometric objects**: the type of visualization
+- **Theme adjustments**: size, text, colors etc
+
+---
+
+## Data
+
+The first building block for our plots are the data we intend to map. In `ggplot2`, we always have to specify the object where our data lives. In other words, you will always have to specify a data frame, as such:
+
+```r
+ggplot(name_of_your_df)
+```
+
+In the future, we will see how to combine multiple data sources to build a single plot. For now, we will work under the assumption that all your data live in the same object.
+
+---
+
+## Aesthetics
+
+The second building block for our plots are the aesthetics. We need to specify the variables in the data frame we will be using and what role they play. 
+
+To do this we will use the function `aes()` within the `ggplot()` function after the data frame **(remember to add a comma after the data frame)**.
+
+```r
+ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable))
+```
+
+Beyond your axis, you can add more aesthetics representing further dimensions of the data in the two dimensional graphic plane, such as: size, color, fill, to name but a few.
+
+---
+
+## Geometric objects
+
+The third layer to render our graph is a geomethic object. To add one, we need to add a plus (**+**) at the end of the initial line and state the type of geometric object we want to add, for example, `geom_point()` for a scatter plot, or `geom_bar()` for barplots. 
+
+```r
+ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable)) +
+  geom_point()
+```
+
+---
+
+## Theme
+
+At this point our plot may just need some final thouches. We may want to fix the axes names or get rid of the default gray background. To do so, we need to add an additional layer preceded by a plus sign (+). 
+
+If we want to change the names in our axes, we can utilize the `labs()` function. 
+
+We can also employ some of the pre-loaded themes, for example, `theme_minimal()`.
+
+```r
+ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "Name you want displayed",
+       y = "Name you want displayed")
+```
+
+---
+
+## Our first plot
+
+For our very first plot using `ggplot2`, we will use the `penguins` data from last week.
+
+We would like to create a scatterplot that illustrates the relationship between the length of a penguin's flipper and their weight.
+
+To do so, we need three of our building blocks: a) data, b) aesthetics, and c) a geometric object (`geom_point()`).
+
+
+```{r}
+ggplot(penguins, aes(x = flipper_length_mm, y=body_mass_g)) +
+  geom_point()
+```
+
+---
+
+**Exercise**: Once we have our scatterplot. Can you think of a way to adapt the code to: 
+
+* (1) convey another dimension through color, the species of penguin 
+* (2) change the axes names
+* (3) render the graph with `theme_minimal()`. 
+
+---
+
+# Visualizing effectively
+
+## Plotting distributions
+
+If we are interested in plotting distributions of our data, we can leverage geometric objects, such as: 
+
+- `geom_histogram()`: visualizes the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin (the default is 30 bins).
+- `geom_density()`: computes and draws kernel density estimate, which is a smoothed version of the histogram.
+- `geom_bar()`: renders barplots and in plotting distributions behaves in a very similar way from `geom_histogram()` (can also be used with two dimensions)
+
+This is a histogram presenting the weight distribution of penguins in our sample. .
+
+```{r distribution-plot, warning=F, exercise=TRUE, exercise.lines = 5}
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_histogram()
+```
+
+---
+
+**Exercise**: Let's adapt the code of our histogram:
+
++ (1) add `bins = 15` argument type different numbers)
++ (2) add `fill = "#FF6666"` (type "red", "blue", instead of #FF6666)
++ (3) change the geom to `_density` and `_bar`
+
+---
+
+## Plotting relationships
+
+We can utilize graphs to explore how different variables are related. In fact, we did so before in our scatterplot. We can also use box plots and lines to show some of these relationships.
+
+For example, this boxplot showcasing the distribution of weight by species:
+
+```{r box-plot, exercise=TRUE, exercise.lines = 6}
+ggplot(penguins, aes(x = species, y = body_mass_g)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Species",
+       y = "Body mass (g)")
+```
+
+Or this adaptation of our initial plot with a line of best fit for the observed data by each species:
+
+```{r relationship-plot, warning = F, exercise=TRUE, exercise.lines = 8}
+ggplot(penguins, aes(x= flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = F) +
+  theme_minimal() +
+  labs(x = "Length of the flipper",
+       y = "Body mass (g)",
+       color = "Species")
+```
+
+---
+
+# Next steps 
+
+Now that you have been introduced to some of the basics of `ggplot2`, **the best way to move forward is to experiment**. As we have discussed before, the **R** community is very open. Perhaps, you can gather some inspiration from the Tidy Tuesday social data project in R where users explore a new dataset each week and share their visualizations and code on Twitter under \#TidyTuesday. You can explore some of the previous visualizations [here](https://shiny.rstudio.com/gallery/tidy-tuesday.html) and try to replicate their code.
+
+*[Here is a curated list](https://github.com/erikgahner/awesome-ggplot2) of awesome `ggplot2` resources.*
+
+---
+
+# Sources
+
+This tutorial is based largely on chapters 7 to 10 from the [QPOLR book](http://qpolr.com/dataviz.html)*
+
