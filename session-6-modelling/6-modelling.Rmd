@@ -88,7 +88,7 @@ head(life_expec_dat)
 
 
 ***
-# Using Formulae in R 
+# Using Formulae in R  `r emo::ji("teacher")`
 
 R as coding language was specifically designed with statistical analysis in mind. Therefore the founding fathers of R `r emo::ji("raising hands")` - in their infinite wisdom - decided to create a special object class (called `formula`) to help us run models.
 
@@ -440,11 +440,12 @@ We will cover the visualisation aspect in R in much greater detail in the coming
 ***
 # Exercises 
 
+If you want to practice the above you can find more materials [here](https://github.com/intro-to-data-science-21/labs/blob/main/practice-scripts/07-model-fitting.R). 
 
-
+Rather than do individual exercises this week we wanted to discuss different recording options for the upcoming Workshop Presentation. 
 
 ***
-# Appendix 1: Tools to Prepare the Workshop {.tabset .tabset-fade .tabset-pills}
+# Appendix 1: Tools to Prepare the Workshop `r emo::ji("film")` {.tabset .tabset-fade .tabset-pills} 
 
 Soon the Workshop will be upon us. To help you prepare the recording of your presentation we wanted to present you with two options that 
 
@@ -482,13 +483,59 @@ You can pause, continue (if necessary) and finally, stop the recording. The reco
 
 Should you feel the need to edit the video (for example, trim the length), the easiest option is to just use the tool inside the Quicktime player. This way you can edit the start and end of the video. 
 
-## Using PowerPoint
 
 ***
-# Appenidx 2: Further Resources 
 
-## Modelling Packages
+## Using PowerPoint
+
+For this to work you need to have an official MS Powerpoint licence and a finished presentation. In order to record yourself and the presentation follow these steps:
+
+**Step 1** Open a Presentation and click on Record Slide Show > Record from Current Slide (if you are at the start of the ppt.)
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+          knitr::include_graphics("pics/ppt_record_1.png")
+```
+
+**Step 2** Use the three buttons in the Upper Left to Corner to navigate the recording.
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+          knitr::include_graphics("pics/ppt_record_2.png")
+```
+
+**Step 3** Additional features include the option to use Slide Notes ... 
+
+```{r, fig.align='center', echo=F, out.width = "70%"}
+          knitr::include_graphics("pics/ppt_record_3.png")
+```
+
+... and the colours and pens at the bottom to draw and highlight elements of a slide.
 
 
-## Visualisation tools
+```{r, fig.align='center', echo=F, out.width = "70%"}
+          knitr::include_graphics("pics/ppt_record_5.png")
+```
+
+**Step 4** Saving your recording as a video file
+
+
+When you're done recording, save your file and recording. 
+
+Then click on File > Export > Create a Video.
+
+Powerpoint will now present you with a number of options regarding the quality of the video (go for the highest possible resolution) and whether you would like your video to include narration and slide timings. For most of you this should not apply. 
+
+Then choose a destination to save the video and you are all set. 
+
+***
+
+## Alternative Options to record presentations
+
+The Readme on the [Workshop Github](https://github.com/intro-to-data-science-21/workshop-presentations) contains a number of online video tutorials for a number of different Tools that you can have a look at. Similarly it offers more potent software tutorials on cutting and editing your videos. 
+
+
+# Sources
+
+This tutorial drew heavily on the vignette from the [_specr package_](https://cran.r-project.org/web/packages/specr/vignettes/specr.html) as well as the [_Regression Section_](https://raw.githack.com/uo-ec607/lectures/master/08-regression/08-regression.html#Presentation) in McDermott's Data Science for Economists by Grant McDermott.
+
+
 
