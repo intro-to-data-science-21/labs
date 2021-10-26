@@ -340,7 +340,7 @@ Option 2: Use HTTP header fields From and User-Agent to provide information abou
 url <- "http://a-totally-random-website.com"
 
 rvest_session <- session(url, 
-  add_headers(From = "my@email.com", 
+  add_headers(`From` = "my@email.com", 
               `UserAgent` = R.Version()$version.string))
                 
 scraped_text <- rvest_session %>% 

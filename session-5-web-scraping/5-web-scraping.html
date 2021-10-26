@@ -346,7 +346,7 @@ div.tocify {
 <li>extensive data cleaning using regular expressions</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌏</h1>
+<h1>Why webscrape with R? 🌐</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the web and b) bringing it into shape (e.g. cleaning it, getting it into tabular format).</p>
 <p>Why webscrape? While some influential people consider “Data Scientist” 👩‍💻 as the <a href="https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century">sexiest job</a> of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so?</p>
 <ul>
@@ -425,13 +425,13 @@ body_nodes %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">1</td>
-<td align="left">The Kid LAROI &amp; Justin Bieber</td>
-<td align="left">Stay</td>
+<td align="left">Lil Nas X &amp; Jack Harlow</td>
+<td align="left">Industry Baby</td>
 </tr>
 <tr class="even">
 <td align="left">2</td>
-<td align="left">Lil Nas X &amp; Jack Harlow</td>
-<td align="left">Industry Baby</td>
+<td align="left">The Kid LAROI &amp; Justin Bieber</td>
+<td align="left">Stay</td>
 </tr>
 <tr class="odd">
 <td align="left">3</td>
@@ -440,13 +440,13 @@ body_nodes %&gt;%
 </tr>
 <tr class="even">
 <td align="left">4</td>
-<td align="left">Drake Featuring Future &amp; Young Thug</td>
-<td align="left">Way 2 Sexy</td>
+<td align="left">Ed Sheeran</td>
+<td align="left">Bad Habits</td>
 </tr>
 <tr class="odd">
 <td align="left">5</td>
-<td align="left">Ed Sheeran</td>
-<td align="left">Bad Habits</td>
+<td align="left">Drake Featuring Future &amp; Young Thug</td>
+<td align="left">Way 2 Sexy</td>
 </tr>
 <tr class="even">
 <td align="left">6</td>
@@ -465,13 +465,13 @@ body_nodes %&gt;%
 </tr>
 <tr class="odd">
 <td align="left">9</td>
-<td align="left">Drake Featuring 21 Savage &amp; Project Pat</td>
-<td align="left">Knife Talk</td>
+<td align="left">Wizkid Featuring Justin Bieber &amp; Tems</td>
+<td align="left">Essence</td>
 </tr>
 <tr class="even">
 <td align="left">10</td>
-<td align="left">Wizkid Featuring Justin Bieber &amp; Tems</td>
-<td align="left">Essence</td>
+<td align="left">Ed Sheeran</td>
+<td align="left">Shivers</td>
 </tr>
 </tbody>
 </table>
@@ -732,7 +732,7 @@ body_nodes %&gt;%
 <pre><code>url &lt;- &quot;http://a-totally-random-website.com&quot;
 
 rvest_session &lt;- session(url, 
-  add_headers(From = &quot;my@email.com&quot;, 
+  add_headers(`From` = &quot;my@email.com&quot;, 
               `UserAgent` = R.Version()$version.string))
                 
 scraped_text &lt;- rvest_session %&gt;% 
