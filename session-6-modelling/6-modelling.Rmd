@@ -80,7 +80,7 @@ Before we get started with the actual coding we need to load a few packages and 
 pacman::p_load(kableExtra, tidyverse, broom, modelsummary, specr, janitor, modelr)
 
 life_expec_dat <- read_csv("life_expectancy.csv") %>% 
-  clean_names() %>% 
+  janitor::clean_names() %>% 
   mutate(developed = if_else(status == "Developed", 1, 0),
          large = if_else(population > 50000000, 1, 0))
 head(life_expec_dat)
@@ -112,11 +112,13 @@ Formulae are very straightforward to work with. To avoid any errors you should f
 
 ```{r}
 formula_string <- paste("life_expectancy", "~ gdp")
+formula_string
 ```
 
 **Step 2:** transform the string into R class formula. Only then can you plug it into the model function.
 
 ```{r}
+form
 form <- as.formula(formula_string) # needs to be transformed to correct class
 ```
 
@@ -125,8 +127,11 @@ Here is the proof that both ways of doing it are identical.
 ```{r}
 form <- lm(form, data = life_expec_dat)
 reg <- lm(life_expectancy ~ gdp, data = life_expec_dat)
+reg <- glm(life_expectancy ~ gdp, family = "gaussian", data = life_expec_dat)
+
 
 form$coefficients == reg$coefficients
+
 ```
 
 ## For Iteration 
@@ -169,6 +174,8 @@ vars <- life_expec_dat %>%
 # run a bivariate model for each column
 biv_model_out <-  vars %>%
   map(lm_fun_iter_x)
+
+biv_model_out
 ```
 
 This returns a list of all the models that your ran. Given that there are a quite a few models now, so it might be an idea to retain the names of the variables that you feed into your model. You can do this with `purrr::set_names()`.
@@ -178,6 +185,8 @@ This returns a list of all the models that your ran. Given that there are a quit
 biv_model_out_w_names <-  vars %>%
   set_names() %>% 
   map(lm_fun_iter_x)
+
+biv_model_out_w_names$year 
 ```
 
 But say we are interested to see what effect gdp has on life_expectancy. Multiple potential combinations make sense. What if you want to run several different multivariate models? In addition to the code from the lectures you could use `modelR::formulas`:
@@ -186,12 +195,14 @@ But say we are interested to see what effect gdp has on life_expectancy. Multipl
 # create list of combinations of vars
 indep_vars_combos <- modelr::formulas(~life_expectancy,
                        "Bivariate OLS"  = ~ gdp,
-                       "Multivariate OLS" = ~ gdp + total_expenditure + population + alcohol + bmi ,
+                       "Multiple OLS" = ~ gdp + total_expenditure + population + alcohol + bmi ,
                        "Interaction" = ~ population + gdp * total_expenditure,
                        "Polynomial" = ~ gdp + I(gdp^2))
   
   
 multiv_model_out <- indep_vars_combos %>%  map(lm, data = life_expec_dat)
+
+multiv_model_out[[1]]
 ```
 
 As you can see the function in the lecture is a lot more powerful, but in my admittedly very modest experience, the preceding code resembles the actual scientific workflow more closely. 
@@ -228,7 +239,6 @@ results <- run_specs(df = life_expec_dat,
                      subsets = list(developed = unique(na.omit(life_expec_dat$developed))) # so it is 1 or 0, not sure why author of pkg choose to do it this way
 )
 
-results %>% head()
 
 ```
 
@@ -294,6 +304,8 @@ Extracting this information from the vanilla model output is possible, but hardl
 
 ```{r, out.lines = 10}
 str(multiv_model_out[[3]])
+
+summary(multiv_model_out[[3]])
 ```
 
 ## Tidying Model Objects
@@ -317,7 +329,7 @@ broom::glance(multiv_model_out[[3]])
 3) `augment()`: Adds information about observations to a dataset.
 
 ```{r}
-augment(multiv_model_out[[3]], se_fit = TRUE) %>% head(3)
+augment(multiv_model_out[[3]], se_fit = TRUE) 
 ```
 
 I mean, doesn't this look a lot more accessible?
@@ -330,7 +342,7 @@ Where `broom` really shines, is in dealing with many models like we have in our 
 
 ```{r}
 multiv_model_out_broom <- map_dfr(multiv_model_out, broom::tidy, .id = "model_type")
-multiv_model_out_broom %>% head()
+multiv_model_out_broom
 ```
 
 Now that we have our multiple model outputs in a format that we can work with normally, it is time to start thinking about visualizing our results. You can plot the residuals, the goodness of fit statistics etc. Similarly you could also use the `glance()` to provide some robustness statistics or descriptive tables. 
@@ -425,7 +437,7 @@ Now we only need to customise the plot to our liking:
 # The palette with grey:
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-# Or you might use any other Paletter inherent to R
+# Or you might use any other Palette inherent to R
 
 modelplot(multiv_model_out, coef_omit = "Intercept") +
     labs(x = 'Coefficients', 
