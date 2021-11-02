@@ -387,11 +387,12 @@ div.tocify {
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  palmerpenguins,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  haven,</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  gapminder,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  viridis</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> gapminder <span class="co"># let&#39;s make a copy of the data to save some characters</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  gridExtra,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  viridis</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> gapminder <span class="co"># let&#39;s make a copy of the data to save some characters</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div>
 </div>
 </div>
 <div id="exercise-1---your-first-plot" class="section level2">
@@ -411,7 +412,7 @@ div.tocify {
 <li>render the graph with <code>theme_minimal()</code>.</li>
 </ol></li>
 </ul>
-<p><img src="7-visualization_files/figure-html/figures-side-1.png" width="50%" /><img src="7-visualization_files/figure-html/figures-side-2.png" width="50%" /></p>
+<p>If you want to know more about the <code>par(mar, mgp, las)</code> function - apparently, it used to be an <a href="http://rfunction.com/archives/1302">R Function of the Day</a>. <img src="7-visualization_files/figure-html/figures-side-1.png" width="50%" /><img src="7-visualization_files/figure-html/figures-side-2.png" width="50%" /></p>
 <p>That was a first shot to understand the basic structure of the layers. Let’s have a closer look at what plot types makes sense in which situations. The question is, how can we convey the information most effectively?</p>
 </div>
 </div>
@@ -1043,8 +1044,27 @@ div.tocify {
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;output/images/lifeexp_dens.png&quot;, width = 3, height = 2, dpi = 300, p1)</span></span></code></pre></div>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;lifeexp_dens.png&quot;, width = 3, height = 2, dpi = 300, p1)</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="co"># or, better folder structure:</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;output/images/lifeexp_dens.png&quot;, width = 3, height = 2, dpi = 300, p1)</span></span></code></pre></div>
 <p>Manually, you could also visit the <code>Plots</code> pane in the RStudio interface and export the graph as image or pdf.</p>
+<p>Oftentimes, we want our plots not only to be displayed side by side in an html output, but we actually want to save it as two(or more)-image file. The function <code>grid.arrange()</code> from the <code>gridExtra</code> package - see this <a href="https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html">vignette</a> for more information- can be very helpful here.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="7-visualization_files/figure-html/unnamed-chunk-43-1.png" width="480" /></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>p3</span></code></pre></div>
+<pre><code>## TableGrob (1 x 2) &quot;arrange&quot;: 2 grobs
+##   z     cells    name           grob
+## 1 1 (1-1,1-1) arrange gtable[layout]
+## 2 2 (1-1,2-2) arrange gtable[layout]</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;lifeexp_double.png&quot;, width = 6, height = 2, dpi = 300, p3)</span></span></code></pre></div>
 <hr />
 </div>
 <div id="next-steps" class="section level1">

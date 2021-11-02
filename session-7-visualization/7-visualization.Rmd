@@ -134,6 +134,7 @@ pacman::p_load(
   palmerpenguins,
   haven,
   gapminder,
+  gridExtra,
   viridis
   )
 
@@ -155,6 +156,7 @@ Once we have our scatterplot. Can you think of a way to adapt the code to:
 * (2) change the axes names
 * (3) render the graph with `theme_minimal()`. 
 
+If you want to know more about the `par(mar, mgp, las)` function - apparently, it used to be an [R Function of the Day](http://rfunction.com/archives/1302).
 ```{r, figures-side, fig.show="hold", out.width="50%", warning=F, echo=F}
 par(mar = c(4, 4, .1, .1)) # to let the figures sit side by side
 
@@ -910,7 +912,6 @@ ggplot(subset(df, country %in% c("Brazil", "Russia", "China", "India", "South Af
 ```
 
 
-
 # Saving plots  `r emo::ji("floppy_disk")`
 
 We can output your plots to many different format using the `ggsave()` function, including but not limited to `.pdf`, `.jpeg`, `.bmp`, `.tiff`, or `.eps`. Here, we output the graph as a Portable Network Graphics (.png) file. We can specify the size of the output graph as well as the resolution in dots per inch (dpi). If no graph is specified, `ggsave()` will save the last graph that was executed. If we no not specify the complete file path, the plot will be saved to your working directory.
@@ -924,10 +925,27 @@ p1 <- ggplot(df,
        aes(x = lifeExp)) +
   geom_density()
 
+#ggsave("lifeexp_dens.png", width = 3, height = 2, dpi = 300, p1)
+
+# or, better folder structure:
 #ggsave("output/images/lifeexp_dens.png", width = 3, height = 2, dpi = 300, p1)
 ```
 
 Manually, you could also visit the `Plots` pane in the RStudio interface and export the graph as image or pdf.
+
+Oftentimes, we want our plots not only to be displayed side by side in an html output, but we actually want to save it as two(or more)-image file. The function `grid.arrange()` from the `gridExtra` package - see this [vignette](https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html) for more information- can be very helpful here.
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
+p1 <- ggplot(df,
+       aes(x = lifeExp)) +
+  geom_density()
+p2 <- ggplot(df, 
+       aes(x = lifeExp)) +
+  geom_histogram()
+
+p3 <- grid.arrange(p1, p2, nrow = 1)
+p3
+#ggsave("lifeexp_double.png", width = 6, height = 2, dpi = 300, p3)
+```
 
 ---
 
