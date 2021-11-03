@@ -368,13 +368,14 @@ Can you explain the differences between the plot applying the natural log to the
 We can use the same principle in bivariate (or multivariate) displays of data. Below, I use the `scale` transformation on the variable and reflect it in the axis label clarify that it is the relationship between life expectancy and the logarithm of GDP per capita that has a strong positive relationship. 
 ```{r, warning = F, message = F, fig.height = 4}
 ggplot(df,
-       aes(x = log(gdpPercap),
+       aes(x = gdpPercap,
            y = lifeExp)) +
   geom_point(alpha = 0.4,
              size = 0.5) +
   labs(title = "Economic wealth and life expectancy",
        x = "GDP per capita (log10)",
        y = "Life expectancy") +
+  scale_x_log10() +
   theme_light()
 ```
 
@@ -569,7 +570,7 @@ ggplot(subset(diff07, continent == "Europe" & year == 2007),
 ```
 
 This is really hard to see. Lets flip the axes using `coord_flip()`. This could useful because countries are ordered alphabetically, but visually, it is is confusing. Let's reorder the country axis based on the value of the population change. The default is ro order the points in ascending order from the origin.
-```{r, fig.show="hold", out.width="50%", warning=F, message=F}
+```{r, fig.show="hold", out.width="50%", fig.height = 6 , warning=F, message=F}
 par(mar = c(4, 4, .1, .1))
 
 ggplot(subset(diff07, continent == "Europe" & year == 2007),
@@ -592,7 +593,7 @@ You now know that we can utilize graphs to explore how different variables are r
 1. Create a boxplot showcasing the distribution of weight by species.
 2. Adapt our very first plot with lines that best fit the observed data by species.
 
-```{r, fig.show="hold", out.width="50%", warning=F, message=F}
+```{r, fig.show="hold", out.width="50%", warning=F, message=F, echo=F}
 par(mar = c(4, 4, .1, .1))
 
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
