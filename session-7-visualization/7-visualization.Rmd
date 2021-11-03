@@ -168,8 +168,9 @@ ggplot(penguins, aes(x = flipper_length_mm, y=body_mass_g)) +
 ggplot(penguins, aes(x = flipper_length_mm, y=body_mass_g, color = species)) +
   geom_point()+
   labs(x = "Flipper Length",
-       y = " Body Mass (g)")+
-  theme_minimal()
+       y = " Body Mass (g)",
+       color = "Species")+
+  theme_bw()
 ```
 
 That was a first shot to understand the basic structure of the layers. Let's have a closer look at what plot types makes sense in which situations. The question is, how can we convey the information most effectively? 
@@ -243,6 +244,7 @@ ggplot(subset(df),
        aes(x = continent,
            y = lifeExp)) +
   geom_boxplot() +
+  geom_jitter(alpha= 0.2, color = "blue")+
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
        x = "Continent",
