@@ -881,8 +881,8 @@ ggplot(subset(df, country %in% c("Brazil", "Russia", "China", "India", "South Af
        aes(x = year,
            y = gdpPercap,
            linetype = country,
-           shape = country,
-           colour = country)) + #shape would work for greyscale!
+           shape = country, #shape would work for greyscale
+           colour = country)) + 
   geom_line(alpha = 0.5) +
   geom_point(alpha = 0.8,
              size = 0.8) +
@@ -892,7 +892,14 @@ ggplot(subset(df, country %in% c("Brazil", "Russia", "China", "India", "South Af
   labs(title = "GDP per capita in BRICS countries",
        x = "Year",
        y = "GDP per capita")+
-  guides(shape = "none", linetype = "none") # hide two dimensions of the legend
+  guides(colour = guide_legend(override.aes = list(shape = c(16, 17, 15, 7)))) + # override the color legend
+  scale_shape(guide = "none")+ # this is now integrated in the colour guide
+  scale_linetype(guide = "none") # you could also add line types when overriding the color guide
+
+
+# or alternatively, just hide the two other legends
+guides(shape = "none", linetype = "none") 
+
 ```
 
 

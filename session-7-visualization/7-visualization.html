@@ -1018,39 +1018,47 @@ div.tocify {
 <h2>Exercise 4 - Groups and Relationships</h2>
 <p>Create a plot to compare the GDP per capita development of the BRICS countries (Brazil, Russia, India, China, South Africa). Unfortunately, Russia (or previously the Soviet Union) is not part of the <code>gapminder</code> data, so we cannot display it in the plot. Please create a publication-ready graph that can be printed (do you have ideas what we could do for grayscale printing?).</p>
 <p><img src="7-visualization_files/figure-html/unnamed-chunk-39-1.png" width="768" /></p>
+<pre><code>## $shape
+## [1] &quot;none&quot;
+## 
+## $linetype
+## [1] &quot;none&quot;
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;guides&quot;</code></pre>
 <p><img src="7-visualization_files/figure-html/unnamed-chunk-40-1.png" width="768" /></p>
 </div>
 </div>
 <div id="saving-plots" class="section level1">
 <h1>Saving plots 💾</h1>
 <p>We can output your plots to many different format using the <code>ggsave()</code> function, including but not limited to <code>.pdf</code>, <code>.jpeg</code>, <code>.bmp</code>, <code>.tiff</code>, or <code>.eps</code>. Here, we output the graph as a Portable Network Graphics (.png) file. We can specify the size of the output graph as well as the resolution in dots per inch (dpi). If no graph is specified, <code>ggsave()</code> will save the last graph that was executed. If we no not specify the complete file path, the plot will be saved to your working directory.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave(&quot;panel_lifeexp_continent.png&quot;, width = 6, height = 3, dpi = 400)</span></span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave(&quot;panel_lifeexp_continent.png&quot;, width = 6, height = 3, dpi = 400)</span></span></code></pre></div>
 <p>Alternatively, we could save the plot as an <code>R</code> object and pass the object name to <code>ggsave()</code>. Also, remember our project folder structure we discussed in one of the first weeks. You might have an image or output folder in your project directory.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;lifeexp_dens.png&quot;, width = 3, height = 2, dpi = 300, p1)</span></span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="co"># or, better folder structure:</span></span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;output/images/lifeexp_dens.png&quot;, width = 3, height = 2, dpi = 300, p1)</span></span></code></pre></div>
-<p>Manually, you could also visit the <code>Plots</code> pane in the RStudio interface and export the graph as image or pdf.</p>
-<p>Oftentimes, we want our plots not only to be displayed side by side in an html output, but we actually want to save it as two(or more)-image file. The function <code>grid.arrange()</code> from the <code>gridExtra</code> package - see this <a href="https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html">vignette</a> for more information- can be very helpful here.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, </span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;lifeexp_dens.png&quot;, width = 3, height = 2, dpi = 300, p1)</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="co"># or, better folder structure:</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;output/images/lifeexp_dens.png&quot;, width = 3, height = 2, dpi = 300, p1)</span></span></code></pre></div>
+<p>Manually, you could also visit the <code>Plots</code> pane in the RStudio interface and export the graph as image or pdf.</p>
+<p>Oftentimes, we want our plots not only to be displayed side by side in an html output, but we actually want to save it as two(or more)-image file. The function <code>grid.arrange()</code> from the <code>gridExtra</code> package - see this <a href="https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html">vignette</a> for more information- can be very helpful here.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> lifeExp)) <span class="sc">+</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="7-visualization_files/figure-html/unnamed-chunk-43-1.png" width="480" /></p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>p3</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>p3</span></code></pre></div>
 <pre><code>## TableGrob (1 x 2) &quot;arrange&quot;: 2 grobs
 ##   z     cells    name           grob
 ## 1 1 (1-1,1-1) arrange gtable[layout]
 ## 2 2 (1-1,2-2) arrange gtable[layout]</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;lifeexp_double.png&quot;, width = 6, height = 2, dpi = 300, p3)</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave(&quot;lifeexp_double.png&quot;, width = 6, height = 2, dpi = 300, p3)</span></span></code></pre></div>
 <hr />
 </div>
 <div id="next-steps" class="section level1">
