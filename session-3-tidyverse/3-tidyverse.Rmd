@@ -556,6 +556,8 @@ zscale <- function(x){
 
 A word on **function names**. Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. mean), or accessing some property of an object (i.e. coefficients). A good sign that a noun might be a better choice is if you’re using a very broad verb like “get”, “compute”, “calculate”, or “determine”. Where possible, avoid overriding existing functions and variables. However, many good names are already taken by other packages, but avoiding the most common names from base R will avoid confusion.
 
+Also, we did not focus at all on function documentation today. In case you are interested, this is a good package to [start](https://cran.r-project.org/web/packages/docstring/vignettes/docstring_intro.html)!
+
 ## Conditions
 
 You can of course also add conditions to your function.
