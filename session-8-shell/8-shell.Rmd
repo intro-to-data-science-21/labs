@@ -1,0 +1,214 @@
+---
+title: "Programming in the Shell"
+subtitle: "Interacting wiht the Command Line Interface"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(digits=2)
+
+# save the built-in output hook
+hook_output <- knitr::knit_hooks$get("output")
+
+# set a new output hook to truncate text output
+knitr::knit_hooks$set(output = function(x, options) {
+  if (!is.null(n <- options$out.lines)) {
+    x <- xfun::split_lines(x)
+    if (length(x) > n) {
+      # truncate the output
+      x <- c(head(x, n), "....\n")
+    }
+    x <- paste(x, collapse = "\n")
+  }
+  hook_output(x, options)
+})
+
+colorise <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+      x)
+  } else x
+}
+
+```
+
+***
+Welcome everyone! This week's session will prove a slight departure from R and introduce you to the Shell. `r emo::ji("woman_technologist")`
+
+You will learn what the Shell is, how you can interact with it and why you would choose to do so! Admittefly, most of the session will be dedicated to you getting it up and running on your local device.
+
+***
+## Introduction to Programming with the Shell
+
+So what exactly is the Shell? There are actually many different terms out there for roughly the same thing: *shell*, *terminal*, *tty*, *command prompt*, *etc.*. When we talk about either of these, we're normally referring to the simple, text-based interface which is used to control a computer or a program. The correct term for this in the jargon is **command line interface (CLI)**.
+ 
+ ***
+## Why the Shell?
+
+Dave Kerr in his book "Effective Shell" argues that there are 3 main reasons: 
+
+**Firstly**, using the shell can help you learn more about the internals of how your computer can work. This can be really helpful if you are technology professional or work with computers.
+
+**Secondly**, there are some scenarios where you have to use a shell. Not every program or system can be operated with a Graphical User Interface, which is the visual point-and-click interface you are probably using now. Some lower-level programs do not have such interfaces, and many computers do not either.
+
+**Finally**, there are some scenarios where it can be more efficient to use the shell. Operations which might be time consuming or repetitive to perform using the user interface might be much faster to perform in a shell. You can also write shell scripts to automate these kinds of operations.
+
+***
+## Setup{.tabset .tabset-fade .tabset-pills}
+
+Here is how you can get the shell to run smoothly on your local device: 
+
+### on MacOS
+
+Extremely straightforward: 
+
+**1.** Open Spotlight and type in "Terminal"
+
+```{r}
+knitr::include_graphics("pics/terminal_spotlight.png")
+```
+
+For the record, I use "iTerm2" which you can download [here](https://iterm2.com/index.html). It has a few small tweaks that makes it more attractive than the base terminal.
+
+**2.** Run Terminal
+
+```{r}
+knitr::include_graphics("pics/iTerm_open.png")
+```
+
+Even if you downloaded "iTerm", yours will look different. That is because you can customise it quite [extensively](https://opensource.com/article/20/8/iterm2-zsh).
+
+You are now essentially ready to interact with the Shell. Easy, no?
+
+***
+
+### Windows 
+
+This is where things can get a little tricky. There are a number of shell programs on Microsoft Windows. We'll be using the basic shell which is pre-installed, which is called the “Command Prompt”.
+
+To open the command prompt, start by clicking the start button on the bottom left hand side of the screen, and type command prompt. Open the Command Prompt program:
+
+```{r}
+knitr::include_graphics("pics/windows-search-command-prompt.png")
+```
+
+Once the program has opened, type whoami then hit the Return key. The whoami program will show the username of the logged in user:
+
+```{r}
+knitr::include_graphics("pics/windows-shell-whoami.png")
+```
+
+
+Unfortunately, it is not all that easy. The CLI in Windows does not behave the way a "Linux-like" shell would. In order to get it running the same way you have essentially 2 choices:
+
+
+:::: {.noticebox data-latex=""}
+::: {.center data-latex=""}
+**Disclaimer!**
+:::
+
+I do not have access to a Windows machine. As a result I had to rely on what other people suggest Windows Users do. I will try and help as much as possible, but am bound by my own limited experience with this stuff on Windows. 
+::::
+
+
+#### **1** Configuring the Shell
+
+Dave Kerr recommends to install "Linux Tools".
+
+This is probably the easiest option. It will let you run something like a Linux shell when you choose to, but not get in your way during day-to-day usage of your computer.
+
+To get a Linux-like experience on a Windows machine, you can install ["Cygwin"](https://cygwin.com/install.html). Cygwin provides a large set of programs which are generally available on Linux systems, which are designed to work on Windows.
+
+For more details on how to install "Cygwin" and whow to use it see [here](https://effective-shell.com/docs/getting-started/).
+
+
+#### **2** Install Windows Subsystem for Linux (WSL)
+
+Grant McDermott on the other hand recommends that you setup the Windows Subsystem for Linux (WSL). Again this must be installed first and a big downside is that it is only available to Windows 10 and 11 users.
+
+The basic installation guid can be found [here](https://docs.microsoft.com/en-us/windows/wsl/install).
+
+Now you can access WSL through RStudio by making WSL your default RStudio Terminal: 
+
+- In RStudio, navigate to: Tools > Terminal > Terminal Options.... 
+
+```{r}
+knitr::include_graphics("pics/wsl-rstudio-1.png")
+```
+
+- Click on the dropdown menu for New terminals open with and select "Bash (Windows Subsystem for Linux)", Then click OK. 
+
+```{r}
+knitr::include_graphics("pics/wsl-rstudio-2.png")
+```
+
+- Refresh your RStudio terminal (Alt+Shift+R).
+- You should see the WSL Bash environment with the path automatically configured to the present working director, mount point and all.
+
+```{r}
+knitr::include_graphics("pics/wsl-rstudio-4.png")
+```
+
+##{-}
+
+***
+## Navigating your filesystem
+
+Now that we have gotten everything to run (hopefully `r emo::ji("sweat_smile")`), let us briefly dive into some easier commands.
+
+Let's identify where we are:
+
+```{bash}
+pwd
+```
+
+Okey, I probably should not do this in my Home folder. Let's change the WD.
+
+```{bash, eval =F}
+cd ~./phd_hertie/courses/intro_data_science_fall_2021/labs/session-8-shell # Replace this with the path to your lab materials
+```
+
+I do not want to change stuff in the lab directory. So let's create a new subdirectory:
+
+```{bash, eval = F}
+mkdir example_dir
+```
+
+Now in order to do stuff here I need to change my Working Directory to the newly-created folder.
+
+```{bash}
+cd example_dir
+```
+
+It is rather empty in the folder so we'll add a .txt file
+
+```{bash, eval=F}
+nano first_text.txt
+```
+
+Okey, while this fun, it is also time consuming. So let's move a batch of files (Taylor Swift song lyrics by album, from [here](https://www.kaggle.com/thespacefreak/taylor-swift-song-lyrics-all-albums?select=02-fearless_taylors_version.csv)) from another folder to this one.
+
+```{bash, eval =F}
+cd ..
+mv text_dir/*.csv example_dir
+```
+
+See how much quicker this is compared to point and click?
+
+***
+## Automating certain tasks 

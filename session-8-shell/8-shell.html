@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Programming in the Shell</title>
+
+<script src="8-shell_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="8-shell_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="8-shell_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="8-shell_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="8-shell_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="8-shell_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="8-shell_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="8-shell_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="8-shell_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="8-shell_files/navigation-1.1/tabsets.js"></script>
+<link href="8-shell_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="8-shell_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Programming in the Shell</h1>
+<h3 class="subtitle">Interacting wiht the Command Line Interface</h3>
+
+</div>
+
+
+<hr />
+<p>Welcome everyone! This week’s session will prove a slight departure from R and introduce you to the Shell. 👩‍💻</p>
+<p>You will learn what the Shell is, how you can interact with it and why you would choose to do so! Admittefly, most of the session will be dedicated to you getting it up and running on your local device.</p>
+<hr />
+<div id="introduction-to-programming-with-the-shell" class="section level2">
+<h2>Introduction to Programming with the Shell</h2>
+<p>So what exactly is the Shell? There are actually many different terms out there for roughly the same thing: <em>shell</em>, <em>terminal</em>, <em>tty</em>, <em>command prompt</em>, <em>etc.</em>. When we talk about either of these, we’re normally referring to the simple, text-based interface which is used to control a computer or a program. The correct term for this in the jargon is <strong>command line interface (CLI)</strong>.</p>
+<hr />
+</div>
+<div id="why-the-shell" class="section level2">
+<h2>Why the Shell?</h2>
+<p>Dave Kerr in his book “Effective Shell” argues that there are 3 main reasons:</p>
+<p><strong>Firstly</strong>, using the shell can help you learn more about the internals of how your computer can work. This can be really helpful if you are technology professional or work with computers.</p>
+<p><strong>Secondly</strong>, there are some scenarios where you have to use a shell. Not every program or system can be operated with a Graphical User Interface, which is the visual point-and-click interface you are probably using now. Some lower-level programs do not have such interfaces, and many computers do not either.</p>
+<p><strong>Finally</strong>, there are some scenarios where it can be more efficient to use the shell. Operations which might be time consuming or repetitive to perform using the user interface might be much faster to perform in a shell. You can also write shell scripts to automate these kinds of operations.</p>
+<hr />
+</div>
+<div id="setup" class="section level2 tabset tabset-fade tabset-pills">
+<h2 class="tabset tabset-fade tabset-pills">Setup</h2>
+<p>Here is how you can get the shell to run smoothly on your local device:</p>
+<div id="on-macos" class="section level3">
+<h3>on MacOS</h3>
+<p>Extremely straightforward:</p>
+<p><strong>1.</strong> Open Spotlight and type in “Terminal”</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/terminal_spotlight.png&quot;</span>)</span></code></pre></div>
+<p><img src="pics/terminal_spotlight.png" width="1440" /></p>
+<p>For the record, I use “iTerm2” which you can download <a href="https://iterm2.com/index.html">here</a>. It has a few small tweaks that makes it more attractive than the base terminal.</p>
+<p><strong>2.</strong> Run Terminal</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/iTerm_open.png&quot;</span>)</span></code></pre></div>
+<p><img src="pics/iTerm_open.png" width="1440" /></p>
+<p>Even if you downloaded “iTerm”, yours will look different. That is because you can customise it quite <a href="https://opensource.com/article/20/8/iterm2-zsh">extensively</a>.</p>
+<p>You are now essentially ready to interact with the Shell. Easy, no?</p>
+<hr />
+</div>
+<div id="windows" class="section level3">
+<h3>Windows</h3>
+<p>This is where things can get a little tricky. There are a number of shell programs on Microsoft Windows. We’ll be using the basic shell which is pre-installed, which is called the “Command Prompt”.</p>
+<p>To open the command prompt, start by clicking the start button on the bottom left hand side of the screen, and type command prompt. Open the Command Prompt program:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/windows-search-command-prompt.png&quot;</span>)</span></code></pre></div>
+<p><img src="pics/windows-search-command-prompt.png" width="931" /></p>
+<p>Once the program has opened, type whoami then hit the Return key. The whoami program will show the username of the logged in user:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/windows-shell-whoami.png&quot;</span>)</span></code></pre></div>
+<p><img src="pics/windows-shell-whoami.png" width="1919" /></p>
+<p>Unfortunately, it is not all that easy. The CLI in Windows does not behave the way a “Linux-like” shell would. In order to get it running the same way you have essentially 2 choices:</p>
+<div class="noticebox">
+<div class="center">
+<p><strong>Disclaimer!</strong></p>
+</div>
+<p>I do not have access to a Windows machine. As a result I had to rely on what other people suggest Windows Users do. I will try and help as much as possible, but am bound by my own limited experience with this stuff on Windows.</p>
+</div>
+<div id="configuring-the-shell" class="section level4">
+<h4><strong>1</strong> Configuring the Shell</h4>
+<p>Dave Kerr recommends to install “Linux Tools”.</p>
+<p>This is probably the easiest option. It will let you run something like a Linux shell when you choose to, but not get in your way during day-to-day usage of your computer.</p>
+<p>To get a Linux-like experience on a Windows machine, you can install <a href="https://cygwin.com/install.html">“Cygwin”</a>. Cygwin provides a large set of programs which are generally available on Linux systems, which are designed to work on Windows.</p>
+<p>For more details on how to install “Cygwin” and whow to use it see <a href="https://effective-shell.com/docs/getting-started/">here</a>.</p>
+</div>
+<div id="install-windows-subsystem-for-linux-wsl" class="section level4">
+<h4><strong>2</strong> Install Windows Subsystem for Linux (WSL)</h4>
+<p>Grant McDermott on the other hand recommends that you setup the Windows Subsystem for Linux (WSL). Again this must be installed first and a big downside is that it is only available to Windows 10 and 11 users.</p>
+<p>The basic installation guid can be found <a href="https://docs.microsoft.com/en-us/windows/wsl/install">here</a>.</p>
+<p>Now you can access WSL through RStudio by making WSL your default RStudio Terminal:</p>
+<ul>
+<li>In RStudio, navigate to: Tools &gt; Terminal &gt; Terminal Options….</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/wsl-rstudio-1.png&quot;</span>)</span></code></pre></div>
+<p><img src="pics/wsl-rstudio-1.png" width="1600" /></p>
+<ul>
+<li>Click on the dropdown menu for New terminals open with and select “Bash (Windows Subsystem for Linux)”, Then click OK.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/wsl-rstudio-2.png&quot;</span>)</span></code></pre></div>
+<p><img src="pics/wsl-rstudio-2.png" width="1600" /></p>
+<ul>
+<li>Refresh your RStudio terminal (Alt+Shift+R).</li>
+<li>You should see the WSL Bash environment with the path automatically configured to the present working director, mount point and all.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/wsl-rstudio-4.png&quot;</span>)</span></code></pre></div>
+<p><img src="pics/wsl-rstudio-4.png" width="1600" /></p>
+<p>##{-}</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="navigating-your-filesystem" class="section level2">
+<h2>Navigating your filesystem</h2>
+<p>Now that we have gotten everything to run (hopefully 😅), let us briefly dive into some easier commands.</p>
+<p>Let’s identify where we are:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div>
+<pre><code>## /Users/tom/phd_hertie/courses/intro_data_science_fall_2021/labs/session-8-shell</code></pre>
+<p>Okey, I probably should not do this in my Home folder. Let’s change the WD.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~./phd_hertie/courses/intro_data_science_fall_2021/labs/session-8-shell <span class="co"># Replace this with the path to your lab materials</span></span></code></pre></div>
+<p>I do not want to change stuff in the lab directory. So let’s create a new subdirectory:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> example_dir</span></code></pre></div>
+<p>Now in order to do stuff here I need to change my Working Directory to the newly-created folder.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> example_dir</span></code></pre></div>
+<p>It is rather empty in the folder so we’ll add a .txt file</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> first_text.txt</span></code></pre></div>
+<p>Okey, while this fun, it is also time consuming. So let’s move a batch of files (Taylor Swift song lyrics by album, from <a href="https://www.kaggle.com/thespacefreak/taylor-swift-song-lyrics-all-albums?select=02-fearless_taylors_version.csv">here</a>) from another folder to this one.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> text_dir/<span class="pp">*</span>.csv example_dir</span></code></pre></div>
+<p>See how much quicker this is compared to point and click?</p>
+<hr />
+</div>
+<div id="automating-certain-tasks" class="section level2">
+<h2>Automating certain tasks</h2>
+</div>
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by Lisa Oswald & Tom Arend</a></p>
+<p style="text-align: center;"><span style="color: #808080;"><em>Prepared for Intro to Data Science, taught by Simon Munzert</em></span></p>
+<p style="text-align: center;"><span style="color: #808080;"><em><a href="https://www.hertie-school.org/en/">Hertie School, Berlin</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" >
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+    <a href="https://github.com/intro-to-data-science-21"  <i class="fab fa-github"></i><a>
+</p>
+
+&nbsp;
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
