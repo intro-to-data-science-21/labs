@@ -1,0 +1,683 @@
+Film	Chapter	Character	Race	Words
+NA	40: The Fighting Uruk-hai	Lurtz	Orc	1
+NA	04: The Uruk-Hai	Mauhur	Orc	2
+NA	24: Courage Is The Best Defense	Gothmog	Orc	4
+NA	28: The Sacrifice Of Faramir	Orc	Orc	5
+NA	53: Victory At Minar Tirith	Orc	Orc	5
+NA	44: The Breaking Of The Fellowship	Lurtz	Orc	6
+NA	18: Osgiliath Invaded	Gothmog	Orc	6
+NA	45: The Witch King's Hour	Gothmog	Orc	9
+NA	04: The Uruk-Hai	Grishnakh	Orc	10
+NA	34: The Wolves Of Isengard	Snaga	Orc	10
+NA	10: Night Camp At Fangorn	Uruk-hai	Orc	13
+NA	21: The Fall of Osgiliath	Gothmog	Orc	13
+NA	43: The Choices Of Master Samwise Gamgee	Orc	Orc	15
+NA	46: The Ride Of The Rohirrim	Gothmog	Orc	15
+NA	13: Treebeard	Grishnakh	Orc	18
+NA	51: The Black Ships	Orc	Orc	19
+NA	18: The Spoiling Of Isengard	Orc	Orc	20
+NA	10: Night Camp At Fangorn	Orc	Orc	20
+NA	58: The Tower Of Cirith Ungol	Grobag	Orc	23
+NA	36: The Siege Of Gondor	Orc	Orc	25
+NA	06: The Burning of the Westfold	Orc	Orc	29
+NA	10: Night Camp At Fangorn	Ugluk	Orc	33
+NA	58: The Tower Of Cirith Ungol	Shagrat	Orc	35
+NA	10: Night Camp At Fangorn	Grishnakh	Orc	44
+NA	36: The Siege Of Gondor	Gothmog	Orc	46
+NA	04: The Uruk-Hai	Ugluk	Orc	51
+NA	43: The Choices Of Master Samwise Gamgee	Shagrat	Orc	55
+NA	64: The Mouth Of Sauron	Mouth Of Sauron	Orc	87
+NA	62: In The Company Of Orcs	Orc	Orc	104
+NA	73: The Fellowship Reunited	Gimli	Dwarf	1
+NA	35: Helm's Deep	Gimli	Dwarf	4
+NA	58: Forth Eorlingas	Gimli	Dwarf	5
+NA	64: The Mouth Of Sauron	Gimli	Dwarf	5
+NA	34: A Journey In The Dark	Gimli	Dwarf	6
+NA	09: On The Trail Of The Uruk-Hai	Gimli	Dwarf	6
+NA	32: One of the Dúnedain	Gimli	Dwarf	6
+NA	51: The Breach Of The Deeping Wall	Gimli	Dwarf	6
+NA	53: Victory At Minar Tirith	Gimli	Dwarf	6
+NA	36: The Bridge Of Khazad-dûm	Gimli	Dwarf	7
+NA	46: The Road Goes Ever On…	Gimli	Dwarf	12
+NA	29: Marshalling At Dunharrow	Gimli	Dwarf	12
+NA	51: The Black Ships	Gimli	Dwarf	12
+NA	45: The Glittering Caves	Gimli	Dwarf	13
+NA	48: The Host Of The Eldar	Gimli	Dwarf	14
+NA	37: The Corsairs Of Umbar	Gimli	Dwarf	14
+NA	20: The King Of The Golden Hall	Gimli	Dwarf	15
+NA	20: Theoren's Decision	Gimli	Dwarf	15
+NA	55: Oaths Fulfilled	Gimli	Dwarf	15
+NA	12: The Fate Of Merry And Pippin	Gimli	Dwarf	16
+NA	65: The Black Gate Opens	Gimli	Dwarf	16
+NA	32: The Pass Of Caradhras	Gimli	Dwarf	19
+NA	31: Aragorn Takes The Paths Of The Dead	Gimli	Dwarf	20
+NA	23: The King's Decision	Gimli	Dwarf	21
+NA	03: The Road To Isengard	Gimli	Dwarf	22
+NA	04: The Voice Of Saruman	Gimli	Dwarf	23
+NA	11: The Riders Of Rohan	Gimli	Dwarf	24
+NA	59: The Last Debate	Gimli	Dwarf	24
+NA	53: The Retreat To The Hornburg	Gimli	Dwarf	34
+NA	05: The Three Hunters	Gimli	Dwarf	35
+NA	62: The Final Tally	Gimli	Dwarf	35
+NA	35: Balin's Tomb	Gimli	Dwarf	37
+NA	27: The Council Of Elrond	Gimli	Dwarf	38
+NA	05: Return To Edoras	Gimli	Dwarf	40
+NA	35: The Paths Of The Dead	Gimli	Dwarf	43
+NA	34: The Wolves Of Isengard	Gimli	Dwarf	45
+NA	33: Dwimoberg ~ The Haunted Mountain	Gimli	Dwarf	45
+NA	31: The Ring Goes South	Gimli	Dwarf	47
+NA	43: Parth Galen	Gimli	Dwarf	48
+NA	49: The Battle Of The Hornburg	Gimli	Dwarf	50
+NA	43: Aragorn's Return	Gimli	Dwarf	51
+NA	33: Moria	Gimli	Dwarf	52
+NA	31: Dwarf Women	Gimli	Dwarf	68
+NA	15: The White Rider	Gimli	Dwarf	73
+NA	41: Farewell To Lorien	Gimli	Dwarf	81
+NA	37: Lothlorien	Gimli	Dwarf	84
+NA	53: The Retreat To The Hornburg	Legolas	Elf	1
+NA	59: The Last Debate	Legolas	Elf	2
+NA	31: The Ring Goes South	Legolas	Elf	3
+NA	36: The Bridge Of Khazad-dûm	Legolas	Elf	4
+NA	01: Prologue	Elrond	Elf	5
+NA	23: Many Meetings	Elrond	Elf	5
+NA	34: The Wolves Of Isengard	Legolas	Elf	5
+NA	43: Aragorn's Return	Legolas	Elf	5
+NA	44: The Breaking Of The Fellowship	Legolas	Elf	6
+NA	53: Victory At Minar Tirith	Legolas	Elf	6
+NA	76: The Grey Havens	Elrond	Elf	6
+NA	22: Rivendell	Elrond	Elf	7
+NA	33: Moria	Legolas	Elf	7
+NA	37: Lothlorien	Legolas	Elf	7
+NA	11: The Riders Of Rohan	Legolas	Elf	7
+NA	62: The Final Tally	Legolas	Elf	7
+NA	09: Arwen's Vision	Figwit	Elf	7
+NA	32: The Pass Of Caradhras	Legolas	Elf	8
+NA	35: Balin's Tomb	Legolas	Elf	8
+NA	37: The Grace Of The Valar	Arwen	Elf	8
+NA	65: The Black Gate Opens	Legolas	Elf	8
+NA	31: Aragorn Takes The Paths Of The Dead	Legolas	Elf	9
+NA	10: Night Camp At Fangorn	Legolas	Elf	10
+NA	09: On The Trail Of The Uruk-Hai	Legolas	Elf	13
+NA	38: Arwen's Fate	Arwen	Elf	14
+NA	46: The Road Goes Ever On…	Legolas	Elf	15
+NA	30: Anduril - Flame Of The West	Arwen	Elf	15
+NA	76: The Grey Havens	Galadriel	Elf	17
+NA	37: Lothlorien	Galadriel	Elf	19
+NA	38: Caras Galadhon	Haldir	Elf	19
+NA	20: Theoren's Decision	Legolas	Elf	19
+NA	41: Farewell To Lorien	Legolas	Elf	20
+NA	05: Return To Edoras	Legolas	Elf	21
+NA	29: Marshalling At Dunharrow	Legolas	Elf	21
+NA	08: The Palantir	Legolas	Elf	22
+NA	48: The Host Of The Eldar	Legolas	Elf	24
+NA	05: The Three Hunters	Legolas	Elf	25
+NA	10: The Reforging Of Narsil	Elrond	Elf	30
+NA	43: Parth Galen	Legolas	Elf	31
+NA	35: The Paths Of The Dead	Legolas	Elf	32
+NA	27: The Council Of Elrond	Legolas	Elf	34
+NA	45: The Glittering Caves	Legolas	Elf	36
+NA	09: Arwen's Vision	Elrond	Elf	36
+NA	48: The Host Of The Eldar	Haldir	Elf	37
+NA	49: The Battle Of The Hornburg	Legolas	Elf	37
+NA	38: Caras Galadhon	Legolas	Elf	41
+NA	25: The Sword That Was Broken	Arwen	Elf	47
+NA	30: The Departure Of The Fellowship	Elrond	Elf	48
+NA	37: Lothlorien	Haldir	Elf	51
+NA	38: Shelob's Lair	Galadriel	Elf	51
+NA	33: The Evenstar	Elrond	Elf	55
+NA	26: The Evenstar	Arwen	Elf	57
+NA	38: Caras Galadhon	Celeborn	Elf	61
+NA	15: The White Rider	Legolas	Elf	63
+NA	28: Gilraen's Memorial	Elrond	Elf	65
+NA	41: Farewell To Lorien	Celeborn	Elf	99
+NA	10: The Reforging Of Narsil	Arwen	Elf	100
+NA	33: The Evenstar	Arwen	Elf	119
+NA	33: Dwimoberg ~ The Haunted Mountain	Legolas	Elf	123
+NA	21: Flight To The Ford	Arwen	Elf	131
+NA	38: Caras Galadhon	Galadriel	Elf	135
+NA	41: Farewell To Lorien	Galadriel	Elf	166
+NA	27: The Council Of Elrond	Elrond	Elf	167
+NA	30: Anduril - Flame Of The West	Elrond	Elf	168
+NA	38: Arwen's Fate	Elrond	Elf	188
+NA	39: The Story Foreseen From Lórien	Galadriel	Elf	190
+NA	39: The Mirror Of Galadriel	Galadriel	Elf	214
+NA	24: The Fate Of The Ring	Elrond	Elf	260
+NA	01: Prologue	Galadriel	Elf	460
+NA	03: The Road To Isengard	Gandalf	Wizard	1
+NA	67: The Last Move	Voice Of Sauron	Wizard	2
+NA	43: Parth Galen	Voice Of The Ring	Wizard	3
+NA	27: Exodus From Edoras	Saruman	Wizard	4
+NA	20: The Caverns Of Isengard	Gandalf	Wizard	5
+NA	19: The Lighting Of The Beacons	Gandalf	Wizard	5
+NA	40: Grond ~ The Hammer Of The Underworld	Gandalf	Wizard	5
+NA	18: The Spoiling Of Isengard	Voice Of Sauron	Wizard	7
+NA	30: The Departure Of The Fellowship	Gandalf	Wizard	7
+NA	24: Courage Is The Best Defense	Gandalf	Wizard	9
+NA	47: The Pyre Of Denethor	Gandalf	Wizard	9
+NA	74: The Return Of The King	Gandalf	Wizard	11
+NA	05: A Long Expected Party	Gandalf	Wizard	12
+NA	27: The Council Of Elrond	Voice Of The Ring	Wizard	12
+NA	05: Return To Edoras	Gandalf	Wizard	15
+NA	32: The Pass Of Caradhras	Gandalf	Wizard	18
+NA	15: At The Sign of the Prancing Pony	Voice Of The Ring	Wizard	19
+NA	15: Minas Morgul	Gandalf	Wizard	20
+NA	58: Forth Eorlingas	Gandalf	Wizard	21
+NA	42: Breaking The Gate Of Gondor	Gandalf	Wizard	21
+NA	18: The Spoiling Of Isengard	Saruman	Wizard	22
+NA	22: Simbelmynë on the Burial Mounds	Gandalf	Wizard	28
+NA	28: The Sacrifice Of Faramir	Gandalf	Wizard	29
+NA	17: Pippin's Task	Gandalf	Wizard	30
+NA	64: The Mouth Of Sauron	Gandalf	Wizard	32
+NA	23: Many Meetings	Saruman	Wizard	33
+NA	46: The Road Goes Ever On…	Gandalf	Wizard	34
+NA	21: The Fall of Osgiliath	Gandalf	Wizard	34
+NA	65: The Battle For Middle Earth Is About To Begin	Gandalf	Wizard	36
+NA	01: The Foundations Of Stone	Gandalf	Wizard	39
+NA	76: The Grey Havens	Gandalf	Wizard	42
+NA	45: The Witch King's Hour	Gandalf	Wizard	48
+NA	36: Isengard Unleashed	Saruman	Wizard	50
+NA	49: A Far Green Country	Gandalf	Wizard	54
+NA	59: The Last Debate	Gandalf	Wizard	59
+NA	07: Keep It Secret, Keep It Safe	Gandalf	Wizard	60
+NA	04: Very Old Friends	Gandalf	Wizard	64
+NA	31: The Ring Goes South	Gandalf	Wizard	68
+NA	32: The Pass Of Caradhras	Saruman	Wizard	68
+NA	25: The Ring Of Barahir	Saruman	Wizard	68
+NA	36: The Siege Of Gondor	Gandalf	Wizard	81
+NA	36: The Bridge Of Khazad-dûm	Gandalf	Wizard	83
+NA	40: The Fighting Uruk-hai	Saruman	Wizard	83
+NA	12: Saruman The White	Gandalf	Wizard	85
+NA	27: The Council Of Elrond	Gandalf	Wizard	85
+NA	35: Balin's Tomb	Gandalf	Wizard	89
+NA	24: The Fate Of The Ring	Gandalf	Wizard	102
+NA	23: Many Meetings	Gandalf	Wizard	104
+NA	08: The Account of Isildur	Gandalf	Wizard	107
+NA	04: The Voice Of Saruman	Gandalf	Wizard	111
+NA	06: Farewell Dear Bilbo	Gandalf	Wizard	148
+NA	20: The King Of The Golden Hall	Gandalf	Wizard	151
+NA	14: The Deep Breath Before The Plunge	Gandalf	Wizard	163
+NA	23: The King's Decision	Gandalf	Wizard	165
+NA	06: The Burning of the Westfold	Saruman	Wizard	187
+NA	03: The Shire	Gandalf	Wizard	197
+NA	33: Moria	Gandalf	Wizard	202
+NA	11: Minas Tirith	Gandalf	Wizard	202
+NA	17: The Heir Of Númenor	Gandalf	Wizard	226
+NA	08: The Palantir	Gandalf	Wizard	255
+NA	12: The Decline Of Gondor	Gandalf	Wizard	268
+NA	12: Saruman The White	Saruman	Wizard	274
+NA	15: The White Rider	Gandalf	Wizard	298
+NA	04: The Voice Of Saruman	Saruman	Wizard	301
+NA	34: A Journey In The Dark	Gandalf	Wizard	349
+NA	10: The Shadow Of The Past	Gandalf	Wizard	541
+NA	24: The Fate Of The Ring	Isildur	Man	1
+NA	35: Helm's Deep	Freda	Man	1
+NA	49: The Battle Of The Hornburg	Gamling	Man	1
+NA	49: The Battle Of The Hornburg	Rohan Warrior	Man	1
+NA	55: Osgiliath	Faramir	Man	1
+NA	05: Return To Edoras	Rohan Warrior	Man	1
+NA	21: The Fall of Osgiliath	Damrod	Man	1
+NA	53: Victory At Minar Tirith	Aragorn	Man	1
+NA	53: Victory At Minar Tirith	Eowyn	Man	1
+NA	44: The Breaking Of The Fellowship	Aragorn	Man	2
+NA	44: The Breaking Of The Fellowship	Boromir	Man	2
+NA	01: The Foundations Of Stone	Boromir	Man	2
+NA	06: The Burning of the Westfold	Eothain	Man	2
+NA	35: Helm's Deep	Morwen	Man	2
+NA	43: Aragorn's Return	Rohan Maiden	Man	2
+NA	04: The Voice Of Saruman	Grima Wormtongue	Man	2
+NA	14: The Deep Breath Before The Plunge	Gondor Man	Man	2
+NA	46: The Ride Of The Rohirrim	Eomer	Man	2
+NA	67: The Last Move	Aragorn	Man	2
+NA	08: The Banishment of Éomer	Theoden	Man	3
+NA	23: The King's Decision	Freda	Man	3
+NA	31: Dwarf Women	Aragorn	Man	3
+NA	34: The Wolves Of Isengard	Hama	Man	3
+NA	04: The Voice Of Saruman	Aragorn	Man	3
+NA	18: Osgiliath Invaded	Damrod	Man	3
+NA	20: Theoren's Decision	Rohan Warrior	Man	3
+NA	34: The Muster Of Rohan	Eowyn	Man	3
+NA	48: The Battle Of The Pelennor Fields	Rohan Warrior	Man	3
+NA	56: The Houses Of Healing	Eomer	Man	3
+NA	27: The Council Of Elrond	Man	Man	4
+NA	48: The Host Of The Eldar	Theoden	Man	4
+NA	60: The Tales That Really Mattered…	Theoden	Man	4
+NA	05: Return To Edoras	Eomer	Man	4
+NA	20: Theoren's Decision	Gamling	Man	4
+NA	30: Anduril - Flame Of The West	Theoden	Man	4
+NA	52: Shieldmaiden Of Rohan	Eowyn	Man	4
+NA	35: Balin's Tomb	Boromir	Man	5
+NA	34: The Wolves Of Isengard	Gamling	Man	5
+NA	50: The Nazgul And His Prey	Theoden	Man	5
+NA	41: Sons Of The Steward	Crowd	Man	6
+NA	53: The Retreat To The Hornburg	Gamling	Man	6
+NA	55: Osgiliath	Gondor Man	Man	6
+NA	58: Forth Eorlingas	Eomer	Man	6
+NA	33: Dwimoberg ~ The Haunted Mountain	Aragorn	Man	6
+NA	37: The Corsairs Of Umbar	Mercenary	Man	6
+NA	17: The Heir Of Númenor	Aragorn	Man	7
+NA	49: The Battle Of The Hornburg	Theoden	Man	7
+NA	58: Forth Eorlingas	Rohan Maiden	Man	7
+NA	18: Osgiliath Invaded	Gondor Man	Man	7
+NA	30: Anduril - Flame Of The West	Rohan Warrior	Man	7
+NA	36: The Siege Of Gondor	Irolas	Man	7
+NA	37: The Corsairs Of Umbar	Boson	Man	7
+NA	45: The Witch King's Hour	Gondor Man	Man	7
+NA	08: The Banishment of Éomer	Eowyn	Man	8
+NA	05: Return To Edoras	Eowyn	Man	8
+NA	21: The Fall of Osgiliath	Madril	Man	8
+NA	34: The Muster Of Rohan	Eomer	Man	8
+NA	48: The Battle Of The Pelennor Fields	Eowyn	Man	8
+NA	50: The Nazgul And His Prey	Eowyn	Man	8
+NA	54: The Passing Of Theoden	Eowyn	Man	8
+NA	59: The Last Debate	Eomer	Man	8
+NA	34: The Wolves Of Isengard	Aragorn	Man	9
+NA	43: Aragorn's Return	Gamling	Man	9
+NA	24: Courage Is The Best Defense	Gondor Man	Man	9
+NA	29: Marshalling At Dunharrow	Grimhold	Man	9
+NA	48: The Battle Of The Pelennor Fields	Eomer	Man	9
+NA	55: Oaths Fulfilled	Aragorn	Man	9
+NA	07: Massacre at the Fords of Isen	Rohan Warrior	Man	10
+NA	34: The Wolves Of Isengard	Eowyn	Man	10
+NA	61: Fangorn Comes To Helm's Deep	Eomer	Man	10
+NA	19: The Lighting Of The Beacons	Gondor Man	Man	10
+NA	32: No More Despair	Eowyn	Man	10
+NA	39: Merry's Simple Courage	Eowyn	Man	10
+NA	44: Denethor's Madness	Gondor Man	Man	10
+NA	28: Gilraen's Memorial	Aragorn	Man	11
+NA	06: The Burning of the Westfold	Wild Man	Man	11
+NA	33: The Evenstar	Eowyn	Man	11
+NA	31: The Ring Goes South	Aragorn	Man	12
+NA	45: The Glittering Caves	Rohan Warrior	Man	12
+NA	51: The Breach Of The Deeping Wall	Aragorn	Man	12
+NA	15: At The Sign of the Prancing Pony	Man	Man	13
+NA	41: Farewell To Lorien	Aragorn	Man	13
+NA	07: Massacre at the Fords of Isen	Eomer	Man	13
+NA	24: Brego	Rohan Warrior	Man	13
+NA	07: Eowyn's Dream	Aragorn	Man	13
+NA	21: The Fall of Osgiliath	Irolas	Man	13
+NA	39: Merry's Simple Courage	Theoden	Man	13
+NA	35: Helm's Deep	Gamling	Man	14
+NA	31: The Ring Goes South	Boromir	Man	15
+NA	35: Helm's Deep	Rohan Maiden	Man	15
+NA	38: Caras Galadhon	Aragorn	Man	16
+NA	42: The Forbidden Pool	Gondor Man	Man	16
+NA	60: The Tales That Really Mattered…	Faramir	Man	16
+NA	31: Aragorn Takes The Paths Of The Dead	Theoden	Man	16
+NA	36: The Bridge Of Khazad-dûm	Boromir	Man	17
+NA	48: The Host Of The Eldar	Rohan Warrior	Man	17
+NA	51: The Breach Of The Deeping Wall	Theoden	Man	17
+NA	21: The Fall of Osgiliath	Gondor Man	Man	17
+NA	46: The Ride Of The Rohirrim	Eowyn	Man	17
+NA	60: Aragorn Masters The Palantir	Aragorn	Man	17
+NA	61: The Captain And The White Lady	Eowyn	Man	17
+NA	61: The Captain And The White Lady	Faramir	Man	17
+NA	20: The King Of The Golden Hall	Aragorn	Man	18
+NA	25: The Ring Of Barahir	Theoden	Man	18
+NA	49: The Battle Of The Hornburg	Aragorn	Man	18
+NA	18: Osgiliath Invaded	Faramir	Man	18
+NA	20: Theoren's Decision	Aragorn	Man	18
+NA	31: Aragorn Takes The Paths Of The Dead	Gamling	Man	18
+NA	36: The Siege Of Gondor	Gondor Man	Man	19
+NA	57: The Nazgûl Attack	Gondor Man	Man	20
+NA	58: Forth Eorlingas	Gamling	Man	20
+NA	05: Return To Edoras	Aragorn	Man	20
+NA	08: The Palantir	Aragorn	Man	20
+NA	28: The Sacrifice Of Faramir	Denethor	Man	20
+NA	31: Aragorn Takes The Paths Of The Dead	Rohan Warrior	Man	20
+NA	20: The King Of The Golden Hall	Hama	Man	21
+NA	20: Theoren's Decision	Eomer	Man	21
+NA	37: The Corsairs Of Umbar	Aragorn	Man	21
+NA	35: Balin's Tomb	Aragorn	Man	22
+NA	24: Brego	Aragorn	Man	22
+NA	35: Helm's Deep	Eowyn	Man	22
+NA	35: Helm's Deep	Rohan Warrior	Man	22
+NA	53: The Retreat To The Hornburg	Rohan Warrior	Man	22
+NA	60: The Tales That Really Mattered…	Gondor Man	Man	22
+NA	08: The Palantir	Theoden	Man	22
+NA	39: Merry's Simple Courage	Eomer	Man	22
+NA	48: The Host Of The Eldar	Haleth	Man	23
+NA	64: The Mouth Of Sauron	Aragorn	Man	23
+NA	26: The Evenstar	Aragorn	Man	24
+NA	06: The Burning of the Westfold	Freda	Man	24
+NA	21: The Funeral Of Théodred	Eowyn	Man	24
+NA	23: The King's Decision	Eowyn	Man	24
+NA	29: Marshalling At Dunharrow	Theoden	Man	24
+NA	25: The Sword That Was Broken	Aragorn	Man	25
+NA	37: Lothlorien	Aragorn	Man	26
+NA	29: Marshalling At Dunharrow	Aragorn	Man	26
+NA	48: The Battle Of The Pelennor Fields	Theoden	Man	26
+NA	37: Lothlorien	Boromir	Man	27
+NA	20: The King Of The Golden Hall	Eowyn	Man	28
+NA	18: Osgiliath Invaded	Madril	Man	28
+NA	23: The King's Decision	Hama	Man	29
+NA	32: The Pass Of Caradhras	Aragorn	Man	30
+NA	46: Where Is The Horse And The Rider	Gamling	Man	30
+NA	29: Marshalling At Dunharrow	Rohan Warrior	Man	30
+NA	33: Moria	Aragorn	Man	31
+NA	33: Moria	Boromir	Man	31
+NA	26: A Daughter Of Kings	Aragorn	Man	31
+NA	53: The Retreat To The Hornburg	Aragorn	Man	31
+NA	57: The Nazgûl Attack	Faramir	Man	31
+NA	28: The Sacrifice Of Faramir	Faramir	Man	31
+NA	31: Aragorn Takes The Paths Of The Dead	Eowyn	Man	32
+NA	17: The Midgewater Marshes	Aragorn	Man	33
+NA	12: The Fate Of Merry And Pippin	Aragorn	Man	33
+NA	32: One of the Dúnedain	Aragorn	Man	33
+NA	48: The Host Of The Eldar	Aragorn	Man	34
+NA	41: Sons Of The Steward	Faramir	Man	35
+NA	24: Brego	Eowyn	Man	36
+NA	20: Theoren's Decision	Eowyn	Man	36
+NA	44: Denethor's Madness	Denethor	Man	36
+NA	06: The Burning of the Westfold	Morwen	Man	37
+NA	15: At The Sign of the Prancing Pony	Gatekeeper	Man	38
+NA	54: The Passing Of Theoden	Theoden	Man	38
+NA	25: The Sword That Was Broken	Boromir	Man	39
+NA	27: The Council Of Elrond	Aragorn	Man	40
+NA	36: The Siege Of Gondor	Denethor	Man	40
+NA	31: Aragorn Takes The Paths Of The Dead	Aragorn	Man	42
+NA	47: The Pyre Of Denethor	Denethor	Man	42
+NA	36: The Bridge Of Khazad-dûm	Aragorn	Man	45
+NA	26: A Daughter Of Kings	Eowyn	Man	45
+NA	74: The Return Of The King	Aragorn	Man	45
+NA	21: Flight To The Ford	Aragorn	Man	48
+NA	23: The King's Decision	Theoden	Man	49
+NA	35: Helm's Deep	Theoden	Man	49
+NA	34: The Wolves Of Isengard	Theoden	Man	50
+NA	07: Eowyn's Dream	Eowyn	Man	50
+NA	25: The Ring Of Barahir	Grima Wormtongue	Man	51
+NA	27: Exodus From Edoras	Grima Wormtongue	Man	52
+NA	05: Return To Edoras	Theoden	Man	52
+NA	19: A Knife In The Dark	Aragorn	Man	53
+NA	26: Allegiance To Denethor	Faramir	Man	53
+NA	30: Anduril - Flame Of The West	Aragorn	Man	54
+NA	22: Simbelmynë on the Burial Mounds	Theoden	Man	55
+NA	20: The King Of The Golden Hall	Theoden	Man	56
+NA	29: Marshalling At Dunharrow	Eowyn	Man	56
+NA	53: The Retreat To The Hornburg	Theoden	Man	58
+NA	05: The Three Hunters	Aragorn	Man	59
+NA	23: The King's Decision	Aragorn	Man	59
+NA	32: One of the Dúnedain	Theoden	Man	59
+NA	32: No More Despair	Theoden	Man	60
+NA	32: The Pass Of Caradhras	Boromir	Man	61
+NA	40: The Windows On The West	Gondor Man	Man	63
+NA	58: Forth Eorlingas	Theoden	Man	63
+NA	34: The Muster Of Rohan	Theoden	Man	63
+NA	42: The Great River	Aragorn	Man	64
+NA	46: Where Is The Horse And The Rider	Theoden	Man	64
+NA	45: The Glittering Caves	Eowyn	Man	65
+NA	36: Isengard Unleashed	Grima Wormtongue	Man	66
+NA	21: The Fall of Osgiliath	Faramir	Man	66
+NA	11: The Riders Of Rohan	Aragorn	Man	68
+NA	15: The White Rider	Aragorn	Man	68
+NA	41: The Tomb Of The Stewards	Denethor	Man	68
+NA	43: Aragorn's Return	Aragorn	Man	69
+NA	46: The Ride Of The Rohirrim	Theoden	Man	71
+NA	45: The Departure Of Boromir	Aragorn	Man	72
+NA	45: The Departure Of Boromir	Boromir	Man	72
+NA	22: The Wizard's Pupil	Faramir	Man	72
+NA	58: Forth Eorlingas	Aragorn	Man	73
+NA	20: Theoren's Decision	Theoden	Man	73
+NA	35: The Paths Of The Dead	Aragorn	Man	75
+NA	15: At The Sign of the Prancing Pony	Aragorn	Man	76
+NA	15: At The Sign of the Prancing Pony	Innkeeper	Man	76
+NA	30: Of Herbs And Stewed Rabbit	Faramir	Man	76
+NA	32: One of the Dúnedain	Eowyn	Man	76
+NA	45: The Glittering Caves	Aragorn	Man	78
+NA	43: Parth Galen	Aragorn	Man	79
+NA	25: Peregrin Of The Tower Guard	Faramir	Man	80
+NA	08: The Banishment of Éomer	Grima Wormtongue	Man	81
+NA	59: The Last Debate	Aragorn	Man	82
+NA	08: The Banishment of Éomer	Eomer	Man	88
+NA	26: Allegiance To Denethor	Denethor	Man	89
+NA	29: Marshalling At Dunharrow	Eomer	Man	89
+NA	42: The Forbidden Pool	Faramir	Man	92
+NA	64: Farewell To Faramir	Faramir	Man	95
+NA	16: The Nazgul	Aragorn	Man	96
+NA	33: The Evenstar	Aragorn	Man	97
+NA	04: The Voice Of Saruman	Theoden	Man	98
+NA	46: The Road Goes Ever On…	Aragorn	Man	102
+NA	42: The Great River	Boromir	Man	103
+NA	65: The Black Gate Opens	Aragorn	Man	103
+NA	22: The Wizard's Pupil	Denethor	Man	114
+NA	41: Sons Of The Steward	Boromir	Man	132
+NA	40: The Windows On The West	Faramir	Man	143
+NA	38: Caras Galadhon	Boromir	Man	149
+NA	11: Minas Tirith	Denethor	Man	151
+NA	11: The Riders Of Rohan	Eomer	Man	156
+NA	20: The King Of The Golden Hall	Grima Wormtongue	Man	166
+NA	43: Parth Galen	Boromir	Man	202
+NA	43: Aragorn's Return	Theoden	Man	206
+NA	27: The Council Of Elrond	Boromir	Man	220
+NA	41: Sons Of The Steward	Denethor	Man	250
+NA	05: A Long Expected Party	Lobelia Sackville-Baggins	Hobbit	1
+NA	05: A Long Expected Party	Proudfoot	Hobbit	1
+NA	41: Farewell To Lorien	Pippin	Hobbit	1
+NA	59: The Flooding Of Isengard	Pippin	Hobbit	1
+NA	38: Shelob's Lair	Sam	Hobbit	1
+NA	56: The Houses Of Healing	Pippin	Hobbit	1
+NA	64: The Mouth Of Sauron	Merry	Hobbit	1
+NA	71: Sauron Defeated	Pippin	Hobbit	1
+NA	73: The Fellowship Reunited	Merry	Hobbit	1
+NA	05: A Long Expected Party	Mrs. Bracegirdle	Hobbit	2
+NA	37: Lothlorien	Sam	Hobbit	2
+NA	43: Parth Galen	Merry	Hobbit	2
+NA	44: The Breaking Of The Fellowship	Sam	Hobbit	2
+NA	46: The Ride Of The Rohirrim	Merry	Hobbit	2
+NA	47: The Pyre Of Denethor	Pippin	Hobbit	2
+NA	71: Sauron Defeated	Merry	Hobbit	2
+NA	75: Homeward Bound	Pippin	Hobbit	2
+NA	75: Homeward Bound	Rosie	Hobbit	2
+NA	09: At The Green Dragon	Rosie	Hobbit	3
+NA	10: The Shadow Of The Past	Hobbits	Hobbit	3
+NA	29: Bilbo's Gifts	Frodo	Hobbit	3
+NA	31: The Ring Goes South	Sam	Hobbit	3
+NA	12: The Fate Of Merry And Pippin	Merry	Hobbit	3
+NA	59: The Flooding Of Isengard	Merry	Hobbit	3
+NA	01: Prologue	Bilbo	Hobbit	4
+NA	36: The Bridge Of Khazad-dûm	Frodo	Hobbit	4
+NA	16: The Song Of The Entwives	Merry	Hobbit	4
+NA	16: Sam's Warning	Frodo	Hobbit	4
+NA	73: The Fellowship Reunited	Frodo	Hobbit	4
+NA	75: Homeward Bound	Hobbits	Hobbit	4
+NA	21: Flight To The Ford	Merry	Hobbit	5
+NA	41: Farewell To Lorien	Merry	Hobbit	5
+NA	01: The Foundations Of Stone	Sam	Hobbit	5
+NA	50: Old Entish	Pippin	Hobbit	5
+NA	56: The Last March Of The Ents	Merry	Hobbit	5
+NA	15: Minas Morgul	Sam	Hobbit	5
+NA	64: The Mouth Of Sauron	Pippin	Hobbit	5
+NA	07: Keep It Secret, Keep It Safe	Bilbo	Hobbit	6
+NA	15: At The Sign of the Prancing Pony	Merry	Hobbit	6
+NA	32: The Pass Of Caradhras	Frodo	Hobbit	6
+NA	38: Caras Galadhon	Merry	Hobbit	6
+NA	44: Entmoot	Merry	Hobbit	6
+NA	54: Master Peregrin's Plan	Merry	Hobbit	6
+NA	69: The Eagles Are Coming	Pippin	Hobbit	6
+NA	05: A Long Expected Party	Sam	Hobbit	7
+NA	30: The Departure Of The Fellowship	Frodo	Hobbit	7
+NA	33: Moria	Sam	Hobbit	7
+NA	34: A Journey In The Dark	Sam	Hobbit	7
+NA	47: Don't Be Hasty, Master Meriadoc!	Pippin	Hobbit	7
+NA	70: The Crack Of Doom	Frodo	Hobbit	7
+NA	04: Very Old Friends	Lobelia Sackville-Baggins	Hobbit	8
+NA	05: A Long Expected Party	Hobbits	Hobbit	8
+NA	27: The Council Of Elrond	Sam	Hobbit	8
+NA	34: A Journey In The Dark	Merry	Hobbit	8
+NA	35: Balin's Tomb	Frodo	Hobbit	8
+NA	36: Isengard Unleashed	Merry	Hobbit	8
+NA	40: The Windows On The West	Sam	Hobbit	8
+NA	56: The Last March Of The Ents	Pippin	Hobbit	8
+NA	15: Minas Morgul	Frodo	Hobbit	8
+NA	23: The Stairs Of Cirith Ungol	Sam	Hobbit	8
+NA	14: Buckleberry Ferry	Sam	Hobbit	9
+NA	17: The Midgewater Marshes	Merry	Hobbit	9
+NA	21: Flight To The Ford	Pippin	Hobbit	9
+NA	33: Moria	Merry	Hobbit	9
+NA	01: The Foundations Of Stone	Frodo	Hobbit	9
+NA	36: Isengard Unleashed	Pippin	Hobbit	9
+NA	68: Mount Doom	Frodo	Hobbit	9
+NA	03: The Shire	Hobbit Kids	Hobbit	10
+NA	09: At The Green Dragon	Sam	Hobbit	10
+NA	31: The Ring Goes South	Pippin	Hobbit	10
+NA	34: A Journey In The Dark	Pippin	Hobbit	10
+NA	68: Mount Doom	Sam	Hobbit	10
+NA	33: Moria	Pippin	Hobbit	11
+NA	66: Gollum's Plan	Frodo	Hobbit	11
+NA	57: Pippin Looks After Merry	Merry	Hobbit	11
+NA	03: The Shire	Hobbits	Hobbit	12
+NA	08: The Account of Isildur	Hobbits	Hobbit	12
+NA	17: The Midgewater Marshes	Frodo	Hobbit	12
+NA	19: A Knife In The Dark	Pippin	Hobbit	12
+NA	60: The Tales That Really Mattered…	Frodo	Hobbit	12
+NA	66: Gollum's Plan	Sam	Hobbit	12
+NA	29: Marshalling At Dunharrow	Merry	Hobbit	12
+NA	19: A Knife In The Dark	Merry	Hobbit	13
+NA	35: Balin's Tomb	Sam	Hobbit	13
+NA	41: Farewell To Lorien	Sam	Hobbit	13
+NA	01: The Finding Of The Ring	Deagol	Hobbit	13
+NA	45: The Witch King's Hour	Pippin	Hobbit	13
+NA	14: Buckleberry Ferry	Pippin	Hobbit	14
+NA	10: Night Camp At Fangorn	Pippin	Hobbit	14
+NA	76: The Grey Havens	Sam	Hobbit	14
+NA	05: A Long Expected Party	Pippin	Hobbit	15
+NA	57: The Nazgûl Attack	Frodo	Hobbit	15
+NA	21: The Fall of Osgiliath	Pippin	Hobbit	15
+NA	36: The Siege Of Gondor	Pippin	Hobbit	15
+NA	19: A Knife In The Dark	Frodo	Hobbit	16
+NA	42: The Great River	Frodo	Hobbit	16
+NA	20: Theoren's Decision	Merry	Hobbit	16
+NA	57: Pippin Looks After Merry	Pippin	Hobbit	16
+NA	62: In The Company Of Orcs	Frodo	Hobbit	16
+NA	65: The Black Gate Opens	Sam	Hobbit	16
+NA	09: At The Green Dragon	Frodo	Hobbit	17
+NA	09: At The Green Dragon	Sandyman	Hobbit	17
+NA	16: The Nazgul	Sam	Hobbit	17
+NA	31: The Ring Goes South	Merry	Hobbit	17
+NA	44: The Breaking Of The Fellowship	Pippin	Hobbit	17
+NA	44: Denethor's Madness	Pippin	Hobbit	17
+NA	49: A Far Green Country	Pippin	Hobbit	17
+NA	27: The Council Of Elrond	Pippin	Hobbit	18
+NA	44: The Breaking Of The Fellowship	Merry	Hobbit	18
+NA	47: Don't Be Hasty, Master Meriadoc!	Merry	Hobbit	18
+NA	64: Farewell To Faramir	Frodo	Hobbit	18
+NA	02: Journey To The Cross-roads	Frodo	Hobbit	18
+NA	05: A Long Expected Party	Merry	Hobbit	19
+NA	04: The Uruk-Hai	Merry	Hobbit	19
+NA	14: Buckleberry Ferry	Frodo	Hobbit	20
+NA	09: At The Green Dragon	Gaffer	Hobbit	21
+NA	13: A Shortcut To Mushrooms	Farmer Maggot	Hobbit	21
+NA	34: The Muster Of Rohan	Merry	Hobbit	21
+NA	12: The Decline Of Gondor	Pippin	Hobbit	22
+NA	55: Osgiliath	Frodo	Hobbit	23
+NA	19: A Knife In The Dark	Sam	Hobbit	24
+NA	27: The Council Of Elrond	Frodo	Hobbit	24
+NA	27: The Council Of Elrond	Merry	Hobbit	24
+NA	16: The Nazgul	Pippin	Hobbit	25
+NA	04: The Uruk-Hai	Pippin	Hobbit	26
+NA	75: Homeward Bound	Sam	Hobbit	27
+NA	10: The Shadow Of The Past	Bilbo	Hobbit	28
+NA	16: The Nazgul	Merry	Hobbit	28
+NA	13: Treebeard	Merry	Hobbit	28
+NA	16: The Nazgul	Frodo	Hobbit	29
+NA	52: The Entmoot Decides	Pippin	Hobbit	29
+NA	15: At The Sign of the Prancing Pony	Sam	Hobbit	30
+NA	33: Moria	Frodo	Hobbit	30
+NA	50: Old Entish	Merry	Hobbit	30
+NA	65: The Battle For Middle Earth Is About To Begin	Frodo	Hobbit	30
+NA	13: Cross-roads Of The Fallen King	Frodo	Hobbit	30
+NA	63: The Land Of Shadow	Frodo	Hobbit	30
+NA	72: The End Of All Things	Sam	Hobbit	31
+NA	05: A Long Expected Party	Frodo	Hobbit	32
+NA	13: A Shortcut To Mushrooms	Pippin	Hobbit	32
+NA	26: Allegiance To Denethor	Pippin	Hobbit	32
+NA	07: Keep It Secret, Keep It Safe	Frodo	Hobbit	33
+NA	21: Flight To The Ford	Sam	Hobbit	34
+NA	23: Many Meetings	Bilbo	Hobbit	36
+NA	39: The Mirror Of Galadriel	Frodo	Hobbit	36
+NA	13: Treebeard	Pippin	Hobbit	36
+NA	03: The Road To Isengard	Merry	Hobbit	36
+NA	11: Minas Tirith	Pippin	Hobbit	36
+NA	13: A Shortcut To Mushrooms	Frodo	Hobbit	37
+NA	42: The Great River	Sam	Hobbit	37
+NA	72: The End Of All Things	Frodo	Hobbit	37
+NA	70: The Crack Of Doom	Sam	Hobbit	38
+NA	15: At The Sign of the Prancing Pony	Pippin	Hobbit	39
+NA	34: A Journey In The Dark	Frodo	Hobbit	39
+NA	18: The Black Gate Is Closed	Frodo	Hobbit	39
+NA	30: Of Herbs And Stewed Rabbit	Frodo	Hobbit	39
+NA	11: The Passing Of The Elves	Sam	Hobbit	40
+NA	11: The Passing Of The Elves	Frodo	Hobbit	43
+NA	14: Buckleberry Ferry	Merry	Hobbit	43
+NA	27: The Parting Of Sam & Frodo	Frodo	Hobbit	43
+NA	66: I Can't Carry It For You… But I Can Carry You	Frodo	Hobbit	44
+NA	02: Elven Rope	Frodo	Hobbit	46
+NA	54: Master Peregrin's Plan	Pippin	Hobbit	46
+NA	06: Gollum's Villany	Frodo	Hobbit	46
+NA	62: In The Company Of Orcs	Sam	Hobbit	46
+NA	13: A Shortcut To Mushrooms	Sam	Hobbit	48
+NA	43: The Choices Of Master Samwise Gamgee	Sam	Hobbit	48
+NA	38: Caras Galadhon	Sam	Hobbit	49
+NA	46: The Road Goes Ever On…	Sam	Hobbit	50
+NA	03: The Road To Isengard	Pippin	Hobbit	51
+NA	09: At The Green Dragon	Hobbits	Hobbit	53
+NA	09: At The Green Dragon	Merry	Hobbit	53
+NA	57: The Nazgûl Attack	Sam	Hobbit	53
+NA	43: Parth Galen	Frodo	Hobbit	54
+NA	14: The Passage Of The Marshes	Frodo	Hobbit	54
+NA	64: Farewell To Faramir	Sam	Hobbit	54
+NA	09: At The Green Dragon	Ted	Hobbit	55
+NA	63: Flotsam And Jetsam	Pippin	Hobbit	56
+NA	13: Cross-roads Of The Fallen King	Sam	Hobbit	56
+NA	63: The Land Of Shadow	Sam	Hobbit	56
+NA	76: The Grey Havens	Bilbo	Hobbit	56
+NA	13: A Shortcut To Mushrooms	Merry	Hobbit	58
+NA	52: The Entmoot Decides	Merry	Hobbit	58
+NA	46: The Road Goes Ever On…	Frodo	Hobbit	59
+NA	28: The Sacrifice Of Faramir	Pippin	Hobbit	59
+NA	38: Shelob's Lair	Frodo	Hobbit	60
+NA	09: At The Green Dragon	Pippin	Hobbit	61
+NA	16: Sam's Warning	Sam	Hobbit	61
+NA	23: Many Meetings	Sam	Hobbit	63
+NA	19: Ent Draft	Merry	Hobbit	63
+NA	42: The Forbidden Pool	Sam	Hobbit	64
+NA	58: The Tower Of Cirith Ungol	Frodo	Hobbit	64
+NA	06: Gollum's Villany	Sam	Hobbit	65
+NA	25: Peregrin Of The Tower Guard	Pippin	Hobbit	66
+NA	15: At The Sign of the Prancing Pony	Frodo	Hobbit	68
+NA	10: Night Camp At Fangorn	Merry	Hobbit	68
+NA	18: The Black Gate Is Closed	Sam	Hobbit	68
+NA	14: The Passage Of The Marshes	Sam	Hobbit	69
+NA	65: The Battle For Middle Earth Is About To Begin	Sam	Hobbit	69
+NA	03: The Shire	Bilbo	Hobbit	70
+NA	05: Return To Edoras	Pippin	Hobbit	73
+NA	40: The Windows On The West	Frodo	Hobbit	75
+NA	14: The Deep Breath Before The Plunge	Pippin	Hobbit	75
+NA	63: Flotsam And Jetsam	Merry	Hobbit	77
+NA	02: Journey To The Cross-roads	Sam	Hobbit	77
+NA	05: Return To Edoras	Merry	Hobbit	78
+NA	28: The Forests Of Ithilien	Frodo	Hobbit	81
+NA	39: Merry's Simple Courage	Merry	Hobbit	83
+NA	10: The Shadow Of The Past	Sam	Hobbit	84
+NA	66: I Can't Carry It For You… But I Can Carry You	Sam	Hobbit	85
+NA	28: The Forests Of Ithilien	Sam	Hobbit	87
+NA	42: The Forbidden Pool	Frodo	Hobbit	89
+NA	30: Of Herbs And Stewed Rabbit	Sam	Hobbit	91
+NA	58: The Tower Of Cirith Ungol	Sam	Hobbit	96
+NA	02: Elven Rope	Sam	Hobbit	97
+NA	75: Homeward Bound	Frodo	Hobbit	98
+NA	08: The Palantir	Pippin	Hobbit	104
+NA	29: Bilbo's Gifts	Bilbo	Hobbit	105
+NA	23: Many Meetings	Frodo	Hobbit	107
+NA	19: Ent Draft	Pippin	Hobbit	122
+NA	03: The Taming of Sméagol	Frodo	Hobbit	123
+NA	03: The Shire	Frodo	Hobbit	128
+NA	76: The Grey Havens	Frodo	Hobbit	132
+NA	08: The Palantir	Merry	Hobbit	135
+NA	10: The Shadow Of The Past	Frodo	Hobbit	139
+NA	03: The Taming of Sméagol	Sam	Hobbit	181
+NA	06: Farewell Dear Bilbo	Bilbo	Hobbit	182
+NA	27: The Parting Of Sam & Frodo	Sam	Hobbit	184
+NA	60: The Tales That Really Mattered…	Sam	Hobbit	186
+NA	02: Concerning Hobbits	Bilbo	Hobbit	214
+NA	05: A Long Expected Party	Bilbo	Hobbit	326
+NA	04: Very Old Friends	Bilbo	Hobbit	339

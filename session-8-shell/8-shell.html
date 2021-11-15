@@ -332,23 +332,22 @@ div.tocify {
 
 <hr />
 <p>Welcome everyone! This week’s session will prove a slight departure from R and introduce you to the Shell. 👩‍💻</p>
-<p>You will learn what the Shell is, how you can interact with it and why you would choose to do so! Admittefly, most of the session will be dedicated to you getting it up and running on your local device.</p>
+<p>You will learn what the Shell is, how you can interact with it and why you would choose to do so! Admittedly, most of the session will be dedicated to you getting it up and running on your local device.</p>
 <hr />
 <div id="introduction-to-programming-with-the-shell" class="section level2">
 <h2>Introduction to Programming with the Shell</h2>
 <p>So what exactly is the Shell? There are actually many different terms out there for roughly the same thing: <em>shell</em>, <em>terminal</em>, <em>tty</em>, <em>command prompt</em>, <em>etc.</em>. When we talk about either of these, we’re normally referring to the simple, text-based interface which is used to control a computer or a program. The correct term for this in the jargon is <strong>command line interface (CLI)</strong>.</p>
-<hr />
-</div>
-<div id="why-the-shell" class="section level2">
-<h2>Why the Shell?</h2>
-<p>Dave Kerr in his book “Effective Shell” argues that there are 3 main reasons:</p>
-<p><strong>Firstly</strong>, using the shell can help you learn more about the internals of how your computer can work. This can be really helpful if you are technology professional or work with computers.</p>
-<p><strong>Secondly</strong>, there are some scenarios where you have to use a shell. Not every program or system can be operated with a Graphical User Interface, which is the visual point-and-click interface you are probably using now. Some lower-level programs do not have such interfaces, and many computers do not either.</p>
-<p><strong>Finally</strong>, there are some scenarios where it can be more efficient to use the shell. Operations which might be time consuming or repetitive to perform using the user interface might be much faster to perform in a shell. You can also write shell scripts to automate these kinds of operations.</p>
+<p>Why would you prefer running some of your code in the shell, rather than through RStudio or a similar IDE?</p>
+<p>In his book “Effective Shell”, Dave Kerr argues that there are 3 main reasons:</p>
+<ol style="list-style-type: decimal">
+<li>Using the shell can help you learn more about the internals of how your computer can work. This can be really helpful if you are technology professional or work with computers.</li>
+<li>There are some scenarios where you have to use a shell. Not every program or system can be operated with a Graphical User Interface, which is the visual point-and-click interface you are probably using now. Some lower-level programs do not have such interfaces, and many computers do not either (here he is talking specifically about so-called “super-computers”.)</li>
+<li>There are some scenarios where it can be more efficient to use the shell. Operations which might be time consuming or repetitive to perform using the user interface might be much faster to perform in a shell. You can also write shell scripts to automate these kinds of operations.</li>
+</ol>
 <hr />
 </div>
 <div id="setup" class="section level2 tabset tabset-fade tabset-pills">
-<h2 class="tabset tabset-fade tabset-pills">Setup</h2>
+<h2 class="tabset tabset-fade tabset-pills">Setup 😵</h2>
 <p>Here is how you can get the shell to run smoothly on your local device:</p>
 <div id="on-macos" class="section level3">
 <h3>on MacOS</h3>
@@ -414,8 +413,10 @@ div.tocify {
 </div>
 </div>
 <div id="navigating-your-filesystem" class="section level2">
-<h2>Navigating your filesystem</h2>
+<h2>Navigating your filesystem 📁</h2>
 <p>Now that we have gotten everything to run (hopefully 😅), let us briefly dive into some easier commands.</p>
+<p>The reason why you would maybe do this through the shell rather than through MacOS or Windows, falls squarely into the first and third category of reasons to use the shell.</p>
+<p>This section is designed to both familiarise you with the internal workings of your filesystem and to showcase that it is easier to manipulate through the shell than with a point-an-click GUI.</p>
 <p>Let’s identify where we are:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div>
 <pre><code>## /Users/tom/phd_hertie/courses/intro_data_science_fall_2021/labs/session-8-shell</code></pre>
@@ -434,7 +435,30 @@ div.tocify {
 <hr />
 </div>
 <div id="automating-certain-tasks" class="section level2">
-<h2>Automating certain tasks</h2>
+<h2>Automating certain tasks 🧙</h2>
+<p>The Shell can be a great option if you are trying to automate certain tasks.</p>
+<p>For example you might want to run several R-scripts in a row and return their output. Rather than use <code>source()</code> within RStudio you can quickly do this in the Shell:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> 00_download-Data.R</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> 01_filter-reorder-plot.R</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> 02_aggregate-plot.R</span></code></pre></div>
+<p><code>#!/bin/sh</code> just indicates that the following files should be executed (i.e. run) in the shell.</p>
+<p>But rather than run it all in R there might be a tool out there that is better suited to the task, or just saves you from having to create an additional R-script? Often, you will employ a variety of tools to arrive at the desired result. Combining these tools will only be possible throught the shell.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-L</span> http://bit.ly/lotr_raw-tsv <span class="op">&gt;</span>lotr_raw.tsv</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> 01_filter-reorder-plot.R</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> 02_aggregate-plot.R</span></code></pre></div>
+<p>Note <code>curl</code> is a way to transfer data through the CLI. No need to write a script.</p>
+<p>If you want to get really fancy, have a look at Makefiles. They are a way to build an executable file from your scripts, following a certain logic. A great and illustrative example on how to use them to compile academic papers can be found <a href="https://kbroman.org/minimal_make/">here</a>.</p>
+<p>Say you would like to scrape a set of newspaper articles each week. Repeatedly, setting aside an afternoon for this is both unproductive and unnecessary. You can use the shell to automate and schedule the scraper. It is a bit complicated but here you can find a guide for <a href="https://www.r-bloggers.com/2018/10/how-to-run-r-from-the-task-scheduler/">Windows</a> and for <a href="https://github.com/bnosac/cronR">MacOS</a>.</p>
+<hr />
+</div>
+<div id="sources" class="section level2">
+<h2>Sources</h2>
+<p>This tutorial is based largely on lecture 3 from Grant McDermott’s course <a href="https://raw.githack.com/uo-ec607/lectures/master/03-shell/03-shell.html#1">Data Science for Economists</a> and draws on Dave Kerr’s <a href="https://effective-shell.com/">Effective Shell</a>.</p>
+<p>The examples for the filesystem navigation are inspired by the lesson in <a href="https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/">Software Carpentry</a> and the automation stuff is taken from <a href="https://github.com/STAT545-UBC/STAT545-UBC-original-website/blob/master/automation01_slides/slides.md">here</a>.</p>
 </div>
 
 &nbsp;

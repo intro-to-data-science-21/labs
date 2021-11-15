@@ -50,26 +50,23 @@ colorise <- function(x, color) {
 ***
 Welcome everyone! This week's session will prove a slight departure from R and introduce you to the Shell. `r emo::ji("woman_technologist")`
 
-You will learn what the Shell is, how you can interact with it and why you would choose to do so! Admittefly, most of the session will be dedicated to you getting it up and running on your local device.
+You will learn what the Shell is, how you can interact with it and why you would choose to do so! Admittedly, most of the session will be dedicated to you getting it up and running on your local device.
 
 ***
 ## Introduction to Programming with the Shell
 
 So what exactly is the Shell? There are actually many different terms out there for roughly the same thing: *shell*, *terminal*, *tty*, *command prompt*, *etc.*. When we talk about either of these, we're normally referring to the simple, text-based interface which is used to control a computer or a program. The correct term for this in the jargon is **command line interface (CLI)**.
  
- ***
-## Why the Shell?
+Why would you prefer running some of your code in the shell, rather than through RStudio or a similar IDE?
 
-Dave Kerr in his book "Effective Shell" argues that there are 3 main reasons: 
+In his book "Effective Shell", Dave Kerr argues that there are 3 main reasons: 
 
-**Firstly**, using the shell can help you learn more about the internals of how your computer can work. This can be really helpful if you are technology professional or work with computers.
-
-**Secondly**, there are some scenarios where you have to use a shell. Not every program or system can be operated with a Graphical User Interface, which is the visual point-and-click interface you are probably using now. Some lower-level programs do not have such interfaces, and many computers do not either.
-
-**Finally**, there are some scenarios where it can be more efficient to use the shell. Operations which might be time consuming or repetitive to perform using the user interface might be much faster to perform in a shell. You can also write shell scripts to automate these kinds of operations.
+1. Using the shell can help you learn more about the internals of how your computer can work. This can be really helpful if you are technology professional or work with computers.
+2. There are some scenarios where you have to use a shell. Not every program or system can be operated with a Graphical User Interface, which is the visual point-and-click interface you are probably using now. Some lower-level programs do not have such interfaces, and many computers do not either (here he is talking specifically about so-called "super-computers".)
+3. There are some scenarios where it can be more efficient to use the shell. Operations which might be time consuming or repetitive to perform using the user interface might be much faster to perform in a shell. You can also write shell scripts to automate these kinds of operations.
 
 ***
-## Setup{.tabset .tabset-fade .tabset-pills}
+## Setup `r emo::ji("dizzy_face")`{.tabset .tabset-fade .tabset-pills}
 
 Here is how you can get the shell to run smoothly on your local device: 
 
@@ -167,9 +164,13 @@ knitr::include_graphics("pics/wsl-rstudio-4.png")
 ##{-}
 
 ***
-## Navigating your filesystem
+## Navigating your filesystem `r emo::ji("file_folder")`
 
 Now that we have gotten everything to run (hopefully `r emo::ji("sweat_smile")`), let us briefly dive into some easier commands.
+
+The reason why you would maybe do this through the shell rather than through MacOS or Windows, falls squarely into the first and third category of reasons to use the shell.
+
+This section is designed to both familiarise you with the internal workings of your filesystem and to showcase that it is easier to manipulate through the shell than with a point-an-click GUI.
 
 Let's identify where we are:
 
@@ -211,4 +212,44 @@ mv text_dir/*.csv example_dir
 See how much quicker this is compared to point and click?
 
 ***
-## Automating certain tasks 
+## Automating certain tasks `r emo::ji("mage")`
+
+The Shell can be a great option if you are trying to automate certain tasks.
+
+For example you might want to run several R-scripts in a row and return their output. Rather than use `source()` within RStudio you can quickly do this in the Shell: 
+
+```{bash, eval = F}
+#!/bin/sh
+
+Rscript 00_download-Data.R
+Rscript 01_filter-reorder-plot.R
+Rscript 02_aggregate-plot.R
+```
+
+`#!/bin/sh` just indicates that the following files should be executed (i.e. run) in the shell.
+
+But rather than run it all in R there might be a tool out there that is better suited to the task, or just saves you from having to create an additional R-script? Often, you will employ a variety of tools to arrive at the desired result. Combining these tools will only be possible throught the shell. 
+
+```{bash, eval = F}
+#!/bin/sh
+
+curl -L http://bit.ly/lotr_raw-tsv >lotr_raw.tsv
+Rscript 01_filter-reorder-plot.R
+Rscript 02_aggregate-plot.R
+
+```
+
+Note `curl` is a way to transfer data through the CLI. No need to write a script.
+
+If you want to get really fancy, have a look at Makefiles. They are a way to build an executable file from your scripts, following a certain logic. A great and illustrative example on how to use them to compile academic papers can be found [here](https://kbroman.org/minimal_make/). 
+
+Say you would like to scrape a set of newspaper articles each week. Repeatedly, setting aside an afternoon for this is both unproductive and unnecessary. You can use the shell to automate and schedule the scraper. It is a bit complicated but here you can find a guide for [Windows](https://www.r-bloggers.com/2018/10/how-to-run-r-from-the-task-scheduler/) and for [MacOS](https://github.com/bnosac/cronR). 
+
+
+---
+
+## Sources
+
+This tutorial is based largely on lecture 3 from Grant McDermott's course [Data Science for Economists](https://raw.githack.com/uo-ec607/lectures/master/03-shell/03-shell.html#1) and draws on Dave Kerr's [Effective Shell](https://effective-shell.com/). 
+
+The examples for the filesystem navigation are inspired by the lesson in [Software Carpentry](https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/) and the automation stuff is taken from [here](https://github.com/STAT545-UBC/STAT545-UBC-original-website/blob/master/automation01_slides/slides.md).
