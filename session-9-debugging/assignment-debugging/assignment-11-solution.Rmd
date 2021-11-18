@@ -1,0 +1,115 @@
+---
+title: "Assignment 11. Debugging, automation, packaging"
+author: "YOUR NAME"
+date: "26/11/2020"
+output: html_document
+---
+
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(lubridate)
+library(legislatoR)
+```
+
+
+<br>
+
+## 1. Debugging messy code
+
+The following code snippet contains various bugs. Identify them, remove them and report what you have done using comments. Example:
+
+```{r, eval = FALSE}
+library(tidyverse) # typo in library(Tidyverse)
+```
+
+
+```{r}
+# load packages
+library(tidyverse)
+library(legislatoR) # bug: typo in library(LegislatoR)
+
+# get political data on German legislators
+political_df <- 
+  left_join(x = filter(get_political(legislature = "deu"), as.numeric(session) == 18), 
+            y = get_core(legislature = "deu"), by = "pageid")
+# bug: wrong country code ("ger" --> "deu")
+# bug: variable name "session" should not be in quotation marks
+
+# wiki traffic data
+traffic_df <- 
+  get_traffic(legislature = "deu") %>% 
+  filter(date >= "2013-10-22" & date <= "2017-10-24") %>% 
+  group_by(pageid) %>% 
+  summarize(traffic_mean = mean(traffic, na.rm = TRUE),
+            traffic_max = max(traffic, na.rm = TRUE))
+# bug: wrong country code ("ger" --> "deu")
+
+
+# sessions served
+sessions_served_df <- 
+  get_political(legislature = "deu") %>% 
+  group_by(pageid) %>% 
+  dplyr::summarize(sessions_served = n())
+# bug: missing ">" in pipe operator "%%"
+
+# merge
+legislator_df <- 
+  left_join(political_df, sessions_served_df, by = "pageid") %>% 
+  left_join(traffic_df, by = "pageid") 
+
+# compute age
+get_age <- function(birth, date_at) {
+  date_at_fmt <- date_at
+  birth_fmt <- birth
+  diff <- difftime(lubridate::ymd(date_at_fmt), lubridate::ymd(birth_fmt))
+  diff_years <- time_length(diff, "years")
+  diff_years
+}
+# bug: arguments in difftime() in wrong order 
+
+legislator_df$age_in_years <- round(get_age(legislator_df$birth, "2017-10-24"), 0)
+
+# plot top 10 pageviews
+legislator_df <- arrange(legislator_df, desc(traffic_mean))
+legislator_df$rank <- 1:nrow(legislator_df)
+legislator_df_table <- dplyr::select(legislator_df, rank, name, traffic_mean, traffic_max) # bug: data argument missing
+names(legislator_df_table) <- c("Rank", "Representative", "Mean", "Maximum")
+legislator_df_table <- head(legislator_df_table, 10)
+
+ggplot(legislator_df_table, aes(y = Mean, x = -Rank)) + 
+  xlab("Rank") + ylab("Avg. daily page views") + 
+  labs(title = "Top 10 representatives by average daily page views") + 
+  geom_bar(stat = "identity") +  # bug: stat instead of stats
+  scale_x_continuous(breaks = -nrow(legislator_df_table):-1, labels = rev(1:nrow(legislator_df_table)))  + # bug: plus sign missing
+  geom_text(aes(y = 10, label = Representative), hjust = 0, color = "white", size = 2) + 
+  coord_flip() + 
+  theme_minimal()
+  
+# run model of page views as a function of sessions served, party, sex, and age in years
+legislator_df$traffic_log <- log(legislator_df$traffic_mean)
+
+covars <- c("sessions_served", "party", "sex", "age_in_years")
+fmla <- paste("traffic_log", paste(covars, collapse = " + "), sep = " ~ ") # bug: plus instead of minus sign to separate covariates in collapse = " + "
+summary(log_traffic_model <- lm(fmla, legislator_df))
+
+# plot table
+sjPlot::tab_model(log_traffic_model)
+``` 
+
+
+<br>
+
+## 2. Build your own minimal package
+
+Build your own package and publish it in a public GitHub repository. Here are the requirements:
+
+  * It should contain at least one function that you wrote. The function does not have to do anything innovative. Anything works really.
+  * It should contain all the necessary package components.
+  * The repository should contain a README.md that briefly reports what the package/function does.
+  * I should be able to install your package using devtools::install_github("<your-github-account-name>/<your-package-name>").
+  
+All you have to provide in this file is one line of code:
+
+```{r, eval = FALSE}
+devtools::install_github("<your-github-account-name>/<your-package-name>")
+``` 

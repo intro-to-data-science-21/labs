@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Debugging and Packaging</title>
+
+<script src="9-debugging_files/header-attrs-2.9/header-attrs.js"></script>
+<script src="9-debugging_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="9-debugging_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="9-debugging_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="9-debugging_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="9-debugging_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="9-debugging_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="9-debugging_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="9-debugging_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="9-debugging_files/navigation-1.1/tabsets.js"></script>
+<link href="9-debugging_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="9-debugging_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Debugging and Packaging</h1>
+<h3 class="subtitle">Next steps to more robust, reliable and efficient programming in R.</h3>
+
+</div>
+
+
+<hr />
+<p>Welcome back everyone! Today we will have a look at</p>
+<ol style="list-style-type: decimal">
+<li>How to deal with (maybe not so obvious) bugs in R</li>
+<li>How to write your own package in R</li>
+</ol>
+<hr />
+<div id="debugging" class="section level1">
+<h1>Debugging 🐞</h1>
+<p>When you write code, things will inevitably go wrong at some point. You can professionalize the way of how to - fix unanticipated problems (debugging) - let functions communicate problems and take actions based on those communications (condition handling) - learn how to avoid common problems before they occur (defensive programming)</p>
+<p>Potential problems are communicated via “conditions”: errors, warnings, and messages. For example - fatal errors are raised by stop() and force all execution to terminate - warnings are generated by warning() and display potential problems - messages are generated by message() and can provide informative output on the way</p>
+<div id="debugging-workflow" class="section level2">
+<h2>Debugging workflow</h2>
+<ol style="list-style-type: decimal">
+<li>realize that you have a bug</li>
+<li>make bug repeatable: start with big block of code and narrow it down to isolate it</li>
+<li>figure out where it is</li>
+<li>fix it and test it</li>
+</ol>
+</div>
+<div id="debugging-tools" class="section level2">
+<h2>Debugging tools 🔦</h2>
+<p>In the lecture, we saw the following function that calculates the geodesic distance between two points specified by radian latitude/longitude using the Haversine formula (hf); taken from <a href="https://goo.gl/GezNGB">here</a>, as an example. We inserted some bugs here… 🐛</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculation</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
+<div id="trial-and-error" class="section level3">
+<h3>Trial and error 🎓</h3>
+<p>That is, if you see the error right away, try and fix it. You have lots of experience doing that. 🤓</p>
+</div>
+<div id="making-function-global" class="section level3">
+<h3>Making function global 🌏</h3>
+<p>You basically turn the arguments of the function into global objects (objects you can see in your environment, otherwise the objects are only available within your function). Then you can step through the code line by line to locate the bug.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make the objects that are otherwise entered as input parameters to your function global</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>lat1 <span class="ot">=</span> <span class="fl">49.5</span>; lon1 <span class="ot">=</span> <span class="fl">8.4</span>; lat2 <span class="ot">=</span> <span class="fl">52.5</span>; lon2 <span class="ot">=</span> <span class="fl">13.4</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now, execute line by line</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(d)</span></code></pre></div>
+<p><strong>Problem:</strong> This creates global objects that match arguments names, which can become confusing and cause problems that become obvious when the function is called in a different environment. ⚠️ In case you choose this option, it is a good idea to clean your environment afterwards, or simply to remove all the new global objects using <code>rm()</code>.</p>
+<p><strong>Side note</strong> If you haven’t done so already, as a general best practice advise, change the settings in your global options to “never” save the workspace as this can cause similar issues to the example described above.</p>
+<p><img src="pics/workspace.png" width="506" /></p>
+</div>
+<div id="using-traceback" class="section level3">
+<h3>Using traceback() 👈</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">traceback</span>()</span></code></pre></div>
+<p>This shows you where the error occurred (but not why). Read from bottom to top (e.g. 1. called function X, 2. called function Y, error occurred in line #6 of function Y)</p>
+</div>
+<div id="using-browser" class="section level3">
+<h3>Using browser() 🦊</h3>
+<p>Basically, add <code>browser()</code> into your function somewhere before you expect the expected error.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon2)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculation</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sin</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
+<p>You can then interactively work through the function line by line by hitting enter in the console or send additional lines of code.</p>
+<p><img src="pics/browser.png" width="776" /></p>
+</div>
+</div>
+<div id="condition-handling" class="section level2">
+<h2>Condition handling 🐜🐜🐝🐜</h2>
+<p>Sometimes errors come expected, and you want to handle them automatically, e.g.: - model fails to converge - download of files fails - stack processing of lists</p>
+<p>Useful functions to deal with such cases: <code>try()</code> and <code>tryCatch()</code></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(x) </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<div id="using-try" class="section level3">
+<h3>Using try() 🤷</h3>
+<p>Ignore error:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<pre><code>## Error in log(x) : non-numeric argument to mathematical function</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p>Suppress error message:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<p>Pass block of code to try():</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>({ </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="st">&quot;x&quot;</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  a <span class="sc">+</span> b </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>## Error in a + b : non-numeric argument to binary operator</code></pre>
+<p>Capture the output of try():</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>success <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span>) </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>failure <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="st">&quot;a&quot;</span> <span class="sc">+</span> <span class="st">&quot;b&quot;</span>) </span></code></pre></div>
+<pre><code>## Error in &quot;a&quot; + &quot;b&quot; : non-numeric argument to binary operator</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(success)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(failure) </span></code></pre></div>
+<pre><code>## [1] &quot;try-error&quot;</code></pre>
+<p>Use try() when applying a function to multiple elements in a list:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>elements <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">10</span>), <span class="fu">c</span>(T, F), letters) </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">lapply</span>(elements, log)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">lapply</span>(elements, <span class="cf">function</span>(x) <span class="fu">try</span>(<span class="fu">log</span>(x)))</span></code></pre></div>
+<p>Use try() together with a default value if expression fails:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>default <span class="ot">&lt;-</span> <span class="cn">NULL</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>(default <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;possibly-bad-input.csv&quot;</span>), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Warning in file(file, &quot;rt&quot;): cannot open file &#39;possibly-bad-input.csv&#39;: No such
+## file or directory</code></pre>
+</div>
+<div id="condition-handling-with-trycatch" class="section level3">
+<h3>Condition handling with tryCatch() 🎣</h3>
+<p>React to conditions, such as errors, warnings, messages, or interruptions, with certain actions “handlers” (functions that are called with the condition as an input) are mapped to condition handler functions can do anything but typically will return a value or create a more informative error message:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>show_condition <span class="ot">&lt;-</span> <span class="cf">function</span>(code) { </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(code, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">error =</span> <span class="cf">function</span>(c) <span class="st">&quot;error&quot;</span>, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">warning =</span> <span class="cf">function</span>(c) <span class="st">&quot;warning&quot;</span>, </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">message =</span> <span class="cf">function</span>(c) <span class="st">&quot;message&quot;</span> )</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">stop</span>(<span class="st">&quot;!&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;error&quot;</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">warning</span>(<span class="st">&quot;?!&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;warning&quot;</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">message</span>(<span class="st">&quot;?&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;message&quot;</code></pre>
+<p>If no condition is captured, tryCatch returns the value of the input:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="dv">10</span><span class="sc">+</span><span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<p>Make more informative error messages</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>read.csv_new <span class="ot">&lt;-</span> <span class="cf">function</span>(file, ...) { </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">read.csv</span>(file, ...), <span class="at">error =</span> <span class="cf">function</span>(c) {</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    c<span class="sc">$</span>message <span class="ot">&lt;-</span> <span class="fu">paste0</span>(c<span class="sc">$</span>message, <span class="st">&quot; (in &quot;</span>, file, <span class="st">&quot;)&quot;</span>) </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(c) </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv_new</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="defensive-programming" class="section level2">
+<h2>Defensive programming 🛡</h2>
+<ul>
+<li>“making code fail in a well-defined manner”</li>
+<li>“fail fast”: as soon as something wrong is discovered, signal an error</li>
+<li>Three rules to implement the “fail fast” principle:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>be strict about what you accept (e.g., only scalars)</li>
+<li>avoid functions that use non-standard evaluation, such as subset(), transform(), or with()</li>
+<li>avoid functions that return different types of output depending on their input, e.g. [ and sapply</li>
+</ol>
+</div>
+<div id="debugging-exercise" class="section level2">
+<h2>Debugging Exercise 💀</h2>
+<p>Here is a piece of code that comes with quite some flaws. As an optional take-home exercise, please identify the bugs, remove them and report what you have done using comments.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LegislatoR)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># get political data on German legislators</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>political_df <span class="ot">&lt;-</span> </span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="at">x =</span> <span class="fu">filter</span>(<span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="fu">as.numeric</span>(<span class="st">&quot;session&quot;</span>) <span class="sc">==</span> <span class="dv">18</span>), </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">get_core</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># wiki traffic data</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="ot">&lt;-</span> </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_traffic</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="st">&quot;2013-10-22&quot;</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">&quot;2017-10-24&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">traffic_mean =</span> <span class="fu">mean</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">traffic_max =</span> <span class="fu">max</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># sessions served</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>sessions_served_df <span class="ot">&lt;-</span> </span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;deu&quot;</span>) <span class="sc">%%</span> </span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">sessions_served =</span> <span class="fu">n</span>())</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co"># merge</span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> </span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(political_df, sessions_served_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(traffic_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) </span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a><span class="co"># compute age</span></span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>get_age <span class="ot">&lt;-</span> <span class="cf">function</span>(birth, date_at) {</span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>  date_at_fmt <span class="ot">&lt;-</span> date_at</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>  birth_fmt <span class="ot">&lt;-</span> birth</span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> <span class="fu">difftime</span>(lubridate<span class="sc">::</span><span class="fu">ymd</span>(birth_fmt), lubridate<span class="sc">::</span><span class="fu">ymd</span>(date_at_fmt))</span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>  diff_years <span class="ot">&lt;-</span> <span class="fu">time_length</span>(diff, <span class="st">&quot;years&quot;</span>)</span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>  diff_years</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>legislator_df<span class="sc">$</span>age_in_years <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">get_age</span>(legislator_df<span class="sc">$</span>birth, <span class="st">&quot;2017-10-24&quot;</span>), <span class="dv">0</span>)</span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="co"># plot top 10 pageviews</span></span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> <span class="fu">arrange</span>(legislator_df, <span class="fu">desc</span>(traffic_mean))</span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>legislator_df<span class="sc">$</span>rank <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df)</span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(rank, name, traffic_mean, traffic_max)</span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(legislator_df_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Rank&quot;</span>, <span class="st">&quot;Representative&quot;</span>, <span class="st">&quot;Mean&quot;</span>, <span class="st">&quot;Maximum&quot;</span>)</span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> <span class="fu">head</span>(legislator_df_table, <span class="dv">10</span>)</span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(legislator_df_table, <span class="fu">aes</span>(<span class="at">y =</span> Mean, <span class="at">x =</span> <span class="sc">-</span>Rank)) <span class="sc">+</span> </span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Rank&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Avg. daily page views&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Top 10 representatives by average daily page views&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stats =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="sc">-</span><span class="fu">nrow</span>(legislator_df_table)<span class="sc">:-</span><span class="dv">1</span>, <span class="at">labels =</span> <span class="fu">rev</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df_table)))  </span>
+<span id="cb32-51"><a href="#cb32-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">10</span>, <span class="at">label =</span> Representative), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb32-52"><a href="#cb32-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb32-53"><a href="#cb32-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb32-54"><a href="#cb32-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-55"><a href="#cb32-55" aria-hidden="true" tabindex="-1"></a><span class="co"># run model of page views as a function of sessions served, party, sex, and age in years</span></span>
+<span id="cb32-56"><a href="#cb32-56" aria-hidden="true" tabindex="-1"></a>legislator_df<span class="sc">$</span>traffic_log <span class="ot">&lt;-</span> <span class="fu">log</span>(legislator_df<span class="sc">$</span>traffic_mean)</span>
+<span id="cb32-57"><a href="#cb32-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-58"><a href="#cb32-58" aria-hidden="true" tabindex="-1"></a>covars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sessions_served&quot;</span>, <span class="st">&quot;party&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age_in_years&quot;</span>)</span>
+<span id="cb32-59"><a href="#cb32-59" aria-hidden="true" tabindex="-1"></a>fmla <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;traffic_log&quot;</span>, <span class="fu">paste</span>(covars, <span class="at">collapse =</span> <span class="st">&quot; - &quot;</span>), <span class="at">sep =</span> <span class="st">&quot; ~ &quot;</span>)</span>
+<span id="cb32-60"><a href="#cb32-60" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(log_traffic_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(fmla, legislator_df))</span>
+<span id="cb32-61"><a href="#cb32-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-62"><a href="#cb32-62" aria-hidden="true" tabindex="-1"></a><span class="co"># plot table</span></span>
+<span id="cb32-63"><a href="#cb32-63" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(log_traffic_model)</span></code></pre></div>
+</div>
+</div>
+<div id="writing-packages-in-r" class="section level1">
+<h1>Writing Packages in R 📦</h1>
+<p>First of all, there is a very nice cheat sheet on <a href="">package development</a></p>
+<p>We now run through the development of a small toy package.</p>
+<p>Note: In this minimal example, we won’t sync the package to GitHub as not to overload information and won’t do version control via Git. In principle, it is strongly recommended to use Git for version control during the process.</p>
+<div id="step-1-load-the-packages-you-will-need" class="section level2">
+<h2>Step 1: Load the packages you will need</h2>
+<p>Load the <code>devtools</code> package, which is the public face of a set of packages that support various aspects of package development. Also load the <code>roxygen2</code> package, which provides helper functions to document your package.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(roxygen2)</span></code></pre></div>
+</div>
+<div id="step-2-create-your-package-directory" class="section level2">
+<h2>Step 2: Create your package directory 🏠</h2>
+<p>You are going to create a directory with the bare minimum folders of R packages. We are going to make a very tiny package providing only a single function as an illustration.</p>
+<p>Call <code>create_package()</code> from the <code>usethis</code> package, which is loaded when you load <code>devtools</code>, to initialize a new package in a directory on your computer (and create the directory, if necessary). Make a deliberate choice about where to create this package on your computer. It should probably be somewhere within your home directory, alongside your other R projects. It should not be nested inside another RStudio Project, R package, or Git repo. Nor should it be in an R package library, which holds packages that have already been built and installed. The conversion of the source package we are creating here into an installed package is part of what devtools facilitates. Don’t try to do devtools’ job for it!</p>
+<p>Substitute your chosen path into a <code>create_package()</code> call like this:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_package</span>(<span class="st">&quot;./awesomepackage&quot;</span>, <span class="at">open =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create_package(&quot;~/Documents/R/awesomepackage&quot;, open = FALSE)</span></span></code></pre></div>
+<p>Also, let’s navigate into that directory, which will allow us to use some fancy functions down the line.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;./awesomepackage&quot;</span>)</span></code></pre></div>
+</div>
+<div id="step-3-add-your-functions" class="section level2">
+<h2>Step 3: Add your functions</h2>
+<p>Now it’s time to add the functions you want to create the package for. Let’s just work with a toy function here:</p>
+<p>Some years ago, there used to be an issue when we catenating two factors (see this stackoverflow <a href="https://stackoverflow.com/questions/3443576/how-to-concatenate-factors-without-them-being-converted-to-integer-level/5068939">discussion</a>). The problem has already been solved, for example within the <code>forcats</code> package, but let’s pretend it had not.</p>
+<p>For whatever reason, the result of catenating two factors used to be an integer vector consisting of the numbers 1, 2, 3, and 4. A possible solution would have been to coerce each factor to character, catenate, then re-convert to factor.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;character&quot;</span>, <span class="st">&quot;hits&quot;</span>, <span class="st">&quot;your&quot;</span>, <span class="st">&quot;eyeballs&quot;</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;but&quot;</span>, <span class="st">&quot;integer&quot;</span>, <span class="st">&quot;where it&quot;</span>, <span class="st">&quot;counts&quot;</span>))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(a, b) <span class="co"># used to cause troubles in the past</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(<span class="fu">c</span>(<span class="fu">as.character</span>(a), <span class="fu">as.character</span>(b))) <span class="co"># was a common workaround (no longer necessary)</span></span></code></pre></div>
+<p>Let’s drop that logic into the body of a function called <code>fbind()</code>:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fbind <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="fu">as.character</span>(a), <span class="fu">as.character</span>(b)))</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Save this function as an R file, <code>fbind.R</code>, to the R directory in your package folder.</p>
+<p>Alternatively, you can use the helper function <code>use_r()</code>from the <code>usethis</code> package, which automatically creates and/or opens a script below <code>R/</code>:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_r</span>(<span class="st">&quot;fbind&quot;</span>)</span></code></pre></div>
+</div>
+<div id="step-4-add-documention" class="section level2">
+<h2>Step 4: Add documention 🎥</h2>
+<p>While not strictly necessary, it’s useful for Future-You and anybody else if you provide some documentation of your function. Luckily, there’s a tool again that helps you doing that. All you have to do is to add a comment like the following at the beginning of your function file, just like:</p>
+<pre><code>#&#39; Bind two factors
+#&#39;
+#&#39; Create a new factor from two existing factors, where the new factor&#39;s levels
+#&#39; are the union of the levels of the input factors.
+#&#39;
+#&#39; @param a factor
+#&#39; @param b factor
+#&#39;
+#&#39; @return factor
+#&#39; @export
+#&#39; @examples
+#&#39; fbind(iris$Species[c(1, 51, 101)], PlantGrowth$group[c(1, 11, 21)])</code></pre>
+<p>Then, you can run <code>document()</code> from roxygen2 to automatically create the documentation for you:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">document</span>()</span></code></pre></div>
+<p>You should now be able to preview your help file like so:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>?fbind</span></code></pre></div>
+</div>
+<div id="step-5-install" class="section level2">
+<h2>Step 5: Install!</h2>
+<p>Now it is as simple as installing the package! You need to run this from the parent working directory that contains the package folder.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;..&quot;</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install</span>(<span class="st">&quot;awesomepackage&quot;</span>)</span></code></pre></div>
+<p>Now you have a real, live, functioning R package. For example, try typing ?fbind. You should see the standard help page pop up!</p>
+</div>
+<div id="step-6-check-your-package" class="section level2">
+<h2>Step 6: Check your package</h2>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;awesomepackage&quot;</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check</span>()</span></code></pre></div>
+</div>
+<div id="step-7-add-a-license" class="section level2">
+<h2>Step 7: Add a license 🏷</h2>
+<p>The field of (software) licensing is complex. Check out this <a href="https://choosealicense.com/">resource</a> for a start. In terms of open source licenses, there are two major types: - permissive licences: easy-going; can be freely copied, modified, and published. examples: MIT, Apache - copyleft licenses: can be freely copied and modified or personal use, but publishing may be restricted. example: GPL</p>
+<p>The usethis package comes with helper functions to add various licenses with minimal effort.</p>
+<p>Things can become more complicated when you use other people’s code and want to bundle it with yours. The licenses may not be compatible… see more <a href="https://en.wikipedia.org/wiki/License_compatibility">here</a>.</p>
+<p>More detailed information on R package licenses can be found <a href="https://r-pkgs.org/license.html">here</a> for more information.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_mit_license</span>(<span class="st">&quot;Your Name&quot;</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use_gpl_license(&quot;Your Name&quot;)</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use_proprietary_license(&quot;Your Name&quot;) # don&#39;t make it open sources; cannot be published on CRAN</span></span></code></pre></div>
+</div>
+<div id="additional-steps" class="section level2">
+<h2>Additional steps</h2>
+<p>In case you’re having a nice idea for an actual package, please take a look at some much more in depth explanations, e.g. by Hadley Wickham and Jenny Bryan: R packages, <a href="https://r-pkgs.org/whole-game.html">Chapter 2 “The whole game”</a> or Karl Broman: <a href="https://kbroman.org/pkg_primer/">R package primer</a>. An overview of next steps to take are:</p>
+<ul>
+<li>Iterative loading and testing -&gt; load_all()</li>
+<li>Adding unit tests -&gt; use_testthat()</li>
+<li>Import functions from other packages -&gt; use_package()</li>
+<li>Version control and collaboration -&gt; use_github()</li>
+<li>Add a proper public description -&gt; use_readme_rmd()</li>
+<li>Add vignettes -&gt; use_vignette()</li>
+<li>Submit to CRAN -&gt; devtools::build(), devtools::release()</li>
+</ul>
+</div>
+<div id="take-home-package-exercise" class="section level2">
+<h2>Take-home Package Exercise 🧳</h2>
+<p>As we do not have an assignment to this session, here is an optional take-home exercise to self-test your packaging skills.</p>
+<p>Build your own package and publish it in a public GitHub repository. Here are the requirements:</p>
+<ul>
+<li>It should contain at least one function that you wrote. The function does not have to do anything innovative. Anything works really.</li>
+<li>It should contain all the necessary package components.</li>
+<li>The repository should contain a README.md that briefly reports what the package/function does.</li>
+<li>Everyone should be able to install your package using devtools::install_github(“<your-github-account-name>/<your-package-name>”).</li>
+</ul>
+<p>All you have to provide to users interested in your package would be this line of code:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;&lt;your-github-account-name&gt;/&lt;your-package-name&gt;&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="automation-in-r" class="section level1">
+<h1>Automation in R</h1>
+<p>We won’t cover automation in the lab today, but here is a summary of helpful ressources in case you are planning to</p>
+<p><strong>1. Organize workflows of a complex project</strong></p>
+<p><strong>2. Schedule reoccurring tasks</strong></p>
+<hr />
+<div id="sources" class="section level2">
+<h2>Sources</h2>
+<p>The debugging tutorial is inspired by Sean C. Anderson’s work on <a href="https://seananderson.ca/2013/08/23/debugging-r/">debugging R functions</a>.</p>
+<p>The packaging tutorial draws heavily on resources by Hilary Parker: <a href="https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/">Writing an R package from scratch</a>, Hadley Wickham and Jenny Bryan: R packages, <a href="https://r-pkgs.org/whole-game.html">Chapter 2 “The whole game”</a> and Karl Broman: <a href="https://kbroman.org/pkg_primer/">R package primer</a></p>
+</div>
+</div>
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by Lisa Oswald & Tom Arend</a></p>
+<p style="text-align: center;"><span style="color: #808080;"><em>Prepared for Intro to Data Science, taught by Simon Munzert</em></span></p>
+<p style="text-align: center;"><span style="color: #808080;"><em><a href="https://www.hertie-school.org/en/">Hertie School, Berlin</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" >
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+    <a href="https://github.com/intro-to-data-science-21"  <i class="fab fa-github"></i><a>
+</p>
+
+&nbsp;
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
