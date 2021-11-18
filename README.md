@@ -11,6 +11,7 @@
 6. Modelling with R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-6-modelling/6-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-6-modelling/6-modelling.Rmd)\]
 7. Visualization in R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-7-visualization/7-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-7-visualization/7-visualization.Rmd)\]
 8. Working with the Shell \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-8-shell/8-shell.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-8-shell/8-shell.Rmd)\]
+9. Debugging and Packaging in R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/9-debugging.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-9-debugging/9-debugging.Rmd)\]
 
 ## Instructors
 
