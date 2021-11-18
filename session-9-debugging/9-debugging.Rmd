@@ -174,6 +174,8 @@ You can then interactively work through the function line by line by hitting ent
 knitr::include_graphics("pics/browser.png", dpi = 100)
 ```
 
+**Note:** Other helpful tools to debug functions in R that you have not written yourself are `debug()`, that automatically opens a debugger at the start of a function call and `trace()`, which allows temporary code modifications inside functions that you don't have easy access to (e.g. ggplot()). 
+
 ## Condition handling `r emo::ji("ant")``r emo::ji("ant")``r emo::ji("bee")``r emo::ji("ant")`
 
 Sometimes errors come expected, and you want to handle them automatically, e.g.:
@@ -373,7 +375,16 @@ You can find the solutions [here](https://raw.githack.com/intro-to-data-science-
 
 # Writing Packages in R `r emo::ji("package")`
 
-First of all, there is a very nice cheat sheet on [package development]()
+First of all, there is a very nice cheat sheet on [package development](https://rklopotek.blog.uksw.edu.pl/files/2017/09/package-development.pdf).
+
+Remember the overall workflow of creating a package:
+
+```{r, fig.align='center', echo=F}
+knitr::include_graphics("pics/package_workflow2.png", dpi = 200)
+```
+
+Source: [Simo Goshev & Steve Worthinton](https://iqss.github.io/dss-rbuild/package-development.html)
+
 
 We now run through the development of a small toy package.
 
@@ -550,12 +561,21 @@ devtools::install_github("<your-github-account-name>/<your-package-name>")
 
 # Automation in R
 
-We won't cover automation in the lab today, but here is a summary of helpful ressources in case you are planning to 
+We won't cover automation in the lab today, but here is a summary of helpful resources in case you are planning to:
 
-**1. Organize workflows of a complex project**
+**1. Organize the workflow of a complex project**
 
+* by running multiple scripts through a "master" R-script - see [master.R example](
+https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/01-automation-just-r)
+* by running multiple scripts through a shell script - see [master.sh example](https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/02-automation-shell-rscript)
+* by using an R make-file - see [makefile example](https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/03-automation-r-make). Note that an alternative package to use here would be [targets](https://docs.ropensci.org/targets/)
 
 **2. Schedule reoccurring tasks**
+
+* using the [tashscheduleR](https://cran.r-project.org/web/packages/taskscheduleR/vignettes/taskscheduleR.html) package in R
+* through the command line using `schtasks.exe`
+* through the [Windows Task Scheduler](https://en.wikipedia.org/wiki/Windows_Task_Scheduler)
+* on macOS you would use [cron](https://en.wikipedia.org/wiki/Cron) or [launchd](https://en.wikipedia.org/wiki/Launchd)
 
 
 ---
