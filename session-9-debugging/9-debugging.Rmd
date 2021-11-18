@@ -368,6 +368,8 @@ summary(log_traffic_model <- lm(fmla, legislator_df))
 sjPlot::tab_model(log_traffic_model)
 ``` 
 
+You can find the solutions [here](https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/debugging-solution.html).
+
 
 # Writing Packages in R `r emo::ji("package")`
 
@@ -551,6 +553,7 @@ devtools::install_github("<your-github-account-name>/<your-package-name>")
 We won't cover automation in the lab today, but here is a summary of helpful ressources in case you are planning to 
 
 **1. Organize workflows of a complex project**
+
 
 **2. Schedule reoccurring tasks**
 
