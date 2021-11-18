@@ -375,7 +375,7 @@ div.tocify {
 <p>That is, if you see the error right away, try and fix it. You have lots of experience doing that. 🤓</p>
 </div>
 <div id="making-function-global" class="section level3">
-<h3>Making function global 🌍</h3>
+<h3>Making function global 🌐</h3>
 <p>You basically turn the arguments of the function into global objects (objects you can see in your environment, otherwise the objects are only available within your function). Then you can step through the code line by line to locate the bug.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make the objects that are otherwise entered as input parameters to your function global</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>lat1 <span class="ot">=</span> <span class="fl">49.5</span>; lon1 <span class="ot">=</span> <span class="fl">8.4</span>; lat2 <span class="ot">=</span> <span class="fl">52.5</span>; lon2 <span class="ot">=</span> <span class="fl">13.4</span></span></code></pre></div>
@@ -707,9 +707,9 @@ div.tocify {
 <p>We won’t cover automation in the lab today, but here is a summary of helpful resources in case you are planning to:</p>
 <p><strong>1. Organize the workflow of a complex project</strong></p>
 <ul>
-<li>by running multiple scripts through a “master” R-script - see <a href="https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/01-automation-just-r">master.R example</a></li>
-<li>by running multiple scripts through a shell script - see <a href="https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/02-automation-shell-rscript">master.sh example</a></li>
-<li>by using an R make-file - see <a href="https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/03-automation-r-make">makefile example</a>. Note that an alternative package to use here would be <a href="https://docs.ropensci.org/targets/">targets</a></li>
+<li>by running multiple scripts through a “master” R-script - see <a href="https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/01-automation-just-r">master.R example</a></li>
+<li>by running multiple scripts through a shell script - see <a href="https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/02-automation-shell-rscript">master.sh example</a></li>
+<li>by using an R make-file - see <a href="https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/03-automation-r-make">makefile example</a>. Note that an alternative package to use here would be <a href="https://docs.ropensci.org/targets/">targets</a></li>
 </ul>
 <p><strong>2. Schedule reoccurring tasks</strong></p>
 <ul>

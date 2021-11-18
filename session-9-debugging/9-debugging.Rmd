@@ -565,10 +565,9 @@ We won't cover automation in the lab today, but here is a summary of helpful res
 
 **1. Organize the workflow of a complex project**
 
-* by running multiple scripts through a "master" R-script - see [master.R example](
-https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/01-automation-just-r)
-* by running multiple scripts through a shell script - see [master.sh example](https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/02-automation-shell-rscript)
-* by using an R make-file - see [makefile example](https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/03-automation-r-make). Note that an alternative package to use here would be [targets](https://docs.ropensci.org/targets/)
+* by running multiple scripts through a "master" R-script - see [master.R example](https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/01-automation-just-r)
+* by running multiple scripts through a shell script - see [master.sh example](https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/02-automation-shell-rscript)
+* by using an R make-file - see [makefile example](https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/03-automation-r-make). Note that an alternative package to use here would be [targets](https://docs.ropensci.org/targets/)
 
 **2. Schedule reoccurring tasks**
 
