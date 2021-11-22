@@ -234,19 +234,15 @@ class(success)
 class(failure) 
 ```
 
-Use try() when applying a function to multiple elements in a list:
+
+Use `possibly()`, a function similar to `try()` from the `purrr` package when applying a function to multiple elements in a list. You can also provide a default value (here: NA) in case execution fails.
 
 ```{r eval = FALSE}
-elements <- list(1:10, c(-1, 10), c(T, F), letters) 
-results <- lapply(elements, log)
-results <- lapply(elements, function(x) try(log(x)))
-```
+library(purrr)
 
-Use try() together with a default value if expression fails:
-
-```{r}
-default <- NULL 
-try(default <- read.csv("possibly-bad-input.csv"), silent = TRUE)
+elements <-list(1,2,3,"f")
+results <- map(elements, log)
+results <- map(elements, possibly(log, NA))
 ```
 
 
@@ -274,8 +270,20 @@ If no condition is captured, tryCatch returns the value of the input:
 show_condition(10+5)
 ```
 
-Make more informative error messages
 
+A more real-life example of how to use tryCatch() is this one:
+```{r}
+model_selection <- function(data, formula1, formula2){
+
+  tryCatch(lm(formula1, data), error = function(e) lm(formula2, data))
+
+}
+```
+You try to fit formula1 to the data, however, maybe it is a model with very strict requirements. You might also have a more robust (but maybe less interesting) formula2 that you might fit if the requirements are not met and the modeling process throws an error. 
+
+
+
+Make more informative error messages
 ```{r eval = FALSE}
 read.csv_new <- function(file, ...) { 
   tryCatch(read.csv(file, ...), error = function(c) {
