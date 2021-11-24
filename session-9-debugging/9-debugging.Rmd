@@ -148,7 +148,7 @@ This shows you where the error occurred (but not why). Read from bottom to top (
 ### Using browser() `r emo::ji("fox")`
 
 Basically, add `browser()` into your function somewhere before you expect the expected error. 
-
+**Note:** browser() works best within a clean .R script, it can shoot some troubles within .Rmd.
 ```{r eval = FALSE}
 geod_dist <- function(lat1, lon1, lat2, lon2, earth.radius = 6371) {
   # from degrees to radians

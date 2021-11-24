@@ -20,7 +20,7 @@ geod_dist(lat1 = 49.5, lon1 = 8.4, lat2 = 52.5, lon2 = 13.4)
 
 # GLOBAL OBJECTS
 # make the objects that are otherwise entered as input parameters to your function global
-lat1 = 49.5; lon1 = 8.4; lat2 = 52.5; lon2 = 13.4
+lat1 = 49.5;lon1 = 8.4; lat2 = 52.5; lon2 = 13.4
 # now, execute line by line
 deg2rad <- function(deg) return(deg*pi/180)
 lon1 <- deg2rad(lon1)
@@ -33,6 +33,7 @@ a <- sin(delta.lat/2)^2 + cos(lat1) * cos(lat2) * sing(delta.long/2)^2
 c <- 2 * asin(min(1,sqrt(a)))
 d = earth_radius * c
 return(d)
+
 
 # TRACEBACK
 geod_dist(lat1 = 49.5, lon1 = 8.4, lat2 = 52.5, lon2 = 13.4)
@@ -60,10 +61,11 @@ geod_dist(lat1 = 49.5, lon1 = 8.4, lat2 = 52.5, lon2 = 13.4)
 
 ########################### CONDITION HANDLING ###################################
 
- f1 <- function(x) {
+f1 <- function(x) {
   log(x)
   10
-  }
+ }
+
 f1("x")
 
 
@@ -72,6 +74,7 @@ f1 <- function(x) {
   try(log(x))
   10 
 } 
+
 f1("x")
 
 
@@ -80,6 +83,7 @@ f1 <- function(x) {
   try(log(x), silent = TRUE)
   10 
 } 
+
 f1("x")
 
 
@@ -88,12 +92,12 @@ try({
   a <- 1 
   b <- "x" 
   a + b 
-})
+}, silent = TRUE)
 
 
 ## -----------------------------------------------------------------------------------------------------------------
-success <- try(1 + 2)
-failure <- try("a" + "b") 
+success <- try(as.character(1 + 2))
+failure <- try("a" + "b", silent = TRUE) 
 class(success)
 class(failure) 
 
@@ -102,7 +106,7 @@ class(failure)
 elements <-list(1,2,3,"f")
 results <- map(elements, log)
 results <- map(elements, possibly(log, NA))
-
+results
 
 ## -----------------------------------------------------------------------------------------------------------------
 show_condition <- function(code) { 
@@ -128,8 +132,8 @@ read.csv_new <- function(file, ...) {
    })
  }
  
- read.csv("code/dummy.csv")
- read.csv_new("code/dummy.csv")
+read.csv("code/dummy.csv")
+read.csv_new("code/dummy.csv")
 
 
  
@@ -139,10 +143,10 @@ library(devtools)
 library(roxygen2)
 
 
-create_package("~/Documents/R/heRtie", open = FALSE)
+create_package("~/Desktop/hertie", open = FALSE)
 
 
-setwd("~/Documents/R/heRtie")
+setwd("~/Desktop/hertie")
 
 
 ## ----eval = FALSE-------------------------------------------------------------------------------------------------
@@ -168,11 +172,11 @@ document()
 ?theme_hertie
 
 
-setwd("~/Documents/R")
-install("heRtie")
+setwd("~/Desktop")
+install("hertie")
 
 
-setwd("~/Documents/R/heRtie")
+setwd("~/Desktop/hertie")
 check()
 
 
