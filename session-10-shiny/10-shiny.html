@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Shiny Applications</title>
+
+<script src="10-shiny_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="10-shiny_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="10-shiny_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="10-shiny_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="10-shiny_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="10-shiny_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="10-shiny_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="10-shiny_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="10-shiny_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="10-shiny_files/navigation-1.1/tabsets.js"></script>
+<link href="10-shiny_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="10-shiny_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Shiny Applications</h1>
+<h3 class="subtitle">Creating interactive Web applications with R</h3>
+
+</div>
+
+
+<hr />
+<p>Welcome back everyone! Today we will have a look at</p>
+<ol style="list-style-type: decimal">
+<li>How to create Shiny Apps in R</li>
+<li>What to look out for when creating Dashboards</li>
+</ol>
+<hr />
+<div id="shiny-applications-in-r" class="section level1">
+<h1>Shiny Applications in R 💎</h1>
+<div id="what-is-shiny" class="section level2">
+<h2>What is Shiny?</h2>
+<p>Shiny is an R package that makes it easy to build interactive web applications (apps) straight from R. You need to install the package <code>shiny</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;shiny&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span></code></pre></div>
+<p>For a quick illustration of what you can do with Shiny head over to the interactive visualisation tool for the <a href="https://gallery.shinyapps.io/freedom-press-index/?_ga=2.102672455.730641241.1638195397-1221361119.1634646993#home">Freedom of Press Index</a></p>
+<p>Throughout the lab we will use a running example to illustrate the different aspects of creating a shiny app. You can find it in the folder “our_app”. It is interactive plot that displays all movies on Rotten Tomatoes and includes several filtering options.</p>
+<div id="structure-of-a-shiny-app" class="section level3">
+<h3>Structure of a Shiny App</h3>
+<p>Shiny apps are contained in a single script called app.R. The script app.R lives in a directory (for example, newdir/) and the app can be run with runApp(“newdir”).</p>
+<p>app.R has three components:</p>
+<ol style="list-style-type: decimal">
+<li><p>a user interface object - the (ui) object controls the layout and appearance of your app.</p></li>
+<li><p>a server function - the server function contains the instructions that your computer needs to build your app.</p></li>
+<li><p>a call to the <code>shinyApp</code> function - the shinyApp function creates Shiny app objects from an explicit UI/server pair.</p></li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># illustrated workflow </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code></pre></div>
+</div>
+<div id="running-a-shiny-app" class="section level3">
+<h3>Running a Shiny App</h3>
+<p>To create a Shiny app you need to create a new directory and save an app.R file inside it. This app.R script needs to contain the three components outlined above. Further, it is recommended that each app should have its own unique directory.</p>
+<p>You can run a Shiny app by giving the name of this directory to the function <code>runApp()</code>. For example if your Shiny app is in a directory called my_shiny_app, run it with the following code:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runApp</span>(<span class="st">&quot;my_shiny_app&quot;</span>)</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="layout-ui" class="section level2">
+<h2>Layout / UI 🗾</h2>
+<p>Shiny uses the function <code>fluidPage</code> to create a display that automatically adjusts to the dimensions of your user’s browser window. You lay out the user interface of your app by placing elements in the <code>fluidPage</code> function. Alternatives to <code>fluidPage</code> exist (i.e. <code>fixedPage</code>, <code>bootstrapPage</code>), but these are only useful in specific situations.</p>
+<p>For example, the ui function below creates a user interface that has a title panel and a sidebar layout, which includes a sidebar panel and a main panel. Note that these elements are placed within the fluidPage function.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;title panel&quot;</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(<span class="st">&quot;sidebar panel&quot;</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(<span class="st">&quot;main panel&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>While titlePanel and sidebarLayout create a basic layout for your Shiny app, you can also create more advanced layouts. For example you can use navbarPage to give your app a multi-page user interface that includes a navigation bar. Or you can use fluidRow and column to build your layout up from a grid system. If you’d like to learn more about these advanced options, have a look at the <a href="https://shiny.rstudio.com/tutorial/written-tutorial/lesson2/">Shiny Application Layout Guide</a>.</p>
+<p>Within the different layout functions you can also customise your app further by italisising or making your font bold and even including html elements:</p>
+<p>To include images you need to use the <code>img</code> function.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">img</span>(<span class="at">src =</span> <span class="st">&quot;my_image.png&quot;</span>, <span class="at">height =</span> <span class="dv">72</span>, <span class="at">width =</span> <span class="dv">72</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;src =&quot; needs to be spelled out since the html expects it. </span></span></code></pre></div>
+<p>To learn more about how you can customise your ui see <a href="https://shiny.rstudio.com/articles/html-tags.html">here</a> and <a href="https://shiny.rstudio.com/articles/tag-glossary.html">here</a>.</p>
+<hr />
+</div>
+<div id="widgets" class="section level2">
+<h2>Widgets 🐭</h2>
+<p>A widget is a web element that your users can interact with. In other words to make your app interactive, you need widgets. These provide a way for your users to send messages to the Shiny app, meaning that when a user changes the input in a widget, the value that is shown will change as well.</p>
+<p>Shiny comes with a family of pre-built widgets, each created with a transparently named R function. For example, Shiny provides a function named actionButton that creates an Action Button and a function named sliderInput that creates a slider bar.</p>
+<p>Some standard Shiny widgets are (<a href="https://shiny.rstudio.com/gallery/widget-gallery.html">gallery</a>):</p>
+<p><img src="pics/basic-widgets.png" width="960" /></p>
+<p>To add a widget to your app, you need to include a widget function in sidebarPanel or mainPanel in your ui object.</p>
+<p>Each widget function requires several arguments. The first two arguments for each widget are:</p>
+<ol style="list-style-type: decimal">
+<li><p>a name for the widget: The user will not see this name, but you can use it to access the widget’s value. The name should be a character string.</p></li>
+<li><p>a label: This label will appear with the widget in your app. It should be a character string, but it can be an empty string ““.</p></li>
+</ol>
+<p>The remaining arguments vary from widget to widget, depending on what the widget needs to do its job. They include things like initial values, ranges, and increments. You can find the exact arguments needed by a widget on the widget function’s help page, (e.g., ?selectInput).</p>
+<p>Relevant chunk from our running example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fluidPage</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">3</span>, ... ,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sliderInput</span>(<span class="at">name =</span> <span class="st">&quot;reviews&quot;</span>, <span class="at">label =</span> <span class="st">&quot;Minimum number of reviews on Rotten Tomatoes&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>          <span class="dv">10</span>, <span class="dv">300</span>, <span class="dv">80</span>, <span class="at">step =</span> <span class="dv">10</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        ... ,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">selectInput</span>(<span class="st">&quot;genre&quot;</span>, <span class="st">&quot;Genre (a movie can have multiple genres)&quot;</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">&quot;All&quot;</span>, <span class="st">&quot;Action&quot;</span>, <span class="st">&quot;Adventure&quot;</span>, <span class="st">&quot;Animation&quot;</span>, <span class="st">&quot;Biography&quot;</span>, <span class="st">&quot;Comedy&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Crime&quot;</span>, <span class="st">&quot;Documentary&quot;</span>, <span class="st">&quot;Drama&quot;</span>, <span class="st">&quot;Family&quot;</span>, <span class="st">&quot;Fantasy&quot;</span>, <span class="st">&quot;History&quot;</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Horror&quot;</span>, <span class="st">&quot;Music&quot;</span>, <span class="st">&quot;Musical&quot;</span>, <span class="st">&quot;Mystery&quot;</span>, <span class="st">&quot;Romance&quot;</span>, <span class="st">&quot;Sci-Fi&quot;</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Short&quot;</span>, <span class="st">&quot;Sport&quot;</span>, <span class="st">&quot;Thriller&quot;</span>, <span class="st">&quot;War&quot;</span>, <span class="st">&quot;Western&quot;</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        ... ,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">textInput</span>(<span class="st">&quot;director&quot;</span>, <span class="st">&quot;Director name contains (e.g., Miyazaki)&quot;</span>))))<span class="er">)</span></span></code></pre></div>
+<hr />
+</div>
+<div id="display-reactive-output" class="section level2">
+<h2>Display Reactive Output</h2>
+<p>To give your Shiny App a feeling of live interactiveness you need to include a way to display reactive output. Reactive output automatically responds when your user selects an option in a widget.</p>
+<p>There are two steps involved in making your widgets reactive: 1. Add the relevant output function to your ui function. 2. Provide R code to build the object in your server function.</p>
+<div id="step-1" class="section level3">
+<h3>Step 1:</h3>
+<p>Shiny provides a family of functions that turn R objects into output for your user interface. Each function creates a specific type of output.</p>
+<p>Some examples are: <code>plotOutput</code> for reactive plots, <code>tableOutput</code> for reactive tables.</p>
+<p>In our running example we used <code>textOutput</code> to give the number of movies displayed:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>( ... ),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">9</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">ggvisOutput</span>(<span class="st">&quot;plot1&quot;</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">wellPanel</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">span</span>(<span class="st">&quot;Number of movies selected:&quot;</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">textOutput</span>(<span class="st">&quot;n_movies&quot;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>             )</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>           ))</span></code></pre></div>
+</div>
+<div id="step-2" class="section level3">
+<h3>Step 2:</h3>
+<p>Placing a function in ui tells Shiny where to display your object. Next, you need to tell Shiny how to build the object.</p>
+<p>We do this by providing the R code that builds the object in the server function. You do this by defining a new element for output within the server function. The element name should match the name of the reactive element that you created in the ui.</p>
+<p>If you created a <code>textOutput("selected_var")</code> in your ui, <code>output$selected_var</code> in the server function matches this.</p>
+<p>To illustrate this let’s look at our example, where we used <code>textOutput("n_movies")</code>, in the server function we state:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  ... ,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  vis <span class="sc">%&gt;%</span> <span class="fu">bind_shiny</span>(<span class="st">&quot;plot1&quot;</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>n_movies <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">nrow</span>(<span class="fu">movies</span>()) })</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that movies is a df that we create within our server function</span></span></code></pre></div>
+<p>Every <code>output*</code> function in ui, has a corresponding <code>render*</code> function in server to build the reactive widget.</p>
+<p>Each <code>render*</code> function takes a single argument: an R expression surrounded by braces, {}. The expression can be one simple line of text, or it can involve many lines of code, as if it were a complicated function call.</p>
+<hr />
+</div>
+</div>
+<div id="more-complicated-examples" class="section level2">
+<h2>More complicated examples ⚙️</h2>
+<p>You can create more complicated Shiny apps by loading R Scripts, packages, and data sets.</p>
+<p>What you need to know is that:</p>
+<ul>
+<li>The directory that app.R appears in will become the working directory of the Shiny app</li>
+<li>Shiny will run code placed at the start of app.R, before the server function, only once during the life of the app.</li>
+<li>Shiny will run code placed inside server function multiple times, which can slow down the app.</li>
+</ul>
+<p>In our example, this is used to first create and join the necessary tables for the entirety of the app. This only needs to be done once. Within the server function we then filter and select based on certain inputs, obviously this needs to be repeated every time the input changes. This is why we placed that code within the server function.</p>
+<hr />
+</div>
+<div id="share-your-apps" class="section level2">
+<h2>Share your Apps 🧺</h2>
+<p>You can now build a useful Shiny app, but can you share it with others? This lesson will show you several ways to share your Shiny apps.</p>
+<p>When it comes to sharing Shiny apps, you have two basic options:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Share your Shiny app as R scripts.</strong> This is the simplest way to share an app, but it works only if your users have R on their own computer (and know how to use it). Users can use these scripts to launch the app from their own R session, just like you’ve been launching the apps so far in this tutorial. All they need to do this a copy of your app directory including the app.R script.</p></li>
+<li><p><strong>Share your Shiny app as a web page.</strong> This is definitely the most user friendly way to share a Shiny app. Your users can navigate to your app through the internet with a web browser. They will find your app fully rendered, up to date, and ready to go.</p></li>
+</ol>
+<p>If you prefer the second option, I propose that you have a look at Shinyapps.io. It is RStudio’s hosting service for Shiny apps. shinyapps.io lets you upload your app straight from your R session to a server hosted by RStudio. You have complete control over your app including server administration tools. You can find out more about shinyapps.io by visiting <a href="https://www.shinyapps.io/?_ga=2.69192023.730641241.1638195397-1221361119.1634646993">shinyapps.io</a>.</p>
+<p>The setup and installation for doing this is relatively straightforward, but requires all the standard boring steps, such as setting up an account, password and getting familiar with the website UI. Therefore we won’t do this here. However, if you have questions you can find a detailed guide <a href="https://docs.rstudio.com/shinyapps.io/">here</a>.</p>
+<hr />
+</div>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<p>Now it is your turn, adapt the shiny app by:</p>
+<ol style="list-style-type: decimal">
+<li>Disable the distinction between films that won an Oscar and those that did not.</li>
+<li>Creating an additional widget that lets you filter by country of origin of the film selection.</li>
+<li>Allow for several countries to be selected simultaneously and display them with different colours.</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="guidelines-for-dashboards" class="section level1">
+<h1>Guidelines for Dashboards 🖌</h1>
+<p>Now that you have the tools to create interactive dashboards, you might be eager to use these skills liberally. And so you should. <strong>But</strong>, dashboards are not always the best way to visualise data. Prior to developing a dashboard you should make sure to ask yourself a few questions.</p>
+<hr />
+<div id="checklist-before-you-start" class="section level2">
+<h2>Checklist before you start ✅</h2>
+<ol style="list-style-type: decimal">
+<li>Are you tackling a monitoring task that needs your data/metrics to be updated frequently?</li>
+<li>Who will use the dashboard and to what end? What questions will they use it to answer? What actions will they take in response to these answers?</li>
+<li>What specific information should be displayed, and is it meaningful without much context?</li>
+<li>What could lead to the metrics being wrong/misleading?</li>
+</ol>
+<hr />
+</div>
+<div id="design-advice" class="section level2">
+<h2>Design advice</h2>
+<ul>
+<li>Design advice</li>
+<li>Minimize distractions.</li>
+<li>Focus on meaningful quantities of interest, not the ones that look cool.</li>
+<li>Don’t overload with information.</li>
+<li>Apply all rules of good data viz.</li>
+<li>Use interactives with care (e.g., to make optional content conditionally visible)</li>
+<li>Try not to exceed the boundaries of a single screen.</li>
+<li>Ensure desktop/mobile screen responsiveness.</li>
+</ul>
+<hr />
+</div>
+<div id="sources" class="section level2">
+<h2>Sources</h2>
+<p>The shiny tutorial leans heavily on RStudio’s series of <a href="https://shiny.rstudio.com/tutorial/">written shiny tutorials</a>.</p>
+<p>The running example was adapted from: <a href="https://github.com/rstudio/shiny-examples/tree/main/051-movie-explorer">Movies-Explorer Interactive App</a>.</p>
+</div>
+</div>
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by Lisa Oswald & Tom Arend</a></p>
+<p style="text-align: center;"><span style="color: #808080;"><em>Prepared for Intro to Data Science, taught by Simon Munzert</em></span></p>
+<p style="text-align: center;"><span style="color: #808080;"><em><a href="https://www.hertie-school.org/en/">Hertie School, Berlin</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" >
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+    <a href="https://github.com/intro-to-data-science-21"  <i class="fab fa-github"></i><a>
+</p>
+
+&nbsp;
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
