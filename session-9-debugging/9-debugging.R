@@ -20,12 +20,12 @@ geod_dist(lat1 = 49.5, lon1 = 8.4, lat2 = 52.5, lon2 = 13.4)
 
 # GLOBAL OBJECTS
 # make the objects that are otherwise entered as input parameters to your function global
-lat1 = 49.5;lon1 = 8.4; lat2 = 52.5; lon2 = 13.4
+lat1 = 49.5; lon1 = 8.4; lat2 = 52.5; lon2 = 13.4
 # now, execute line by line
 deg2rad <- function(deg) return(deg*pi/180)
 lon1 <- deg2rad(lon1)
 lat1 <- deg2rad(lat1)
-lon2 <- deg2rad(long2)
+lon2 <- deg2rad(lon2)
 lat2 <- deg2rad(lat2)
 delta.long <- (lon2 - lon1)
 delta.lat <- (lat2 - lat1)
@@ -38,6 +38,7 @@ return(d)
 # TRACEBACK
 geod_dist(lat1 = 49.5, lon1 = 8.4, lat2 = 52.5, lon2 = 13.4)
 traceback()
+
 
 # BROWSER
 geod_dist <- function(lat1, lon1, lat2, lon2, earth.radius = 6371) {
@@ -149,15 +150,6 @@ create_package("~/Desktop/hertie", open = FALSE)
 setwd("~/Desktop/hertie")
 
 
-## ----eval = FALSE-------------------------------------------------------------------------------------------------
-## a <- factor(c("character", "hits", "your", "eyeballs"))
-## b <- factor(c("but", "integer", "where it", "counts"))
-## 
-## c(a, b) # used to cause troubles in the past
-## 
-## factor(c(as.character(a), as.character(b))) # was a common workaround (no longer necessary)
-## 
-
 theme_hertie <- ggplot2::theme_classic() +
   ggplot2::theme(text =  element_text(family = "Georgia", size = 23, color = "darkred"))
   
@@ -168,8 +160,9 @@ use_r("theme_hertie")
 
 document()
 
-
+?log
 ?theme_hertie
+
 
 
 setwd("~/Desktop")
@@ -177,6 +170,7 @@ install("hertie")
 
 
 setwd("~/Desktop/hertie")
+
 check()
 
 
