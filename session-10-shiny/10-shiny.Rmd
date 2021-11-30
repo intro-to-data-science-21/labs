@@ -289,7 +289,7 @@ Now it is your turn, adapt the shiny app by:
                            Horror, Music, Musical, Mystery, Romance, Sci-Fi,
                            Short, Sport, Thriller, War, Western.
                            
-2. Turn our scatter plot into a bubble plot, where the size of the bubbles is determined by the revnues generated at the BoxOffice.
+2. Turn our scatter plot into a bubble plot, where the size of the bubbles is determined by the revenues generated at the Box-Office.
 
 3. In line 97 we use reactive({}) to change the filtering based on user input, how could we do this with an alternative (but slower) function? 
 
