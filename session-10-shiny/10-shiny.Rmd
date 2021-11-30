@@ -281,9 +281,17 @@ The setup and installation for doing this is relatively straightforward, but req
 
 Now it is your turn, adapt the shiny app by: 
 
-1. Disable the distinction between films that won an Oscar and those that did not. 
-1. Creating an additional widget that lets you filter by country of origin of the film selection.
-2. Allow for several countries to be selected simultaneously and display them with different colours.
+1. Adding a widget that let's you subset by the film's genre:
+    + Think about where you specify this? 
+    + Make sure to specify what the default option should be.
+    + Genre Categories in the data include: Action, Adventure, Animation, Biography, Comedy,
+                           Crime, Documentary, Drama, Family, Fantasy, History,
+                           Horror, Music, Musical, Mystery, Romance, Sci-Fi,
+                           Short, Sport, Thriller, War, Western.
+                           
+2. Turn our scatter plot into a bubble plot, where the size of the bubbles is determined by the revnues generated at the BoxOffice.
+
+3. In line 97 we use reactive({}) to change the filtering based on user input, how could we do this with an alternative (but slower) function? 
 
 ***
 
