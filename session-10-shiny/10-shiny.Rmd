@@ -173,14 +173,10 @@ fluidPage(
         sliderInput(name = "reviews", label = "Minimum number of reviews on Rotten Tomatoes",
           10, 300, 80, step = 10),
         ... ,
-        selectInput("genre", "Genre (a movie can have multiple genres)",
-          c("All", "Action", "Adventure", "Animation", "Biography", "Comedy",
-            "Crime", "Documentary", "Drama", "Family", "Fantasy", "History",
-            "Horror", "Music", "Musical", "Mystery", "Romance", "Sci-Fi",
-            "Short", "Sport", "Thriller", "War", "Western")
-        ),
-        ... ,
-        textInput("director", "Director name contains (e.g., Miyazaki)")))))
+        textInput("director", "Director name contains (e.g., Miyazaki)"),
+    ),
+    ...,
+    selectInput("xvar", "X-axis variable", axis_vars, selected = "Meter")))
 ```
 
 ***
@@ -231,8 +227,6 @@ To illustrate this let's look at our example, where we used `textOutput("n_movie
 
 server <- function(input, output, session) {
   ... ,
-  
-  vis %>% bind_shiny("plot1"),
   
   output$n_movies <- renderText({ nrow(movies()) })
 }
