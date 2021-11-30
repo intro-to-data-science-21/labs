@@ -302,24 +302,30 @@ Now that you have the tools to create interactive dashboards, you might be eager
 3. What specific information should be displayed, and is it meaningful without much context?
 4. What could lead to the metrics being wrong/misleading?
 
+Only if you answered ticked the box after the majority of the questions above should you really opt for a dashboard-based approach.
+
 ***
 
 ## Design advice
 
-- Design advice
+Even then, there are a number of design guidelines that you should follow. Here is a non-exhaustive list: 
+
 - Minimize distractions.
 - Focus on meaningful quantities of interest, not the ones that look cool.
 - Don't overload with information.
-- Apply all rules of good data viz.
-- Use interactives with care (e.g., to make optional content conditionally visible)
+- Apply all rules of good data visualisation.
+- Use interactive figures with care (e.g., to make optional content conditionally visible)
 - Try not to exceed the boundaries of a single screen.
-- Ensure desktop/mobile screen responsiveness.
+- Ensure desktop/mobile screen responsiveness (fluidPage(), will achieve this).
 
 ***
 
+# Foreshadowing our last Lab `r emo::ji("ghost")`
+
+Tomorrow's lecture will be on Ethics in the field of Data Science. This lecture will already be very interactive. It therefore makes little sense to cover ethics again in our lab next week. We though it would be better to organise that lab as a drop-in session, where you can come in with question regarding your final project. As promised, we will also have some materials on websites and how to create them with R and markdown, for those among you that are interested in building a personalised site. 
+
+***
 
 ## Sources
 
-The shiny tutorial leans heavily on RStudio's series of [written shiny tutorials](https://shiny.rstudio.com/tutorial/).
-
-The running example was adapted from: [Movies-Explorer Interactive App](https://github.com/rstudio/shiny-examples/tree/main/051-movie-explorer).
+The shiny tutorial leans heavily on RStudio's series of [written shiny tutorials](https://shiny.rstudio.com/tutorial/). The running example was adapted from: [Movies-Explorer Interactive App](https://github.com/rstudio/shiny-examples/tree/main/051-movie-explorer).
