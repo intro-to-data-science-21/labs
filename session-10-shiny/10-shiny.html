@@ -413,14 +413,10 @@ div.tocify {
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sliderInput</span>(<span class="at">name =</span> <span class="st">&quot;reviews&quot;</span>, <span class="at">label =</span> <span class="st">&quot;Minimum number of reviews on Rotten Tomatoes&quot;</span>,</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>          <span class="dv">10</span>, <span class="dv">300</span>, <span class="dv">80</span>, <span class="at">step =</span> <span class="dv">10</span>),</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        ... ,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">selectInput</span>(<span class="st">&quot;genre&quot;</span>, <span class="st">&quot;Genre (a movie can have multiple genres)&quot;</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">&quot;All&quot;</span>, <span class="st">&quot;Action&quot;</span>, <span class="st">&quot;Adventure&quot;</span>, <span class="st">&quot;Animation&quot;</span>, <span class="st">&quot;Biography&quot;</span>, <span class="st">&quot;Comedy&quot;</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Crime&quot;</span>, <span class="st">&quot;Documentary&quot;</span>, <span class="st">&quot;Drama&quot;</span>, <span class="st">&quot;Family&quot;</span>, <span class="st">&quot;Fantasy&quot;</span>, <span class="st">&quot;History&quot;</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Horror&quot;</span>, <span class="st">&quot;Music&quot;</span>, <span class="st">&quot;Musical&quot;</span>, <span class="st">&quot;Mystery&quot;</span>, <span class="st">&quot;Romance&quot;</span>, <span class="st">&quot;Sci-Fi&quot;</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Short&quot;</span>, <span class="st">&quot;Sport&quot;</span>, <span class="st">&quot;Thriller&quot;</span>, <span class="st">&quot;War&quot;</span>, <span class="st">&quot;Western&quot;</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        ... ,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">textInput</span>(<span class="st">&quot;director&quot;</span>, <span class="st">&quot;Director name contains (e.g., Miyazaki)&quot;</span>))))<span class="er">)</span></span></code></pre></div>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">textInput</span>(<span class="st">&quot;director&quot;</span>, <span class="st">&quot;Director name contains (e.g., Miyazaki)&quot;</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    ...,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">&quot;xvar&quot;</span>, <span class="st">&quot;X-axis variable&quot;</span>, axis_vars, <span class="at">selected =</span> <span class="st">&quot;Meter&quot;</span>)))</span></code></pre></div>
 <hr />
 </div>
 <div id="display-reactive-output" class="section level2">
@@ -453,12 +449,10 @@ div.tocify {
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  ... ,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  vis <span class="sc">%&gt;%</span> <span class="fu">bind_shiny</span>(<span class="st">&quot;plot1&quot;</span>),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>n_movies <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">nrow</span>(<span class="fu">movies</span>()) })</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that movies is a df that we create within our server function</span></span></code></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>n_movies <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">nrow</span>(<span class="fu">movies</span>()) })</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that movies is a df that we create within our server function</span></span></code></pre></div>
 <p>Every <code>output*</code> function in ui, has a corresponding <code>render*</code> function in server to build the reactive widget.</p>
 <p>Each <code>render*</code> function takes a single argument: an R expression surrounded by braces, {}. The expression can be one simple line of text, or it can involve many lines of code, as if it were a complicated function call.</p>
 <hr />
@@ -492,15 +486,20 @@ div.tocify {
 <h2>Exercises</h2>
 <p>Now it is your turn, adapt the shiny app by:</p>
 <ol style="list-style-type: decimal">
-<li>Disable the distinction between films that won an Oscar and those that did not.</li>
-<li>Creating an additional widget that lets you filter by country of origin of the film selection.</li>
-<li>Allow for several countries to be selected simultaneously and display them with different colours.</li>
+<li><p>Adding a widget that let’s you subset by the film’s genre:</p>
+<ul>
+<li>Think about where you specify this?</li>
+<li>Make sure to specify what the default option should be.</li>
+<li>Genre Categories in the data include: Action, Adventure, Animation, Biography, Comedy, Crime, Documentary, Drama, Family, Fantasy, History, Horror, Music, Musical, Mystery, Romance, Sci-Fi, Short, Sport, Thriller, War, Western.</li>
+</ul></li>
+<li><p>Turn our scatter plot into a bubble plot, where the size of the bubbles is determined by the revenues generated at the Box-Office.</p></li>
+<li><p>In line 97 we use reactive({}) to change the filtering based on user input, how could we do this with an alternative (but slower) function?</p></li>
 </ol>
 <hr />
 </div>
 </div>
 <div id="guidelines-for-dashboards" class="section level1">
-<h1>Guidelines for Dashboards 🖌</h1>
+<h1>Guidelines for Dashboards 🖼</h1>
 <p>Now that you have the tools to create interactive dashboards, you might be eager to use these skills liberally. And so you should. <strong>But</strong>, dashboards are not always the best way to visualise data. Prior to developing a dashboard you should make sure to ask yourself a few questions.</p>
 <hr />
 <div id="checklist-before-you-start" class="section level2">
