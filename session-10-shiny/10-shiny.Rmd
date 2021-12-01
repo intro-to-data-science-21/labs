@@ -124,7 +124,7 @@ ui <- fluidPage(
 )
 ```
 
-While titlePanel and sidebarLayout create a basic layout for your Shiny app, you can also create more advanced layouts. For example you can use navbarPage to give your app a multi-page user interface that includes a navigation bar. Or you can use fluidRow and column to build your layout up from a grid system. If you’d like to learn more about these advanced options, have a look at the [Shiny Application Layout Guide](https://shiny.rstudio.com/tutorial/written-tutorial/lesson2/).
+While titlePanel and sidebarLayout create a basic layout for your Shiny app, you can also create more advanced layouts. For example you can use navbarPage to give your app a multi-page user interface that includes a navigation bar. Or you can use fluidRow and column to build your layout up from a grid system. If you’d like to learn more about these advanced options, have a look at the [Shiny Application Layout Guide](https://shiny.rstudio.com/articles/layout-guide.html).
 
 Within the different layout functions you can also customise your app further by italisising or making your font bold and even including html elements: 
 
@@ -203,7 +203,7 @@ ui <- fluidPage(
   fluidRow(
     column( ... ),
     column(9,
-           ggvisOutput("plot1"),
+           plotlyOutput("plot1"),
            wellPanel(
              span("Number of movies selected:",
                   textOutput("n_movies")

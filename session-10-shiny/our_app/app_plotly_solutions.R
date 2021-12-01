@@ -124,13 +124,13 @@ server <- function(input, output, session) {
       ) %>%
       arrange(Oscars)
     
-    
     #### Answer to Exercise 1 
     # Optional: filter by genre
     if (input$genre != "All") {
       genre <- paste0("%", input$genre, "%")
       m <- m %>% filter(Genre %like% genre)
     }
+
     # Optional: filter by director
     if (!is.null(input$director) && input$director != "") {
       director <- paste0("%", input$director, "%")
