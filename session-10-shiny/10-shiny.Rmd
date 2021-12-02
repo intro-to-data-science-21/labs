@@ -320,9 +320,59 @@ Even then, there are a number of design guidelines that you should follow. Here 
 
 ***
 
-# Foreshadowing our last Lab `r emo::ji("ghost")`
+# Display all your new skills? `r emo::ji("beaming_face_with_smiling_eyes")`
 
-Tomorrow's lecture will be on Ethics in the field of Data Science. This lecture will already be very interactive. It therefore makes little sense to cover ethics again in our lab next week. We though it would be better to organise that lab as a drop-in session, where you can come in with question regarding your final project. As promised, we will also have some materials on websites and how to create them with R and markdown, for those among you that are interested in building a personalised site. 
+Thinking a bit ahead (e.g. data science / academic job market), one way to go would be to create a personalized website as a central source to everything you would like to show.
+What to include, of course, highly depends on your profile, your discipline and the job market you are interested in. 
+
+For an **academic webpage** that could for example be:
+
+* about statement
+* CV
+* list of publications / working papers
+* list of course materials for courses that you've taught
+* example of data science project / app / package you're proud of
+* contact + links to Github, Google Scholar, Twitter, etc.
+
+Here is a [recommendation](https://www.elsevier.com/connect/creating-a-simple-and-effective-academic-personal-website) by Elsevier on how to create effective academic personal website.
+
+For a **non-academic webpage** (e.g. focus on industry jobs) that could be:
+
+* about statement
+* CV(?)
+* EXAMPLES of data science projects
+* contact + links to Github, LinkedIn, etc.
+
+Usually, a good first step is to look at webpages of other people with similar profiles you find inspiring (e.g. people that already have the job you'd like to have). `r emo::ji("eyes")`
+
+## Tools to build personal webpages
+
+There is a plethora of possibilities to build your personal webpage, from very basic to very very complicated. 
+
+Very simple point-and-click ways to create websites are Google Sites, WordPress, Wix, etc. However, the free versions often come with ads and other downsides. 
+
+### GitHub Pages `r emo::ji("octopus")`
+One mid-range way that we'd recommend (it requires some coding experience, but you have that!) is to use [GitHub Pages](https://pages.github.com/) because 
+
+* it is free and free of adds
+* the page would be directly hosted from your GitHub repository and 
+* you can choose from a huge variety of [Jekyll themes](https://jekyllthemes.io/github-pages-themes) and
+* it compiles html from Markdown - something you've been doing all the time in this course
+* and there are even more [advantages](http://svmiller.com/blog/2015/08/create-your-website-in-jekyll/#advantages)
+
+For example [Rob Williams](https://jayrobwilliams.com/posts/2020/06/academic-website/) created a great tutorial on how to build an academic websites with Github; and the [academicpages](https://academicpages.github.io/) template is a ready-to-fork GitHub Pages template that I used to build my webpage [lfoswald.github.io](https://lfoswald.github.io/). If you like, you can also configure [custom URLs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
+
+Here is a, possibly even more accessible, all purpose and less complicated [Quick Start](https://docs.github.com/en/pages/quickstart) tutorial on GitHub Pages.
+
+### Blogdown 
+
+[Blogdown](https://bookdown.org/yihui/blogdown/) is an R package based on Hugo, another static site generator. Again
+
+* it is free
+* you have great online support because you work with R and GitHub
+* and you can choose from a wide range of [Hugo themes](https://themes.gohugo.io/)
+
+Here is a tutorial by [Andrew Hetherington](https://www.andrewhetherington.com/) on how to build a [data-science personal website](https://www.andrewhetherington.com/page/make-a-personal-website/) in R using blogdown. His personal webpage is also created with blogdown. You can deploy and host your website, for example, on [Netlify](https://www.netlify.com/). 
 
 ***
 

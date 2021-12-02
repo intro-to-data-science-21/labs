@@ -13,8 +13,8 @@
 
 <title>Shiny Applications</title>
 
-<script src="10-shiny_files/header-attrs-2.11/header-attrs.js"></script>
-<script src="10-shiny_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="10-shiny_files/header-attrs-2.9/header-attrs.js"></script>
+<script src="10-shiny_files/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="10-shiny_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
 <script src="10-shiny_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -372,7 +372,7 @@ div.tocify {
 </div>
 </div>
 <div id="layout-ui" class="section level2">
-<h2>Layout / UI 🗺</h2>
+<h2>Layout / UI 🗾</h2>
 <p>Shiny uses the function <code>fluidPage</code> to create a display that automatically adjusts to the dimensions of your user’s browser window. You lay out the user interface of your app by placing elements in the <code>fluidPage</code> function. Alternatives to <code>fluidPage</code> exist (i.e. <code>fixedPage</code>, <code>bootstrapPage</code>), but these are only useful in specific situations.</p>
 <p>For example, the ui function below creates a user interface that has a title panel and a sidebar layout, which includes a sidebar panel and a main panel. Note that these elements are placed within the fluidPage function.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
@@ -402,7 +402,7 @@ div.tocify {
 <p>Each widget function requires several arguments. The first two arguments for each widget are:</p>
 <ol style="list-style-type: decimal">
 <li><p>a name for the widget: The user will not see this name, but you can use it to access the widget’s value. The name should be a character string.</p></li>
-<li><p>a label: This label will appear with the widget in your app. It should be a character string, but it can be an empty string ““.</p></li>
+<li><p>a label: This label will appear with the widget in your app. It should be a character string, but it can be an empty string "".</p></li>
 </ol>
 <p>The remaining arguments vary from widget to widget, depending on what the widget needs to do its job. They include things like initial values, ranges, and increments. You can find the exact arguments needed by a widget on the widget function’s help page, (e.g., ?selectInput).</p>
 <p>Relevant chunk from our running example:</p>
@@ -499,7 +499,7 @@ div.tocify {
 </div>
 </div>
 <div id="guidelines-for-dashboards" class="section level1">
-<h1>Guidelines for Dashboards 🖌</h1>
+<h1>Guidelines for Dashboards 🎨</h1>
 <p>Now that you have the tools to create interactive dashboards, you might be eager to use these skills liberally. And so you should. <strong>But</strong>, dashboards are not always the best way to visualise data. Prior to developing a dashboard you should make sure to ask yourself a few questions.</p>
 <hr />
 <div id="checklist-before-you-start" class="section level2">
@@ -528,10 +528,56 @@ div.tocify {
 <hr />
 </div>
 </div>
-<div id="foreshadowing-our-last-lab" class="section level1">
-<h1>Foreshadowing our last Lab 👻</h1>
-<p>Tomorrow’s lecture will be on Ethics in the field of Data Science. This lecture will already be very interactive. It therefore makes little sense to cover ethics again in our lab next week. We though it would be better to organise that lab as a drop-in session, where you can come in with question regarding your final project. As promised, we will also have some materials on websites and how to create them with R and markdown, for those among you that are interested in building a personalised site.</p>
+<div id="display-all-your-new-skills" class="section level1">
+<h1>Display all your new skills? 😁</h1>
+<p>Thinking a bit ahead (e.g. data science / academic job market), one way to go would be to create a personalized website as a central source to everything you would like to show. What to include, of course, highly depends on your profile, your discipline and the job market you are interested in.</p>
+<p>For an <strong>academic webpage</strong> that could for example be:</p>
+<ul>
+<li>about statement</li>
+<li>CV</li>
+<li>list of publications / working papers</li>
+<li>list of course materials for courses that you’ve taught</li>
+<li>example of data science project / app / package you’re proud of</li>
+<li>contact + links to Github, Google Scholar, Twitter, etc.</li>
+</ul>
+<p>Here is a <a href="https://www.elsevier.com/connect/creating-a-simple-and-effective-academic-personal-website">recommendation</a> by Elsevier on how to create effective academic personal website.</p>
+<p>For a <strong>non-academic webpage</strong> (e.g. focus on industry jobs) that could be:</p>
+<ul>
+<li>about statement</li>
+<li>CV(?)</li>
+<li>EXAMPLES of data science projects</li>
+<li>contact + links to Github, LinkedIn, etc.</li>
+</ul>
+<p>Usually, a good first step is to look at webpages of other people with similar profiles you find inspiring (e.g. people that already have the job you’d like to have). 👀</p>
+<div id="tools-to-build-personal-webpages" class="section level2">
+<h2>Tools to build personal webpages</h2>
+<p>There is a plethora of possibilities to build your personal webpage, from very basic to very very complicated.</p>
+<p>Very simple point-and-click ways to create websites are Google Sites, WordPress, Wix, etc. However, the free versions often come with ads and other downsides.</p>
+<div id="github-pages" class="section level3">
+<h3>GitHub Pages 🐙</h3>
+<p>One mid-range way that we’d recommend (it requires some coding experience, but you have that!) is to use <a href="https://pages.github.com/">GitHub Pages</a> because</p>
+<ul>
+<li>it is free and free of adds</li>
+<li>the page would be directly hosted from your GitHub repository and</li>
+<li>you can choose from a huge variety of <a href="https://jekyllthemes.io/github-pages-themes">Jekyll themes</a> and</li>
+<li>it compiles html from Markdown - something you’ve been doing all the time in this course</li>
+<li>and there are even more <a href="http://svmiller.com/blog/2015/08/create-your-website-in-jekyll/#advantages">advantages</a></li>
+</ul>
+<p>For example <a href="https://jayrobwilliams.com/posts/2020/06/academic-website/">Rob Williams</a> created a great tutorial on how to build an academic websites with Github; and the <a href="https://academicpages.github.io/">academicpages</a> template is a ready-to-fork GitHub Pages template that I used to build my webpage <a href="https://lfoswald.github.io/">lfoswald.github.io</a>. If you like, you can also configure <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site">custom URLs</a>.</p>
+<p>Here is a, possibly even more accessible, all purpose and less complicated <a href="https://docs.github.com/en/pages/quickstart">Quick Start</a> tutorial on GitHub Pages.</p>
+</div>
+<div id="blogdown" class="section level3">
+<h3>Blogdown</h3>
+<p><a href="https://bookdown.org/yihui/blogdown/">Blogdown</a> is an R package based on Hugo, another static site generator. Again</p>
+<ul>
+<li>it is free</li>
+<li>you have great online support because you work with R and GitHub</li>
+<li>and you can choose from a wide range of <a href="https://themes.gohugo.io/">Hugo themes</a></li>
+</ul>
+<p>Here is a tutorial by <a href="https://www.andrewhetherington.com/">Andrew Hetherington</a> on how to build a <a href="https://www.andrewhetherington.com/page/make-a-personal-website/">data-science personal website</a> in R using blogdown. His personal webpage is also created with blogdown. You can deploy and host your website, for example, on <a href="https://www.netlify.com/">Netlify</a>.</p>
 <hr />
+</div>
+</div>
 <div id="sources" class="section level2">
 <h2>Sources</h2>
 <p>The shiny tutorial leans heavily on RStudio’s series of <a href="https://shiny.rstudio.com/tutorial/">written shiny tutorials</a>. The running example was adapted from: <a href="https://github.com/rstudio/shiny-examples/tree/main/051-movie-explorer">Movies-Explorer Interactive App</a>.</p>
