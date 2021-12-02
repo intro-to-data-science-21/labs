@@ -372,7 +372,7 @@ div.tocify {
 </div>
 </div>
 <div id="layout-ui" class="section level2">
-<h2>Layout / UI 🗾</h2>
+<h2>Layout / UI 🗺</h2>
 <p>Shiny uses the function <code>fluidPage</code> to create a display that automatically adjusts to the dimensions of your user’s browser window. You lay out the user interface of your app by placing elements in the <code>fluidPage</code> function. Alternatives to <code>fluidPage</code> exist (i.e. <code>fixedPage</code>, <code>bootstrapPage</code>), but these are only useful in specific situations.</p>
 <p>For example, the ui function below creates a user interface that has a title panel and a sidebar layout, which includes a sidebar panel and a main panel. Note that these elements are placed within the fluidPage function.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
@@ -383,7 +383,7 @@ div.tocify {
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(<span class="st">&quot;main panel&quot;</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>While titlePanel and sidebarLayout create a basic layout for your Shiny app, you can also create more advanced layouts. For example you can use navbarPage to give your app a multi-page user interface that includes a navigation bar. Or you can use fluidRow and column to build your layout up from a grid system. If you’d like to learn more about these advanced options, have a look at the <a href="https://shiny.rstudio.com/tutorial/written-tutorial/lesson2/">Shiny Application Layout Guide</a>.</p>
+<p>While titlePanel and sidebarLayout create a basic layout for your Shiny app, you can also create more advanced layouts. For example you can use navbarPage to give your app a multi-page user interface that includes a navigation bar. Or you can use fluidRow and column to build your layout up from a grid system. If you’d like to learn more about these advanced options, have a look at the <a href="https://shiny.rstudio.com/articles/layout-guide.html">Shiny Application Layout Guide</a>.</p>
 <p>Within the different layout functions you can also customise your app further by italisising or making your font bold and even including html elements:</p>
 <p>To include images you need to use the <code>img</code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">img</span>(<span class="at">src =</span> <span class="st">&quot;my_image.png&quot;</span>, <span class="at">height =</span> <span class="dv">72</span>, <span class="at">width =</span> <span class="dv">72</span>)</span>
@@ -433,7 +433,7 @@ div.tocify {
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>( ... ),</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">9</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">ggvisOutput</span>(<span class="st">&quot;plot1&quot;</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">plotlyOutput</span>(<span class="st">&quot;plot1&quot;</span>),</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">wellPanel</span>(</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">span</span>(<span class="st">&quot;Number of movies selected:&quot;</span>,</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">textOutput</span>(<span class="st">&quot;n_movies&quot;</span>)</span>
@@ -499,7 +499,7 @@ div.tocify {
 </div>
 </div>
 <div id="guidelines-for-dashboards" class="section level1">
-<h1>Guidelines for Dashboards 🖼</h1>
+<h1>Guidelines for Dashboards 🖌</h1>
 <p>Now that you have the tools to create interactive dashboards, you might be eager to use these skills liberally. And so you should. <strong>But</strong>, dashboards are not always the best way to visualise data. Prior to developing a dashboard you should make sure to ask yourself a few questions.</p>
 <hr />
 <div id="checklist-before-you-start" class="section level2">
